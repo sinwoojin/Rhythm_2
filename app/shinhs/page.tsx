@@ -1,8 +1,8 @@
 
-function page() {
+function ShinhsPage() {
   return (
-    <div>page</div>
+    <main>page</main>
   )
 }
 
-export default page
+export default ShinhsPage
