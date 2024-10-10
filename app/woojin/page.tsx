@@ -1,5 +1,5 @@
 function WooJinPage() {
-	return <div>page</div>;
+	return <main>page</main>;
 }
 
 export default WooJinPage;
