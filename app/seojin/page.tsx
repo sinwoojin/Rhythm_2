@@ -1,9 +1,5 @@
-import React from 'react'
-
 function SeojinPage() {
-  return (
-    <div>page</div>
-  )
+  return <main>page</main>;
 }
 
-export default SeojinPage
+export default SeojinPage;
