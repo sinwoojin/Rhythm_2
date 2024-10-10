@@ -1,9 +1,18 @@
-import React from 'react'
+import { PropsWithChildren } from "react";
+import AuthProvider from "./_providers/AuthProvider";
+import ModalProvider from "./_providers/ModalProvider";
+import TanstackQueryProvider from "./_providers/TanStackQueryProvider";
 
-function ProvidersLayout() {
+function ProvidersLayout({ children }: PropsWithChildren) {
   return (
-    <div>layout</div>
-  )
+    <>
+      <TanstackQueryProvider>
+        <ModalProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </ModalProvider>
+      </TanstackQueryProvider>
+    </>
+  );
 }
 
-export default ProvidersLayout
+export default ProvidersLayout;
