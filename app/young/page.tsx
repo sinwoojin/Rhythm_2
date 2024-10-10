@@ -1,5 +1,5 @@
 function YoungPage() {
-  return <div>page</div>;
+  return <main>page</main>;
 }
 
 export default YoungPage;
