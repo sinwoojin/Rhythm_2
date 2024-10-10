@@ -1,7 +1,7 @@
 import React from "react";
 
 function LeeganghuiPage() {
-  return <div>page</div>;
+  return <main>page</main>;
 }
 
 export default LeeganghuiPage;
