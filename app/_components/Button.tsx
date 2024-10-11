@@ -10,7 +10,11 @@ interface ButtonProps {
 /**
  *
  * 크기 조정시 w, h 붙여서 작성 예) w-[100px]
+ * 
+ * 기본 패딩 px-2, py-1 지정
+ * 
  * content 필수!
+ * 
  * action으로 onClick 가능!
  */
 function Button(props: ButtonProps) {

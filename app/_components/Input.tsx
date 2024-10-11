@@ -14,10 +14,11 @@ interface InputProps {
 }
 
 /**
+ * width, height 조정가능
  *
  * 크기 조정시 w, h 붙여서 작성 예) w-[100px]
  *
- *  지정가능
+ *  labelValue, id, type, onChange, value, ref 사용가능
  */
 function Input(props: InputProps) {
   return (
