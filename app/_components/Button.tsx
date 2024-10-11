@@ -16,7 +16,7 @@ interface ButtonProps {
 function Button(props: ButtonProps) {
   return (
     <button
-      className={` ${props.width} ${props.height} rounded-md bg-gray-500 text-white brightness-95 active:bg-slate-700 transition-all`}
+      className={` ${props.width} ${props.height} rounded-md bg-gray-500 text-white brightness-95 active:bg-slate-700 transition-all px-2 py-1`}
       onClick={props.action}
     >
       {props.content}
