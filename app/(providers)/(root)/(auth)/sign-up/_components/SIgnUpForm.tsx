@@ -1,17 +1,19 @@
 "use client";
 
-import { ComponentProps, useState } from "react";
+import { ComponentProps, useRef, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const regEmail =
 	/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
+const regPassword = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
+
 function SIgnUpForm() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordConfirm, setPasswordConfirm] = useState("");
-	const [visible, setVisible] = useState(false);
-	const [type, setType] = useState("password");
+	const userNameRef = useRef<HTMLInputElement | null>(null);
+	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
 	const handleChangeEmail: ComponentProps<"input">["onChange"] = (e) => {
 		const email = e.target.value;
@@ -30,13 +32,22 @@ function SIgnUpForm() {
 		setPasswordConfirm(passwordConfirm);
 	};
 
-	const handleClickSignUp: ComponentProps<"button">["onClick"] = (e) => {
+	const handleSubmitSignUp: ComponentProps<"form">["onSubmit"] = (e) => {
 		e.preventDefault();
+
+		if (!userNameRef.current) return alert("사용자 이름을 입력해주세요");
+		const userName = userNameRef.current.value;
 
 		// 이메일 양식이 맞는지 확인하는 코드
 		if (!regEmail.test(email))
 			return alert(
 				"잘못된 이메일 주소입니다. example@email.com 형식으로 입력되었는지 확인하세요."
+			);
+
+		//비밀번호의 양식이 맞는지 확인
+		if (!regPassword.test(password))
+			return alert(
+				"비밀번호는 영문 숫자를 조합하여 8자리 이상 입력해주세요"
 			);
 
 		// 두 비밀번호가 서로 일치하는지 확인
@@ -45,6 +56,7 @@ function SIgnUpForm() {
 
 		//회원가입 api에 data를 전송하기 위한 데이터
 		const data = {
+			userName,
 			email,
 			password,
 		};
@@ -53,24 +65,10 @@ function SIgnUpForm() {
 		console.log(data);
 	};
 
-	/**
-	 * 첫번째 입력받는 비밀번호의 타입을 text 또는 password로 바꿈
-	 */
-	const isClickPasswordToggle = () => {
-		if (visible) {
-			setType("password");
-			setVisible(false);
-		} else {
-			setType("text");
-			setVisible(true);
-		}
-		console.log(visible);
-	};
-
 	return (
-		<form>
-			<label htmlFor="userName">유저 이름</label>
-			<input type="text" id="userName" />
+		<form onSubmit={handleSubmitSignUp}>
+			<label htmlFor="userName">사용자 이름</label>
+			<input type="text" id="userName" ref={userNameRef} />
 			<label htmlFor="email">이메일</label>
 			<input
 				type="text"
@@ -81,14 +79,18 @@ function SIgnUpForm() {
 			<div className="flex items-center">
 				<label htmlFor="password">비밀번호</label>
 				<input
-					type={type}
+					type={isPasswordVisible ? "text" : "password"}
 					id="password"
 					value={password}
 					onChange={handleChangePassword}
+					placeholder="영문 숫자를 포함하여 8글자 이상 작성"
 				/>
-				<div onClick={isClickPasswordToggle}>
-					{visible ? <FaEye /> : <FaEyeSlash />}
-				</div>
+				<button
+					type="button"
+					onClick={() => setIsPasswordVisible((prev) => !prev)}
+				>
+					{isPasswordVisible ? <FaEye /> : <FaEyeSlash />}
+				</button>
 			</div>
 			<label htmlFor="passwordConfirm">비밀번호 확인</label>
 			<input
@@ -97,7 +99,7 @@ function SIgnUpForm() {
 				value={passwordConfirm}
 				onChange={handleChangePasswordConfirm}
 			/>
-			<button onClick={handleClickSignUp}>회원가입 버튼</button>
+			<button>회원가입 버튼</button>
 		</form>
 	);
 }
