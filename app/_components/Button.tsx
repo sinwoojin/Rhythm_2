@@ -1,31 +1,75 @@
 "use client";
 
-interface ButtonProps {
-  content: string;
-  width: string;
-  height: string;
-  action?: () => void;
-}
+import { cva, VariantProps } from "class-variance-authority";
+import { ComponentProps, PropsWithChildren } from "react";
 
-/**
- *
- * 크기 조정시 w, h 붙여서 작성 예) w-[100px]
- * 
- * 기본 패딩 px-2, py-1 지정
- * 
- * content 필수!
- * 
- * action으로 onClick 가능!
- */
-function Button(props: ButtonProps) {
-  return (
-    <button
-      className={` ${props.width} ${props.height} rounded-md bg-gray-500 text-white brightness-95 active:bg-slate-700 transition-all px-2 py-1`}
-      onClick={props.action}
-    >
-      {props.content}
-    </button>
-  );
+type ButtonProps = ButtonVariantsType & ComponentProps<"button">;
+
+const buttonVariants = cva(
+	"transition hover:brightness-90 active:brightness-75",
+	{
+		variants: {
+			size: {
+				sm: "text-xs px-1.5 py-0.5 font-medium",
+				md: "text-[15px] px-2.5 py-1 font-semibold",
+				lg: "text-[17px] px-3.5 py-2 font-bold",
+			},
+			intent: {
+				play: "bg-red-500",
+				warning: "bg-yellow-500",
+				primary: ["bg-white", "bg-opacity-20"],
+				secondary: "bg-gray-400",
+			},
+			outline: {
+				true: "border",
+				false: "text-white",
+			},
+			rounded: {
+				normal: "rounded-md",
+				pill: "rounded-full",
+			},
+		},
+		compoundVariants: [
+			{
+				outline: true,
+				intent: "primary",
+				className: "bg-white text-sky-500 border-sky-500",
+			},
+		],
+		defaultVariants: {
+			size: "md",
+			intent: "primary",
+			outline: false,
+			rounded: "normal",
+		},
+	}
+);
+
+type ButtonVariantsType = VariantProps<typeof buttonVariants>;
+
+function Button({
+	size,
+	intent,
+	outline,
+	rounded,
+	children,
+	className,
+	...props
+}: PropsWithChildren<ButtonProps>) {
+	return (
+		<button
+			className={buttonVariants({
+				className,
+				size,
+				intent,
+				outline,
+				rounded,
+			})}
+			{...props}
+		>
+			{children}
+		</button>
+	);
 }
 
 export default Button;
