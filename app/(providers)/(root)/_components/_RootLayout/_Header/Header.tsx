@@ -7,7 +7,7 @@ import { SiYoutubemusic } from "react-icons/si";
 
 function Header() {
   return (
-    <header className="min-w-[245px] h-full bg-black text-white">
+    <header className="min-w-[245px] h-full bg-[#121212] text-white">
       <h1 className="my-6 ml-10">
         <Link href="/" className="flex items-center">
           <span className="font-black text-lg mr-2">SKN</span>
