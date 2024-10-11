@@ -2,6 +2,7 @@
 
 import { useModalStore } from "@/zustand/modalStore";
 import { PropsWithChildren } from "react";
+import LogInModal from "../_components/LogInModal";
 
 function ModalProvider({ children }: PropsWithChildren) {
   const isModal = useModalStore((state) => state.isModal);
@@ -9,7 +10,7 @@ function ModalProvider({ children }: PropsWithChildren) {
 
   return (
     <>
-      {/* {isModal === true ? <Modal /> : null} */}
+      {isModal === true ? <LogInModal /> : null}
       {children}
     </>
   );
