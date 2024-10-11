@@ -6,7 +6,7 @@ import { useModalStore } from "@/zustand/modalStore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-function Modal() {
+function LogInModal() {
   // 홈으로 이동
   const router = useRouter();
 
@@ -99,4 +99,4 @@ function Modal() {
   );
 }
 
-export default Modal;
+export default LogInModal;
