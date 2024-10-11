@@ -1,4 +1,3 @@
-
 function BandPage() {
   return (
     <div>page</div>
