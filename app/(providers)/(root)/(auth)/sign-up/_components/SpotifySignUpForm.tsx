@@ -17,7 +17,12 @@ function SpotifyLogInPage() {
 	};
 
 	return (
-		<Button onClick={handleClickSpotifyLogIn} className="absolute left-20">
+		<Button
+			onClick={handleClickSpotifyLogIn}
+			intent="spotify"
+			type="button"
+			className="mt-5"
+		>
 			SpotifySignUpForm
 		</Button>
 	);

@@ -16,9 +16,11 @@ const buttonVariants = cva(
 			},
 			intent: {
 				play: "bg-red-500",
+				spotify: "bg-green-500",
 				warning: "bg-yellow-500",
 				primary: ["bg-white", "bg-opacity-20"],
 				secondary: "bg-gray-400",
+				none: "bg-none",
 			},
 			outline: {
 				true: "border",
