@@ -3,6 +3,7 @@
 import Button from "@/app/_components/Button";
 import { ComponentProps, useRef, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import SpotifyLogInPage from "./SpotifySignUpForm";
 
 const regEmail =
 	/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
@@ -33,7 +34,9 @@ function SIgnUpForm() {
 		setPasswordConfirm(passwordConfirm);
 	};
 
-	const handleSubmitSignUp: ComponentProps<"form">["onSubmit"] = (e) => {
+	const handleSubmitSignUp: ComponentProps<"form">["onSubmit"] = async (
+		e
+	) => {
 		e.preventDefault();
 
 		if (!userNameRef.current) return alert("사용자 이름을 입력해주세요");
@@ -67,41 +70,44 @@ function SIgnUpForm() {
 	};
 
 	return (
-		<form onSubmit={handleSubmitSignUp}>
-			<label htmlFor="userName">사용자 이름</label>
-			<input type="text" id="userName" ref={userNameRef} />
-			<label htmlFor="email">이메일</label>
-			<input
-				type="text"
-				id="email"
-				value={email}
-				onChange={handleChangeEmail}
-			/>
-			<div className="flex items-center">
-				<label htmlFor="password">비밀번호</label>
+		<div>
+			<form onSubmit={handleSubmitSignUp}>
+				<label htmlFor="userName">사용자 이름</label>
+				<input type="text" id="userName" ref={userNameRef} />
+				<label htmlFor="email">이메일</label>
 				<input
-					type={isPasswordVisible ? "text" : "password"}
-					id="password"
-					value={password}
-					onChange={handleChangePassword}
-					placeholder="영문 숫자를 포함하여 8글자 이상 작성"
+					type="text"
+					id="email"
+					value={email}
+					onChange={handleChangeEmail}
 				/>
-				<button
-					type="button"
-					onClick={() => setIsPasswordVisible((prev) => !prev)}
-				>
-					{isPasswordVisible ? <FaEye /> : <FaEyeSlash />}
-				</button>
-			</div>
-			<label htmlFor="passwordConfirm">비밀번호 확인</label>
-			<input
-				type="password"
-				id="passwordConfirm"
-				value={passwordConfirm}
-				onChange={handleChangePasswordConfirm}
-			/>
-			<Button>회원가입 하기</Button>
-		</form>
+				<div className="flex items-center">
+					<label htmlFor="password">비밀번호</label>
+					<input
+						type={isPasswordVisible ? "text" : "password"}
+						id="password"
+						value={password}
+						onChange={handleChangePassword}
+						placeholder="영문 숫자를 포함하여 8글자 이상 작성"
+					/>
+					<button
+						type="button"
+						onClick={() => setIsPasswordVisible((prev) => !prev)}
+					>
+						{isPasswordVisible ? <FaEye /> : <FaEyeSlash />}
+					</button>
+				</div>
+				<label htmlFor="passwordConfirm">비밀번호 확인</label>
+				<input
+					type="password"
+					id="passwordConfirm"
+					value={passwordConfirm}
+					onChange={handleChangePasswordConfirm}
+				/>
+				<Button>회원가입 하기</Button>
+			</form>
+			<SpotifyLogInPage />
+		</div>
 	);
 }
 
