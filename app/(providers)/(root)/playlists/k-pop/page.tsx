@@ -1,7 +1,9 @@
-import React from "react";
+import React from 'react'
 
-function page() {
-  return <div>page</div>;
+function KpopPage() {
+  return (
+    <div>page</div>
+  )
 }
 
-export default page;
+export default KpopPage

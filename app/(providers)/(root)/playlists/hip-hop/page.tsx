@@ -1,7 +1,7 @@
-import React from "react";
-
-function page() {
-  return <div>page</div>;
+function HiphopPage() {
+  return (
+    <div>page</div>
+  )
 }
 
-export default page;
+export default HiphopPage

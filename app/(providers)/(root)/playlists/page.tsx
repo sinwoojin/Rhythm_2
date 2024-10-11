@@ -1,9 +1,9 @@
 import React from 'react'
 
-function UserDetailPage() {
+function PlaylistsPage() {
   return (
     <div>page</div>
   )
 }
 
-export default UserDetailPage
+export default PlaylistsPage
