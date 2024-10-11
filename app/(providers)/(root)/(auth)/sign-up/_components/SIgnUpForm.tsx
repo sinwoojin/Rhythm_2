@@ -97,7 +97,7 @@ function SIgnUpForm() {
 				value={passwordConfirm}
 				onChange={handleChangePasswordConfirm}
 			/>
-			<button onClick={handleClickSignUp}>회원가입 하기</button>
+			<button onClick={handleClickSignUp}>회원가입 버튼</button>
 		</form>
 	);
 }
