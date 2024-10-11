@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/app/_components/Button";
 import { ComponentProps, useRef, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -99,7 +100,7 @@ function SIgnUpForm() {
 				value={passwordConfirm}
 				onChange={handleChangePasswordConfirm}
 			/>
-			<button>회원가입 버튼</button>
+			<Button>회원가입 하기</Button>
 		</form>
 	);
 }
