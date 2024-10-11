@@ -1,8 +1,8 @@
 import { getAccessToken } from "@/axios/getAccessToken";
-import { spotifyAPI } from "./spotify.api";
+import { baseURL } from "./spotify.api";
 
 /**
- * 앨범 받아오기
+ * 앨범 받아오기(albumId 필요함)
  * @param albumId
  */
 const getAlbum = async (albumId: string) => {
@@ -12,7 +12,7 @@ const getAlbum = async (albumId: string) => {
       throw new Error("Access token is required");
     }
 
-    const response = await spotifyAPI.get(`albums/${albumId}`, {
+    const response = await baseURL.spotifyAPI.get(`albums/${albumId}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -25,7 +25,7 @@ const getAlbum = async (albumId: string) => {
   }
 };
 /**
- * 여러 앨범 받아오기
+ * 여러 앨범 받아오기(albumIds 필요함 (예:albumId, albumId))
  * @param albumIds
  */
 const getAlbums = async (albumIds: string) => {
@@ -35,7 +35,7 @@ const getAlbums = async (albumIds: string) => {
       throw new Error("Access token is required");
     }
 
-    const response = await spotifyAPI.get(`albums?${albumIds}`, {
+    const response = await baseURL.spotifyAPI.get(`albums?${albumIds}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -48,7 +48,7 @@ const getAlbums = async (albumIds: string) => {
   }
 };
 /**
- * 앨범 트랙 받아오기
+ * 앨범 트랙 받아오기(albumId 필요함)
  * @param albumId
  */
 const getAlbumTrack = async (albumId: string) => {
@@ -58,7 +58,7 @@ const getAlbumTrack = async (albumId: string) => {
       throw new Error("Access token is required");
     }
 
-    const response = await spotifyAPI.get(`albums/${albumId}/tracks`, {
+    const response = await baseURL.spotifyAPI.get(`albums/${albumId}/tracks`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
