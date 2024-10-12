@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 // Spotify 토큰 엔드포인트 URI 및 클라이언트 자격 증명 설정
-const tokenEndpoint = 'https://accounts.spotify.com/api/token';
+const BASEURL = 'https://accounts.spotify.com/api/token';
 const clientId = process.env.SPOTIFY_CLIENT_ID!
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET!
 
@@ -17,7 +17,7 @@ interface TokenResponse {
 export const getAccessToken = async (): Promise<string | undefined> => {
   try {
     const response: AxiosResponse<TokenResponse> = await axios.post(
-      tokenEndpoint,
+      BASEURL,
       new URLSearchParams({
         grant_type: 'client_credentials',
         client_id: clientId,

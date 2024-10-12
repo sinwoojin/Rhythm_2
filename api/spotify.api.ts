@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AlbumAPI } from "./spotfiy.album.api";
+import { AlbumAPI } from "./spotify.album.api";
 import { PlaylistAPI } from "./spotify.playlist.api";
 import { ProfileAPI } from "./spotify.profile.api";
 

@@ -3,7 +3,7 @@ import { baseURL } from "./spotify.api";
 
 /**
  * 지금 로그인한 유저의 프로필 가져오기
- * @param playlistId
+ * @param getProfile
  */
 const getProfile = async () => {
   try {
