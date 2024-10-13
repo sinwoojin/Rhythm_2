@@ -55,7 +55,7 @@ function Header() {
                 <span className="text-[20px] text-gray-400">차트</span>
               </li>
             </Link>
-            <Link href="/">
+            <Link href="/playlists">
               {/* 링크 URL은 페이지 만들면 카테고리에 맞춰서 넣어주세요 */}
               <li className="flex items-center gap-x-3 mx-[6px]">
                 <span className="text-3xl text-gray-400">
