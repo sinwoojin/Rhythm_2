@@ -7,7 +7,7 @@ import { SiYoutubemusic } from "react-icons/si";
 
 function Header() {
   return (
-    <header className="min-w-[245px] h-full bg-[#121212] text-white">
+    <header className="fixed left-0 max-w-[245px] h-full bg-[#121212] text-white">
       <h1 className="my-6 ml-10">
         <Link href="/" className="flex items-center">
           <span className="font-black text-lg mr-2">SKN</span>
@@ -37,7 +37,7 @@ function Header() {
         </div>
         <div>
           <ul className="flex flex-col gap-y-4">
-            <Link href="/">
+            <Link href="/today">
               {/* 링크 URL은 페이지 만들면 카테고리에 맞춰서 넣어주세요 */}
               <li className="flex items-center gap-x-3 mx-[6px]">
                 <span className="text-3xl text-gray-400">
