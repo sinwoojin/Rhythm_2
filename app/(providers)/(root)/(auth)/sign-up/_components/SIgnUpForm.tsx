@@ -73,7 +73,7 @@ function SIgnUpForm() {
     const user = await supabase.auth.getUser();
     console.log(user);
 
-    const userId = user.data.user?.id!;
+    const userId = user.data.user!.id;
 
     const data: Database["public"]["Tables"]["users"]["Insert"] = {
       userId,
