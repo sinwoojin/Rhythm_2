@@ -2,6 +2,9 @@
 
 import Button from "@/app/_components/Button";
 import Input from "@/app/_components/Input";
+import { supabase } from "@/supabase/client";
+import { useAuthStore } from "@/zustand/authStore";
+import { useRouter } from "next/navigation";
 import { ComponentProps, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -11,6 +14,9 @@ const regEmail =
 const regPassword = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
 
 function SIgnUpForm() {
+	const LogIn = useAuthStore((state) => state.isLogIn);
+	const router = useRouter();
+
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -63,17 +69,19 @@ function SIgnUpForm() {
 
 		//회원가입 api에 data를 전송하기 위한 데이터
 		const data = {
-			userName,
 			email,
 			password,
 		};
 
 		//api 요청을 보내야 할 곳
-		console.log(data);
+		const signUp = await supabase.auth.signUp(data);
+		if (signUp.error) return alert("로그인에 실패 하였습니다");
+		LogIn();
+		router.push("/");
 	};
 
 	return (
-		<div className="bg-black bg-opacity-90  w-full grid place-content-center">
+		<div className="bg-black bg-opacity-90  w-[calc(100%-245px)] ml-[245px] grid place-content-center min-h-[calc(100vh-87px)]">
 			<form
 				onSubmit={handleSubmitSignUp}
 				className="px-10 py-10 rounded-md items-center items-center  bg-slate-800 w-[800px]"
