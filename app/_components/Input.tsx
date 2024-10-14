@@ -1,39 +1,81 @@
 "use client";
 
-import { ComponentProps } from "react";
+import { cva, VariantProps } from "class-variance-authority";
+import { ComponentProps, PropsWithChildren } from "react";
 
-interface InputProps {
-  id: string;
-  type: string;
-  width: string;
-  height: string;
-  value?: string;
-  labelValue: string;
-  onchange?: () => void;
-  ref?: ComponentProps<"input">["ref"];
+type InputProps = InputVariantsType & ComponentProps<"input">;
+
+const inputVariants = cva(
+	"transition hover:brightness-90 active:brightness-75",
+	{
+		variants: {
+			size: {
+				sm: "text-xs px-1.5 py-0.5 font-medium",
+				md: "text-base w-full",
+				lg: "text-[17px] px-3.5 py-2 font-bold",
+			},
+			padding: {
+				md: "px-4 py-4",
+			},
+			intent: {
+				play: "bg-red-500",
+				warning: "bg-yellow-500",
+				primary: ["bg-white", "bg-opacity-20"],
+				secondary: "bg-gray-400",
+			},
+			outline: {
+				true: "border",
+				false: "text-white",
+			},
+			rounded: {
+				normal: "rounded-md",
+				pill: "rounded-full",
+			},
+		},
+		compoundVariants: [
+			{
+				outline: true,
+				intent: "primary",
+				className: "bg-white text-sky-500 border-sky-500",
+			},
+		],
+		defaultVariants: {
+			size: "md",
+			intent: "primary",
+			outline: false,
+			rounded: "normal",
+			padding: "md",
+		},
+	}
+);
+
+type InputVariantsType = VariantProps<typeof inputVariants>;
+
+function Button({
+	size,
+	padding,
+	intent,
+	outline,
+	rounded,
+	children,
+	className,
+	...props
+}: PropsWithChildren<InputProps>) {
+	return (
+		<input
+			className={inputVariants({
+				className,
+				padding,
+				size,
+				intent,
+				outline,
+				rounded,
+			})}
+			{...props}
+		>
+			{children}
+		</input>
+	);
 }
 
-/**
- * width, height 조정가능
- *
- * 크기 조정시 w, h 붙여서 작성 예) w-[100px]
- *
- *  labelValue, id, type, onChange, value, ref 사용가능
- */
-function Input(props: InputProps) {
-  return (
-    <>
-      <label htmlFor={props.id}>{props.labelValue}</label>
-      <input
-        id={props.id}
-        type={props.type}
-        className={`${props.width} ${props.height} border border-black`}
-        onChange={props.onchange}
-        value={props.value}
-        ref={props.ref}
-      />
-    </>
-  );
-}
-
-export default Input;
+export default Button;
