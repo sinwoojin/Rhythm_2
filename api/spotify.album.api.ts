@@ -1,4 +1,6 @@
 import { getAccessToken } from "@/axios/getAccessToken";
+
+import { Album } from "@/schema/type";
 import { baseURL } from "./spotify.api";
 
 /**
@@ -12,14 +14,14 @@ const getAlbum = async (albumId: string) => {
       throw new Error("Access token is required");
     }
 
-    const response = await baseURL.spotifyAPI.get(`albums/${albumId}`, {
+    const response = await baseURL.spotifyAPI.get<Album[]>(`albums/${albumId}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
 
     // 응답 데이터 출력
-    console.log(response.data);
+    return response.data
   } catch (error) {
     console.error("Error fetching album information:", error);
   }
