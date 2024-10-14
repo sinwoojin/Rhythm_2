@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { PropsWithChildren } from "react";
 
-function Lists({}) {
+function Lists(props: PropsWithChildren) {
 	return (
 		<ul>
 			<li className="w-full p-6 bg-slate-700 rounded-lg mb-10 flex">
