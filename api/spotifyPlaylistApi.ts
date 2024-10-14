@@ -3,7 +3,6 @@ import { getAccessToken } from "@/axios/getAccessToken";
 import { Playlist } from "@/schema/type";
 import { baseURL } from "./spotifyApi";
 
-
 /**
  * 플레이 리스트 받아오기(playlistId 필요)
  * @param playlistId
@@ -45,22 +44,19 @@ const createPlaylists = async (userId: string) => {
       throw new Error("Access token is required");
     }
 
-    const response = await baseURL.spotifyPlayListAPI.post(
-      `${userId}/playlists`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        data: {
-          name: "",
-          description: "",
-          public: false,
-        },
-      }
-    );
+    const response = await baseURL.spotifyUserAPI.post(`${userId}/playlists`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      data: {
+        name: "",
+        description: "",
+        public: false,
+      },
+    });
 
     // 응답 데이터 출력
-    return response.data
+    return response.data;
   } catch (error) {
     console.error("Error fetching album information:", error);
   }
@@ -76,14 +72,11 @@ const editPlaylist = async (userId: string) => {
       throw new Error("Access token is required");
     }
 
-    const response = await baseURL.spotifyPlayListAPI.put(
-      `${userId}/playlists`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const response = await baseURL.spotifyUserAPI.put(`${userId}/playlists`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
     // 응답 데이터 출력
     console.log(response.data);
@@ -102,7 +95,7 @@ const getCategoryPlaylist = async (category_id: string) => {
       throw new Error("Access token is required");
     }
 
-    const response = await baseURL.spotifyPlayListAPI.get(
+    const response = await baseURL.spotifyUserAPI.get(
       `browse/categories/${category_id}/playlists`,
       {
         headers: {

@@ -9,6 +9,9 @@ export interface Album {
   tracks: {
     items: { id: string; name: string; artists: { name: string }[] }[];
   };
+  images:{
+    url:string
+  }[]
 }
 
 
