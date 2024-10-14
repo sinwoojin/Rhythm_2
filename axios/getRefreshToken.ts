@@ -3,10 +3,10 @@ import axios from "axios";
 export const getRefreshToken = async () => {
   try {
     const refreshToken = localStorage.getItem("refresh_token");
-    const baseURL = "https://accounts.spotify.com/api/token";
+    const BASEURL = "https://accounts.spotify.com/api/token";
 
     const response = await axios.post(
-      baseURL,
+      BASEURL,
       new URLSearchParams({
         grant_type: "refresh_token",
         refresh_token: refreshToken as string,
