@@ -21,16 +21,16 @@ function Profile() {
     >
       <div
         id="profile-img"
-        className="rounded-full bg-gray-400 min-w-10 aspect-square text-gray-100 "
+        className="rounded-full bg-gray-400 min-w-8 aspect-square text-gray-100 "
       >
         {/* <img src=""/> */}
         {/* 이미지 주소에 사용자 프로필 사진 주소 넣으면 됨 */}
       </div>
       {/* 여기에 사용자 id 넣기 */}
       <div className="flex justify-between w-full">
-        <span className="text-lg font-medium">userName</span>
+        <span className="text-sm font-medium">userName</span>
         <button onClick={handleClickSignOutButton}>
-          <span className="text-lg font-sm">로그아웃</span>
+          <span className="text-sm font-sm">로그아웃</span>
         </button>
       </div>
     </button>
@@ -42,16 +42,15 @@ function Profile() {
     >
       <div
         id="profile-img"
-        className="rounded-full bg-gray-400 w-10 h-10 text-gray-100 "
+        className="rounded-full bg-gray-400 min-w-8 aspect-square text-gray-100 "
       >
         {/* <img src=""/> */}
         {/* 이미지 주소에 사용자 프로필 사진 주소 넣으면 됨 */}
       </div>
 
-      <span className="text-lg font-medium">로그인</span>
+      <span className="text-sm font-medium">로그인</span>
     </button>
   );
-
 }
 
 export default Profile;
