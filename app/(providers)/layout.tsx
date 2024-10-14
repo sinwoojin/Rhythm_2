@@ -4,15 +4,15 @@ import ModalProvider from "./_providers/ModalProvider";
 import TanstackQueryProvider from "./_providers/TanStackQueryProvider";
 
 function ProvidersLayout({ children }: PropsWithChildren) {
-  return (
-    <>
-      <TanstackQueryProvider>
-        <ModalProvider>
-          <AuthProvider>{children}</AuthProvider>
-        </ModalProvider>
-      </TanstackQueryProvider>
-    </>
-  );
+	return (
+		<>
+			<TanstackQueryProvider>
+				<ModalProvider>
+					<AuthProvider>{children}</AuthProvider>
+				</ModalProvider>
+			</TanstackQueryProvider>
+		</>
+	);
 }
 
 export default ProvidersLayout;

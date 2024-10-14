@@ -16,7 +16,7 @@ const buttonVariants = cva(
 			},
 			intent: {
 				play: "bg-red-500",
-				spotify: "bg-green-500",
+				spotify: "bg-green-500 hover:-translate-y-2 transition-all",
 				warning: "bg-yellow-500",
 				primary: ["bg-white", "bg-opacity-20"],
 				secondary: "bg-gray-400",
