@@ -2,6 +2,7 @@
 
 import Button from "@/app/_components/Button";
 import { supabase } from "@/supabase/client";
+import { useRouter } from "next/navigation";
 import { FaSpotify } from "react-icons/fa";
 
 function SpotifyLogInPage() {
