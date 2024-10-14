@@ -18,7 +18,7 @@ const getProfile = async () => {
     });
 
     // 응답 데이터 출력
-    console.log(response.data);
+    return response.data;
   } catch (error) {
     console.error("Error fetching album information:", error);
   }

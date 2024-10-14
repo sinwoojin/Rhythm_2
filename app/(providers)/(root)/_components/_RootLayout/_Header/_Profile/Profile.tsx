@@ -51,6 +51,7 @@ function Profile() {
       <span className="text-lg font-medium">로그인</span>
     </button>
   );
+
 }
 
 export default Profile;
