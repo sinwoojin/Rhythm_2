@@ -3,6 +3,7 @@
 import Button from "@/app/_components/Button";
 import { supabase } from "@/supabase/client";
 import { useRouter } from "next/navigation";
+import { FaSpotify } from "react-icons/fa";
 
 function SpotifyLogInPage() {
 	const router = useRouter();
@@ -20,10 +21,12 @@ function SpotifyLogInPage() {
 		<Button
 			onClick={handleClickSpotifyLogIn}
 			intent="spotify"
+			size="lg"
 			type="button"
-			className="mt-5"
+			className=" flex items-center w-full h-full justify-center py-4 gap-x-3"
 		>
-			SpotifySignUpForm
+			<FaSpotify />
+			Sign in with Spotify
 		</Button>
 	);
 }

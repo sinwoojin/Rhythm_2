@@ -4,7 +4,6 @@ import Button from "@/app/_components/Button";
 import Input from "@/app/_components/Input";
 import { ComponentProps, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import SpotifyLogInPage from "./SpotifySignUpForm";
 
 const regEmail =
 	/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
@@ -74,12 +73,15 @@ function SIgnUpForm() {
 	};
 
 	return (
-		<div className="bg-slate-400 w-full grid place-content-center">
+		<div className="bg-black bg-opacity-90  w-full grid place-content-center">
 			<form
 				onSubmit={handleSubmitSignUp}
 				className="px-10 py-10 rounded-md items-center items-center  bg-slate-800 w-[800px]"
 			>
-				<div className="w-full flex flex-wrap items-center gap-y-5 ">
+				<h2 className="font-bold text-white text-3xl mb-5 text-center">
+					회원가입
+				</h2>
+				<div className="w-[90%] flex flex-wrap items-center gap-y-5 mx-auto">
 					<div className="flex w-full items-center">
 						<label
 							htmlFor="userName"
@@ -153,9 +155,6 @@ function SIgnUpForm() {
 						/>
 					</div>
 					<Button className="w-full mt-5 py-6">회원가입 하기</Button>
-					<div className="mx-auto">
-						<SpotifyLogInPage />
-					</div>
 				</div>
 			</form>
 		</div>
