@@ -1,7 +1,8 @@
 import { getAccessToken } from "@/axios/getAccessToken";
 
 import { Album } from "@/schema/type";
-import { baseURL } from "./spotify.api";
+import { baseURL } from "./spotifyApi";
+
 
 /**
  * 앨범 받아오기(albumId 필요함)

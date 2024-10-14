@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { refreshAccessToken } from './getRefreshToken';
+import { getRefreshToken } from './getRefreshToken';
 
 const BASEURL = 'https://accounts.spotify.com/api/token';
 const clientId = process.env.SPOTIFY_CLIENT_ID!;
@@ -26,7 +26,9 @@ export const getAccessToken = async () => {
     if (response.data.access_token) {
       return response.data.access_token;
     } else {
-      return await refreshAccessToken();
+      const newToken = await getRefreshToken();
+      console.log(newToken)
+      return newToken
     }
   } catch (error) {
     console.error('액세스 토큰 패치 오류:', error);

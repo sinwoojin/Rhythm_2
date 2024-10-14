@@ -1,16 +1,32 @@
 import axios from "axios";
 
-export async function refreshAccessToken() {
-    try {
-      const response = await axios.post('/api/refresh-token', {}, { withCredentials: true }); // 리프레시 토큰 요청
-  
-      if (response.data.access_token) {
-        console.log(response.data.access_token)
-        return response.data.access_token;
-      } else {
-        throw new Error('리프레시 토큰으로 액세스 토큰을 발급받지 못했습니다.');
+export const getRefreshToken = async () => {
+  try {
+    const refreshToken = localStorage.getItem("refresh_token");
+    const baseURL = "https://accounts.spotify.com/api/token";
+
+    const response = await axios.post(
+      baseURL,
+      new URLSearchParams({
+        grant_type: "refresh_token",
+        refresh_token: refreshToken as string,
+        client_id: process.env.SPOTIFY_CLIENT_ID as string,
+      }),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       }
-    } catch (error) {
-      throw new Error('리프레시 토큰 요청 중 오류가 발생했습니다: ' + error.message);
+    );
+
+    const { access_token, refresh_token: newRefreshToken } = response.data;
+
+    localStorage.setItem("access_token", access_token);
+    if (newRefreshToken) {
+      localStorage.setItem("refresh_token", newRefreshToken);
     }
+  } catch (error) {
+    console.error("Failed to refresh token:", error);
+    // 필요에 따라 사용자에게 알림을 띄우거나 추가 처리 수행
   }
+};

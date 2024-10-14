@@ -1,5 +1,6 @@
 import { getAccessToken } from "@/axios/getAccessToken";
-import { baseURL } from "./spotify.api";
+import { baseURL } from "./spotifyApi";
+
 
 /**
  * 지금 로그인한 유저의 프로필 가져오기
