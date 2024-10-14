@@ -1,7 +1,8 @@
 import { getAccessToken } from "@/axios/getAccessToken";
 
 import { Playlist } from "@/schema/type";
-import { baseURL } from "./spotify.api";
+import { baseURL } from "./spotifyApi";
+
 
 /**
  * 플레이 리스트 받아오기(playlistId 필요)
