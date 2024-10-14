@@ -23,7 +23,7 @@ function SpotifyLogInPage() {
 			intent="spotify"
 			size="lg"
 			type="button"
-			className=" flex items-center w-full h-full justify-center py-4 gap-x-3"
+			className="w-[400px] h-[60px] mt-5 flex items-center justify-center py-4 gap-x-3 hover:-translate-y-2 transition-all mx-auto"
 		>
 			<FaSpotify />
 			Sign in with Spotify
