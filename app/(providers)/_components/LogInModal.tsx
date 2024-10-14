@@ -29,9 +29,6 @@ function LogInModal() {
 
 	// 로그인 버튼
 	const handleSubmitSignUpButton = async () => {
-		if (!email.includes("@") || !email.includes(".")) {
-			return alert("이메일 형식을 맞추어 입력해주세요!");
-		}
 		if (!password) {
 			return alert("비밀번호를 입력해주세요!");
 		}
@@ -42,7 +39,6 @@ function LogInModal() {
 		};
 
 		const result = await supabase.auth.signInWithPassword(data);
-		console.log(result);
 
 		if (result.error) return alert("회원 정보가 없습니다!");
 

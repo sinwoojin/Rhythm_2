@@ -19,7 +19,6 @@ const buttonVariants = cva(
 				spotify: "bg-green-500 hover:-translate-y-2 transition-all",
 				warning: "bg-yellow-500",
 				primary: ["bg-white", "bg-opacity-20"],
-				secondary: "bg-gray-400",
 				none: "bg-none",
 			},
 			outline: {
@@ -28,7 +27,7 @@ const buttonVariants = cva(
 			},
 			rounded: {
 				normal: "rounded-md",
-				pill: "rounded-full",
+				full: "rounded-full",
 			},
 		},
 		compoundVariants: [
