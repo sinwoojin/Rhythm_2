@@ -81,7 +81,7 @@ function SIgnUpForm() {
 	};
 
 	return (
-		<div className="bg-black bg-opacity-90  w-full grid place-content-center h-screen">
+		<div className="bg-black bg-opacity-90  w-[calc(100%-245px)] ml-[245px] grid place-content-center min-h-[calc(100vh-87px)]">
 			<form
 				onSubmit={handleSubmitSignUp}
 				className="px-10 py-10 rounded-md items-center items-center  bg-slate-800 w-[800px]"
