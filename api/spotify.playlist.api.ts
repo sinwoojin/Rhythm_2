@@ -1,31 +1,33 @@
 import { getAccessToken } from "@/axios/getAccessToken";
+
+import { Playlist } from "@/schema/type";
 import { baseURL } from "./spotify.api";
 
 /**
  * 플레이 리스트 받아오기(playlistId 필요)
  * @param playlistId
  */
-const getPlaylists = async (playlistId: string) => {
+const getPlaylists = async (
+  playlistId: string
+): Promise<Playlist | undefined> => {
   try {
     const accessToken = await getAccessToken(); // 액세스 토큰을 비동기로 가져옴
     if (!accessToken) {
       throw new Error("Access token is required");
     }
 
-    const response = await baseURL.spotifyAPI.get(`playlists/${playlistId}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-      data: {
-        name: "",
-        description: "",
-        public: false,
-      },
-    });
+    const response = await baseURL.spotifyAPI.get<Playlist>(
+      `playlists/${playlistId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     // 응답 데이터 출력
-    console.log(response.data);
+    return response.data;
   } catch (error) {
     console.error("Error fetching album information:", error);
   }
@@ -48,11 +50,16 @@ const createPlaylists = async (userId: string) => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
+        data: {
+          name: "",
+          description: "",
+          public: false,
+        },
       }
     );
 
     // 응답 데이터 출력
-    console.log(response.data);
+    return response.data
   } catch (error) {
     console.error("Error fetching album information:", error);
   }

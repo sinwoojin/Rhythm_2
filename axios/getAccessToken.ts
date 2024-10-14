@@ -1,22 +1,14 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
+import { refreshAccessToken } from './getRefreshToken';
 
-// Spotify 토큰 엔드포인트 URI 및 클라이언트 자격 증명 설정
 const BASEURL = 'https://accounts.spotify.com/api/token';
-const clientId = process.env.SPOTIFY_CLIENT_ID!
-const clientSecret = process.env.SPOTIFY_CLIENT_SECRET!
+const clientId = process.env.SPOTIFY_CLIENT_ID!;
+const clientSecret = process.env.SPOTIFY_CLIENT_SECRET!;
 
-// 요청할 데이터 타입 정의
-interface TokenResponse {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-  scope?: string;
-}
-
-// POST 요청 함수 정의
-export const getAccessToken = async (): Promise<string | undefined> => {
+// POST로 accessToken 불러오는 함수
+export const getAccessToken = async () => {
   try {
-    const response: AxiosResponse<TokenResponse> = await axios.post(
+    const response = await axios.post(
       BASEURL,
       new URLSearchParams({
         grant_type: 'client_credentials',
@@ -29,9 +21,15 @@ export const getAccessToken = async (): Promise<string | undefined> => {
         },
       }
     );
-    return response.data.access_token
+
+    // access_token이 정의되어 있는지 확인하고 반환
+    if (response.data.access_token) {
+      return response.data.access_token;
+    } else {
+      return await refreshAccessToken();
+    }
   } catch (error) {
     console.error('액세스 토큰 패치 오류:', error);
+    throw error; // 에러를 다시 던져서 호출한 곳에서 처리할 수 있도록 합니다.
   }
-
 };
