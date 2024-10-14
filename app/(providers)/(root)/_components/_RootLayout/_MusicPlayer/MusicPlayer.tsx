@@ -9,7 +9,7 @@ import { SlOptions } from "react-icons/sl";
 
 function MusicPlayer() {
   return (
-    <div className="w-full bg-black grid grid-cols-7 py-6 px-8">
+    <div className="fixed bottom-0 w-full bg-[#121212] grid grid-cols-7 py-6 px-8">
       <div
         id="music-player-left"
         className="col-span-2 flex items-center gap-x-4"
