@@ -65,6 +65,7 @@ export type Database = {
           createdAt: string
           email: string
           id: number
+          imgUrl: string | null
           userId: string
           userName: string
         }
@@ -73,6 +74,7 @@ export type Database = {
           createdAt?: string
           email: string
           id?: number
+          imgUrl?: string | null
           userId: string
           userName: string
         }
@@ -81,6 +83,7 @@ export type Database = {
           createdAt?: string
           email?: string
           id?: number
+          imgUrl?: string | null
           userId?: string
           userName?: string
         }

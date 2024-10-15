@@ -25,8 +25,9 @@ function SpotifyLogInPage() {
       }
 
       const userId = user.data.user.id;
-      const userName = user.data.user?.user_metadata.full_name;
-      const email = String(user.data.user.email);
+      const userName =
+        user.data.user?.user_metadata?.full_name ?? "Unknown User";
+      const email = user.data.user?.email ?? "no-email@example.com";
 
       const data: Database["public"]["Tables"]["users"]["Insert"] = {
         userId,
@@ -37,7 +38,7 @@ function SpotifyLogInPage() {
       const response = await supabase.from("users").insert(data);
       console.log(response);
     } else {
-      return alert("흠");
+      return alert("오류입니다");
     }
   };
 
