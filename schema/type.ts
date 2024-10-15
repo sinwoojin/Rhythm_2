@@ -53,8 +53,7 @@ export type Playlist = {
  * 유저 정보 타입
  */
 export type User = {
-  id: number;
-  userId: string;
+  id: string;
   userName: string;
   email: string;
   createdAt: string;
