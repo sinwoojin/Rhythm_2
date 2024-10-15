@@ -1,8 +1,32 @@
-import React from "react";
-import Page from "../_components/_Page/Page";
-import Button from "@/app/_components/Button";
+"use client";
 
-function ProfileDetailPage() {
+import Button from "@/app/_components/Button";
+import { User } from "@/schema/type";
+import { supabase } from "@/supabase/client";
+import { useEffect, useState } from "react";
+import Page from "../../_components/_Page/Page";
+
+interface ProfileDetailPageProps {
+  params: {
+    userId: string;
+  };
+  searchParams: {};
+}
+
+function ProfileDetailPage(props: ProfileDetailPageProps) {
+  const id = props.params.userId;
+  const [user, setUser] = useState<User | null>();
+
+  useEffect(() => {
+    (async () => {
+      const response = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", id)
+        .single();
+      setUser(response.data);
+    })();
+  }, [id]);
   return (
     <Page>
       <div className="grid grid-cols-5 gap-x-10 place-items-center border-b border-white/20 pb-16 mb-10">
@@ -10,8 +34,8 @@ function ProfileDetailPage() {
           {/* <img src="" alt="" /> */}
         </div>
         <div className="flex flex-col gap-y-2 w-full h-full col-span-2">
-          <span>userName/categories</span>
-          <span>내 소개</span>
+          <span>userName: {user?.userName}</span>
+          <span>내 소개: {user?.content}</span>
           <span className="bg-white/20 w-full h-full"></span>
         </div>
         <div className="w-full h-full flex flex-col-reverse items-center gap-y-8 col-span-2">

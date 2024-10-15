@@ -48,3 +48,15 @@ export type Playlist = {
     url: string;
   }[];
 };
+
+/**
+ * 유저 정보 타입
+ */
+export type User = {
+  id: string;
+  userName: string;
+  email: string;
+  createdAt: string;
+  content: string | null;
+  imgUrl: string | null;
+};
