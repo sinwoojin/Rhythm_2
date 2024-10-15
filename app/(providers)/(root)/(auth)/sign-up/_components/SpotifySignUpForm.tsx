@@ -25,9 +25,8 @@ function SpotifyLogInPage() {
       }
 
       const userId = user.data.user.id;
-      const userName =
-        user.data.user?.user_metadata?.full_name ?? "Unknown User";
-      const email = user.data.user?.email ?? "no-email@example.com";
+      const userName = user.data.user?.user_metadata?.full_name;
+      const email = String(user.data.user?.email);
 
       const data: Database["public"]["Tables"]["users"]["Insert"] = {
         userId,
