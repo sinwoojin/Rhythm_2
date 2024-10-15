@@ -4,10 +4,10 @@ interface ChartProps {
 
 function Chart({ title }: ChartProps) {
 	return (
-		<div className="">
+		<div className="[&+&]:mt-16 py-6 px-6">
 			<h2 className="font-bold text-2xl mb-5">{title}</h2>
 			{/* 그리드 활용해 3 * 3으로 보여주기  */}
-			<div className="grid grid-rows-3 grid-cols-3 gap-x-5 gap-y-4 ">
+			<div className="grid grid-rows-3 grid-cols-3 gap-x-5 gap-y-4 grid-flow-col">
 				{/* 이게 하나 */}
 				<div className="w-full flex gap-x-4">
 					<div className="w-[100px] bg-white aspect-square" />
@@ -19,10 +19,6 @@ function Chart({ title }: ChartProps) {
 						<p>가수 이름</p>
 					</div>
 				</div>
-				<div className="w-[100px] bg-white aspect-square" />
-				<div className="w-[100px] bg-white aspect-square" />
-				<div className="w-[100px] bg-white aspect-square" />
-				<div className="w-[100px] bg-white aspect-square" />
 				<div className="w-[100px] bg-white aspect-square" />
 				<div className="w-[100px] bg-white aspect-square" />
 				<div className="w-[100px] bg-white aspect-square" />
