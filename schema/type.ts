@@ -9,11 +9,10 @@ export interface Album {
   tracks: {
     items: { id: string; name: string; artists: { name: string }[] }[];
   };
-  images:{
-    url:string
-  }[]
+  images: {
+    url: string;
+  }[];
 }
-
 
 /**
  * 앨범 트랙 타입
@@ -28,7 +27,6 @@ type Track = {
   // 기타 트랙 관련 속성이 필요한 경우 추가
   album: Album;
 };
-
 
 /**
  * 플레이리스트 타입(상세페이지)
@@ -49,4 +47,17 @@ export type Playlist = {
   images: {
     url: string;
   }[];
+};
+
+/**
+ * 유저 정보 타입
+ */
+export type User = {
+  id: number;
+  userId: string;
+  userName: string;
+  email: string;
+  createdAt: string;
+  content: string | null;
+  imgUrl: string | null;
 };
