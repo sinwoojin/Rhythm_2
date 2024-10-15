@@ -3,7 +3,6 @@ import { getAccessToken } from "@/axios/getAccessToken";
 import { Album } from "@/schema/type";
 import { baseURL } from "./spotifyApi";
 
-
 /**
  * 앨범 받아오기(albumId 필요함)
  * @param albumId
@@ -15,14 +14,17 @@ const getAlbum = async (albumId: string) => {
       throw new Error("Access token is required");
     }
 
-    const response = await baseURL.spotifyAPI.get<Album[]>(`albums/${albumId}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await baseURL.spotifyAPI.get<Album[]>(
+      `albums/${albumId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
 
     // 응답 데이터 출력
-    return response.data
+    return response.data;
   } catch (error) {
     console.error("Error fetching album information:", error);
   }
@@ -75,7 +77,7 @@ const getAlbumTrack = async (albumId: string) => {
 };
 
 export const AlbumAPI = {
-    getAlbum,
-    getAlbums,
-    getAlbumTrack
-}
+  getAlbum,
+  getAlbums,
+  getAlbumTrack,
+};

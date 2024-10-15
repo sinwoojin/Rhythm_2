@@ -1,18 +1,18 @@
 import { getAccessToken } from "@/axios/getAccessToken";
+import { Track } from "@/schema/type";
 import { baseURL } from "./spotifyApi";
 
-
 /**
- * 지금 로그인한 유저의 프로필 가져오기
- * @param getProfile
+ * 트랙 가져오기(노래 하나)
+ * @param trackId
  */
-const getProfile = async () => {
+const getTracks = async (trackId: string): Promise<Track | undefined> => {
   try {
     const accessToken = await getAccessToken(); // 액세스 토큰을 비동기로 가져옴
     if (!accessToken) {
       throw new Error("Access token is required");
     }
-    const response = await baseURL.spotifyAPI.get("me", {
+    const response = await baseURL.spotifyAPI.get<Track>(`tracks/${trackId}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -24,6 +24,7 @@ const getProfile = async () => {
     console.error("Error fetching album information:", error);
   }
 };
-export const ProfileAPI = {
-  getProfile,
+
+export const Tracks = {
+  getTracks,
 };

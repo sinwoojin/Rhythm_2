@@ -9,16 +9,15 @@ export interface Album {
   tracks: {
     items: { id: string; name: string; artists: { name: string }[] }[];
   };
-  images:{
-    url:string
-  }[]
+  images: {
+    url: string;
+  }[];
 }
-
 
 /**
  * 앨범 트랙 타입
  */
-type Track = {
+export type Track = {
   id: string; // 트랙 ID
   name: string; // 트랙 이름
   artists: {
@@ -28,7 +27,6 @@ type Track = {
   // 기타 트랙 관련 속성이 필요한 경우 추가
   album: Album;
 };
-
 
 /**
  * 플레이리스트 타입(상세페이지)
