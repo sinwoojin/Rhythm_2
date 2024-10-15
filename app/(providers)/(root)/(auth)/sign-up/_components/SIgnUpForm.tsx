@@ -79,11 +79,9 @@ function SIgnUpForm() {
       userId,
       userName,
       email,
-      password,
     };
 
     const userData = await supabase.from("users").insert(data);
-
     console.log(userData);
 
     if (!signUp.data.user) return alert("로그인에 실패 하였습니다");
