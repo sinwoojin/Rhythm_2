@@ -1,3 +1,4 @@
+import SearchInput from "@/components/SearchInput";
 import Link from "next/link";
 import { BsFillTrophyFill, BsMusicNoteList } from "react-icons/bs";
 import { CiSearch } from "react-icons/ci";
@@ -16,13 +17,8 @@ function Header() {
       </h1>
       <nav className="px-6">
         <Profile />
-
         <div className="relative mb-16">
-          <input
-            type="text"
-            className="py-[10px] pl-10 pr-9 text-base rounded-md max-w-full bg-white bg-opacity-15 outline-none transition-all ease-in-out duration-300 focus:outline-2 focus:outline-blue-500/50 focus:bg-opacity-20"
-            placeholder="RHYTHM 검색"
-          />
+          <SearchInput />
           <span className="absolute text-[26px] top-2 left-1.5 text-gray-400">
             <CiSearch />
           </span>
@@ -56,7 +52,7 @@ function Header() {
                 <span className="text-[20px] text-gray-400">유저 리듬</span>
               </li>
             </Link>
-            <Link href="/">
+            <Link href="/my">
               {/* 링크 URL은 페이지 만들면 카테고리에 맞춰서 넣어주세요 */}
               <li className="flex items-center gap-x-3 mx-[6px]">
                 <span className="text-3xl text-gray-400">

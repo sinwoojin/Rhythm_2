@@ -17,7 +17,7 @@ export interface Album {
 /**
  * 앨범 트랙 타입
  */
-type Track = {
+export type Track = {
   id: string; // 트랙 ID
   name: string; // 트랙 이름
   artists: {
