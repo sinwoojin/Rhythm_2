@@ -1,6 +1,5 @@
-import React from "react";
-import Page from "../_components/_Page/Page";
 import Button from "@/app/_components/Button";
+import Page from "../../_components/_Page/Page";
 
 function ProfileDetailPage() {
   return (
