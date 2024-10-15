@@ -71,7 +71,6 @@ function SIgnUpForm() {
 
     // 입력한 데이터를 users 테이블에 저장하기 (content 제외)
     const user = await supabase.auth.getUser();
-    console.log(user);
 
     const userId = user.data.user!.id;
 
@@ -83,8 +82,6 @@ function SIgnUpForm() {
     };
 
     const userData = await supabase.from("users").insert(data);
-
-    console.log(userData);
 
     if (!signUp.data.user) return alert("로그인에 실패 하였습니다");
     router.push("/");
