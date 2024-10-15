@@ -1,20 +1,22 @@
 import axios from "axios";
+import getUserApi from "./getUser";
 import { AlbumAPI } from "./spotifyAlbumApi";
 import { PlaylistAPI } from "./spotifyPlaylistApi";
 import { ProfileAPI } from "./spotifyProfileApi";
 
 const spotifyAPI = axios.create({ baseURL: "https://api.spotify.com/v1/" });
 const spotifyUserAPI = axios.create({
-  baseURL: "https://api.spotify.com/v1/users/",
+	baseURL: "https://api.spotify.com/v1/users/",
 });
 
 export const baseURL = {
-  spotifyAPI,
-  spotifyUserAPI,
+	spotifyAPI,
+	spotifyUserAPI,
 };
 
 export const api = {
-  AlbumAPI,
-  PlaylistAPI,
-  ProfileAPI,
+	AlbumAPI,
+	PlaylistAPI,
+	ProfileAPI,
+	getUserApi,
 };
