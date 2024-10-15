@@ -1,7 +1,12 @@
 import { supabase } from "@/supabase/client";
 
-export const getUser = async () => {
+const getUser = async () => {
 	const response = await supabase.auth.getUser();
 	const data = response.data.user;
 	return data;
 };
+
+const getUserApi = {
+	getUser,
+};
+export default getUserApi;

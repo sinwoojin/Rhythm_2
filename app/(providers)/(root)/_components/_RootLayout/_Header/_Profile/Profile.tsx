@@ -1,6 +1,6 @@
 "use client";
 
-import { getUser } from "@/api/getUser";
+import { api } from "@/api/spotifyApi";
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/authStore";
 import { useModalStore } from "@/zustand/modalStore";
@@ -18,7 +18,7 @@ function Profile() {
 		supabase.auth.signOut();
 	};
 	const handleClickProfile = async () => {
-		const response = await getUser();
+		const response = await api.getUserApi.getUser();
 		console.log(response);
 
 		if (!response) return;
@@ -36,7 +36,7 @@ function Profile() {
 	useEffect(() => {
 		(async () => {
 			if (isLoggedIn) {
-				const response = await getUser();
+				const response = await api.getUserApi.getUser();
 				if (response?.app_metadata.provider === "spotify") {
 					setUserName(response?.user_metadata.name);
 				} else if (response?.app_metadata.provider === "email") {
