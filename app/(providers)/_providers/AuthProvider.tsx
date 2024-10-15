@@ -37,7 +37,6 @@ function AuthProvider({ children }: PropsWithChildren) {
         } else {
           logOut();
         }
-        console.log(session?.user);
         setAuthInitialized();
       });
     })();

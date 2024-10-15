@@ -27,7 +27,6 @@ export const getAccessToken = async () => {
       return response.data.access_token;
     } else {
       const newToken = await getRefreshToken();
-      console.log(newToken);
       return newToken;
     }
   } catch (error) {
