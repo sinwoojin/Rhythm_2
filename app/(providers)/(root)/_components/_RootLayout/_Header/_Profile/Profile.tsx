@@ -3,14 +3,18 @@
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/authStore";
 import { useModalStore } from "@/zustand/modalStore";
+import { useRouter } from "next/navigation";
 
 function Profile() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-
   const modal = useModalStore((state) => state.setIsModal);
+  const router = useRouter();
 
   const handleClickSignOutButton = () => {
     supabase.auth.signOut();
+  };
+  const handleClickProfile = () => {
+    router.push("/profile-detail");
   };
 
   return isLoggedIn ? (
@@ -18,6 +22,7 @@ function Profile() {
     <button
       id="profile"
       className="flex items-center px-2 py-3 gap-x-2 mb-5 w-full"
+      onClick={handleClickProfile}
     >
       <div
         id="profile-img"
