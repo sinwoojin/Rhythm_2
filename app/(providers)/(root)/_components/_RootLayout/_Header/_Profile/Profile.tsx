@@ -4,11 +4,11 @@ import { getUser } from "@/api/getUser";
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/authStore";
 import { useModalStore } from "@/zustand/modalStore";
-import { UserMetadata } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function Profile() {
+	const [userName, setUserName] = useState("");
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 	const logOut = useAuthStore((state) => state.LogOut);
 	const modal = useModalStore((state) => state.setIsModal);
@@ -33,12 +33,15 @@ function Profile() {
 		router.push(`/profile-detail/${userId}`);
 	};
 
-	const [user, setUser] = useState<UserMetadata | null>(null);
 	useEffect(() => {
 		(async () => {
 			if (isLoggedIn) {
-				const profile = await getUser();
-				setUser(profile!);
+				const response = await getUser();
+				if (response?.app_metadata.provider === "spotify") {
+					setUserName(response?.user_metadata.name);
+				} else if (response?.app_metadata.provider === "email") {
+					setUserName(response?.user_metadata.display_name);
+				}
 			} else {
 				logOut();
 			}
@@ -61,9 +64,7 @@ function Profile() {
 			</div>
 			{/* 여기에 사용자 id 넣기 */}
 			<div className="flex justify-between w-full">
-				<span className="text-sm font-medium">
-					{user?.display_name}
-				</span>
+				<span className="text-sm font-medium">{userName}</span>
 				<button onClick={handleClickSignOutButton}>
 					<span className="text-sm font-sm">로그아웃</span>
 				</button>
