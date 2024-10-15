@@ -11,10 +11,10 @@ function SpotifyLogInPage() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "spotify",
     });
+
     if (error) {
       console.error("Error with Spotify login:", error.message);
     }
-    router.push("/");
   };
 
   return (

@@ -2,8 +2,8 @@ import axios from "axios";
 import { getRefreshToken } from "./getRefreshToken";
 
 const BASEURL = "https://accounts.spotify.com/api/token";
-const clientId = process.env.SPOTIFY_CLIENT_ID!;
-const clientSecret = process.env.SPOTIFY_CLIENT_SECRET!;
+const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID!;
+const clientSecret = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET!;
 
 // POST로 accessToken 불러오는 함수
 export const getAccessToken = async () => {

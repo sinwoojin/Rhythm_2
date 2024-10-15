@@ -1,5 +1,6 @@
 "use client";
 
+import { Database } from "@/database.types";
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/authStore";
 
@@ -16,13 +17,30 @@ function AuthProvider({ children }: PropsWithChildren) {
       supabase.auth.onAuthStateChange((_event, session) => {
         if (session?.user) {
           logIn();
+
+          (async () => {
+            const user = session.user;
+
+            const id = user.id;
+            const userName =
+              user.user_metadata?.full_name || user.user_metadata.display_name;
+            const email = String(user.email);
+
+            const data: Database["public"]["Tables"]["users"]["Insert"] = {
+              id,
+              userName,
+              email,
+            };
+
+            await supabase.from("users").upsert(data);
+          })();
         } else {
           logOut();
         }
         setAuthInitialized();
       });
     })();
-  }, [logIn, logOut, setAuthInitialized]);
+  }, []);
 
   return children;
 }
