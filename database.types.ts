@@ -64,34 +64,38 @@ export type Database = {
           content: string | null
           createdAt: string
           email: string
-          id: number
+          id: string
           imgUrl: string | null
-          userId: string
           userName: string
         }
         Insert: {
           content?: string | null
           createdAt?: string
           email: string
-          id?: number
+          id: string
           imgUrl?: string | null
-          userId: string
           userName: string
         }
         Update: {
           content?: string | null
           createdAt?: string
           email?: string
-          id?: number
+          id?: string
           imgUrl?: string | null
-          userId?: string
           userName?: string
         }
         Relationships: [
           {
+            foreignKeyName: "users_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "users_userId_fkey"
-            columns: ["userId"]
-            isOneToOne: false
+            columns: ["id"]
+            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
           },

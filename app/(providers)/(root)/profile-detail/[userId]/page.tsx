@@ -14,7 +14,7 @@ interface ProfileDetailPageProps {
 }
 
 function ProfileDetailPage(props: ProfileDetailPageProps) {
-  const userId = props.params.userId;
+  const id = props.params.userId;
   const [user, setUser] = useState<User | null>();
 
   useEffect(() => {
@@ -22,11 +22,11 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
       const response = await supabase
         .from("users")
         .select("*")
-        .eq("userId", userId)
+        .eq("id", id)
         .single();
       setUser(response.data);
     })();
-  }, [userId]);
+  }, [id]);
   return (
     <Page>
       <div className="grid grid-cols-5 gap-x-10 place-items-center border-b border-white/20 pb-16 mb-10">
