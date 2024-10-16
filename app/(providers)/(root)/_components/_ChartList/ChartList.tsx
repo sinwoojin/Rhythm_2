@@ -1,47 +1,64 @@
-import { api } from "@/api/spotifyApi";
+"use client";
+import { Track } from "@/schema/type";
 import Link from "next/link";
+import Page from "../_Page/Page";
 
 interface ChartListProps {
-  Chart: string;
+
+  bestMusics: Track[];
   title: string;
+  round: boolean;
 }
 
-async function ChartList({ Chart, title }: ChartListProps) {
-  const response = await api.PlaylistAPI.getPlaylists(Chart);
-  // top 100
-  const bestMusic = response?.tracks.items || [];
+function ChartList({ bestMusics, title, round }: ChartListProps) {
 
   return (
-    <div className="[&+&]:mt-10">
-      <h3 className="text-2xl mb-5 font-bold">{title}</h3>
-      <ul className="flex gap-x-4 overflow-auto scrollbar-hide">
-        {bestMusic.map((chartContent, index) => {
-          const tracks = chartContent.track;
-          return (
+    <>
+     <div className="[&+&]:mt-10">
+      <h3 className="text-2xl mb-3 font-bold">{title}</h3>
+      {bestMusics.length > 0 ? (
+        <ul className="flex gap-x-3 overflow-auto scrollbar-hide w-[100vw]">
+          {bestMusics.map((bestMusic) => (
             <li
-              key={tracks.id || index}
+              key={bestMusic.id}
+
               className="flex flex-col gap-y-2 min-w-[17%]"
             >
               <Link
                 href={
-                  `/music/${tracks.id}` /*여기에 디테일 페이지로 넘어갈 동적 url 적기 지금은 비워둠*/
+
+                  "/" /*여기에 디테일 페이지로 넘어갈 동적 url 적기 지금은 비워둠*/
                 }
               >
-                <div className="text-3xl font-bold ml-2 mb-2">
-                  TOP {index + 1}
-                </div>
-                <img
-                  src={tracks.album.images[0].url}
-                  className="w-full aspect-square bg-white bg-opacity-10"
-                />
-                <p className="text-xl font-semibold">{tracks.name}</p>
-                <p className="text-base opacity-80">{tracks.artists[0].name}</p>
+                {round === false ? (
+                  bestMusic.images.length === 0 ? (
+                    <img className="w-[318px] h-[318px] object-cover bg-slate-600" />
+                  ) : (
+                    <img
+                      src={bestMusic.images[0].url}
+                      className="w-[318px] h-[318px] object-contain"
+                    />
+                  )
+                ) : bestMusic.images.length === 0 ? (
+                  <img className="w-[318px] h-[318px] object-cover bg-slate-600" />
+                ) : (
+                  <img
+                    src={bestMusic.images[0].url}
+                    className="w-[318px] h-[318px] object-contain  rounded-full"
+                  />
+                )}
+
+                <p className="text-xl font-semibold">{bestMusic.name}</p>
               </Link>
             </li>
-          );
-        })}
-      </ul>
-    </div>
+          ))}
+        </ul>
+      ) : (
+        <Page>검색 결과가 존재하지 않습니다</Page>
+      )}
+       </div>
+    </>
+
   );
 }
 

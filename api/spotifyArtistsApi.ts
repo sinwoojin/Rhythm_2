@@ -11,7 +11,7 @@ const getArtist = async () => {
     if (!accessToken) {
       throw new Error("Access token is required");
     }
-    const response = await baseURL.spotifyAPI.get("artists", {
+    const response = await baseURL.spotifyArtistApi.get("/", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

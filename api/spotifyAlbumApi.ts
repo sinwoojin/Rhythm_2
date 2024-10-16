@@ -14,8 +14,8 @@ const getAlbum = async (albumId: string) => {
       throw new Error("Access token is required");
     }
 
-    const response = await baseURL.spotifyAPI.get<Album[]>(
-      `albums/${albumId}`,
+    const response = await baseURL.spotifyAlbumApi.get<Album[]>(
+      `/${albumId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -40,7 +40,7 @@ const getAlbums = async (albumIds: string) => {
       throw new Error("Access token is required");
     }
 
-    const response = await baseURL.spotifyAPI.get(`albums?${albumIds}`, {
+    const response = await baseURL.spotifyAlbumApi.get(`?${albumIds}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -63,7 +63,7 @@ const getAlbumTrack = async (albumId: string) => {
       throw new Error("Access token is required");
     }
 
-    const response = await baseURL.spotifyAPI.get(`albums/${albumId}/tracks`, {
+    const response = await baseURL.spotifyAlbumApi.get(`/${albumId}/tracks`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

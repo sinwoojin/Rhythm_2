@@ -15,21 +15,26 @@ export interface Album {
 }
 
 /**
- * 앨범 트랙 타입
+ * 트랙 타입
  */
 export type Track = {
-	id: string; // 트랙 ID
-	name: string; // 트랙 이름
-	artists: {
-		id: string; // 아티스트 ID
-		name: string; // 아티스트 이름
-	}[]; // 아티스트 배열
-	// 기타 트랙 관련 속성이 필요한 경우 추가
-	album: Album;
+
+  id: string; // 트랙 ID
+  name: string; // 트랙 이름
+  artists: {
+    id: string; // 아티스트 ID
+    name: string; // 아티스트 이름
+  }[]; // 아티스트 배열
+  // 기타 트랙 관련 속성이 필요한 경우 추가
+  album: Album;
+  images: {
+    url: string;
+  }[];
+
 };
 
 /**
- * 플레이리스트 타입(상세페이지)
+ * 플레이리스트 타입
  */
 export type Playlist = {
 	id: string; // 플레이리스트 ID
