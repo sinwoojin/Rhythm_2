@@ -14,11 +14,9 @@ async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
 	const release_create_day = day.format("YYYY년 YY월 DD일");
 	const release_year = day.format("YYYY");
 
-	console.log("album", album);
-
 	const albumImg = chart?.album.images[1].url;
 	const artists = chart?.artists[0];
-	console.log("아티스트", artists);
+
 	return (
 		<Page>
 			<div className="flex gap-x-6 py-4 border-b border-white mb-4">
