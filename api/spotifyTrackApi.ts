@@ -27,6 +27,6 @@ const getTracks = async (trackId: string): Promise<Track | undefined> => {
 	}
 };
 
-export const Tracks = {
+export const TracksApi = {
 	getTracks,
 };

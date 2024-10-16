@@ -30,10 +30,10 @@ function SearchPage() {
           artistsResponse,
           playlistsResponse,
         ] = await Promise.all([
-          api.searchItems.getTracks(search),
-          api.searchItems.getAlbums(search),
-          api.searchItems.getArtists(search),
-          api.searchItems.getPlaylists(search),
+          api.searchItemsAPI.getTracks(search),
+          api.searchItemsAPI.getAlbums(search),
+          api.searchItemsAPI.getArtists(search),
+          api.searchItemsAPI.getPlaylists(search),
         ]);
 
         //검색된 결과를 하나의 객체로 합침
@@ -81,7 +81,7 @@ function SearchPage() {
   const album = searchResults.albums;
   const playlists = searchResults.playlists;
   const artists = searchResults.artists;
-  console.log(track)
+  console.log(track);
   return (
     <Page>
       검색
