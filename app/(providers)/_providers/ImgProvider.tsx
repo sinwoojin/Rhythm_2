@@ -7,8 +7,8 @@ import { PropsWithChildren, useEffect, useState } from "react";
 
 function ImgProvider({ children }: PropsWithChildren) {
   const [userId, setUserId] = useState("");
-  const [editImgUrl, setEditImgUrl] = useState<string | null>("");
   const setImgUrl = useImgStore((state) => state.setImgUrl);
+  const imgUrl = useImgStore((state) => state.imgUrl);
 
   useEffect(() => {
     (async () => {
@@ -22,12 +22,14 @@ function ImgProvider({ children }: PropsWithChildren) {
           .select("*")
           .eq("id", userId)
           .single();
-        setEditImgUrl(user.data?.imgUrl ?? null);
 
-        setImgUrl(String(editImgUrl));
+        setImgUrl(user.data?.imgUrl ?? "");
+        console.log(imgUrl);
+      } else {
+        console.log("에러입니다");
       }
     })();
-  }, []);
+  }, [userId, imgUrl]);
   return children;
 }
 
