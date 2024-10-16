@@ -153,8 +153,12 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
 
   // 유저 정보, 팔로워 ,팔로잉 수 가져오기, 팔로우 상태 확인 실행
   useEffect(() => {
-    userUpdate();
-    checkIfFollowing();
+    const fetchData = async () => {
+      await userUpdate();
+      await checkIfFollowing();
+    };
+
+    fetchData();
   }, [id]);
 
   return (
