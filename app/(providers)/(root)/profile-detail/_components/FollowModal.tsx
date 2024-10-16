@@ -2,6 +2,7 @@ import { api } from "@/api/spotifyApi";
 import Button from "@/app/_components/Button";
 import { User } from "@/schema/type";
 import { supabase } from "@/supabase/client";
+import { useFollowStore } from "@/zustand/followStore";
 import React, { useEffect, useState } from "react";
 
 interface FollowModalProps {
@@ -17,6 +18,14 @@ const FollowModal: React.FC<FollowModalProps> = ({
 }) => {
   // 팔로워 목록 상태
   const [followers, setFollowers] = useState<User[]>([]);
+
+  // 유저 정보
+  // const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  // 팔로우 상태관리 (zustand)
+  // const isFollowing = useFollowStore((state) => state.isFollowing);
+  // const follow = useFollowStore((state) => state.follow);
+  // const unFollow = useFollowStore((state) => state.unFollow);
 
   // 팔로워, 팔로잉 목록 가져오는 함수
   const fetchFollowData = async () => {
@@ -47,10 +56,52 @@ const FollowModal: React.FC<FollowModalProps> = ({
     setFollowers(usersData || []);
   };
 
+  // 팔로우/언팔로우 함수 (미완성)
+  // const handleToggleFollow = async (targetUserId: string) => {
+  //   if (!currentUser) return; // 로그인한 유저가 없을 경우
+
+  //   const followerId = currentUser.id; // 현재 로그인한 사용자 ID
+  //   const followingId = targetUserId; // 프로필 사용자 ID
+
+  //   // 현재 팔로우 여부 확인
+  //   const { data: existingFollow } = await supabase
+  //     .from("follow")
+  //     .select("*")
+  //     .eq("follower", followerId)
+  //     .eq("following", followingId);
+
+  //   if (existingFollow!.length > 0) {
+  //     // 이미 팔로우한 경우 -> 언팔로우 처리
+  //     await supabase
+  //       .from("follow")
+  //       .delete()
+  //       .eq("follower", followerId)
+  //       .eq("following", followingId);
+  //     unFollow();
+  //     alert(`${targetUserId}를 언팔로우 했습니다.`);
+  //   } else {
+  //     // 팔로우하지 않은 경우 -> 팔로우 처리
+  //     await supabase.from("follow").insert({
+  //       follower: followerId,
+  //       following: followingId,
+  //     });
+  //     follow();
+  //     alert(`${targetUserId}를 팔로우 했습니다.`);
+  //   }
+
+  //   // 데이터 업데이트
+  //   fetchFollowData();
+  // };
+
   useEffect(() => {
+    // 팔로워/팔로잉 목록 가져오기
     fetchFollowData();
 
-    const user = api.getUserApi.getUser();
+    // 현재 로그인한 유저 정보 가져오기
+    (async () => {
+      const user = await api.getUserApi.getUser();
+      // setCurrentUser(user?.id); // 로그인한 유저 정보 설정
+    })();
   }, [userId, modalType]);
 
   return (
@@ -80,14 +131,11 @@ const FollowModal: React.FC<FollowModalProps> = ({
                   className="flex justify-between items-center py-2"
                 >
                   <span>{follower.userName}</span>
-                  <Button
-                    onClick={() => {
-                      // 언팔로우 기능 구현 (필요 시)
-                      console.log(`언팔로우: ${follower.userName}`);
-                    }}
-                  >
-                    언팔로우
-                  </Button>
+                  {/* {currentUser && currentUser.id !== follower.id && (
+                    <Button onClick={() => handleToggleFollow(follower.id)}>
+                      {isFollowing ? "언팔로우" : "팔로우"}
+                    </Button>
+                  )} */}
                 </li>
               ))}
             </ul>

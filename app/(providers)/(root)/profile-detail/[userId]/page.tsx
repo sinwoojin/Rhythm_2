@@ -45,6 +45,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   // 모달 관련 핸들러
   const handleClickToggleEditModal = () => {
     setIsEditModal((prev) => !prev);
+    userUpdate();
   };
 
   const handleClickToggleFollowModal = (type: "followers" | "following") => {
@@ -107,52 +108,52 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
     updateFollowCounts();
   };
 
-  // 유저 정보, 팔로워 ,팔로잉 수 가져오기
+  // 유저 정보 리렌더링 (useEffect)
+  const userUpdate = async () => {
+    // 유저 정보 가져오기
+    const response = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", id)
+      .single();
+    setUser(response.data);
+
+    const user = await api.getUserApi.getUser();
+    const loginUserId = user?.id;
+    setIsButtonVisibility(loginUserId === id);
+
+    // 팔로워, 팔로잉 수 업데이트
+    updateFollowCounts();
+  };
+
+  // 팔로우 상태 확인 (useEffect)
+  const checkIfFollowing = async () => {
+    const currentUser = await api.getUserApi.getUser();
+    if (!currentUser) return;
+
+    // 현재 로그인한 사람의 id
+    const follower = currentUser.id;
+
+    // 현재 프로필 페이지의 id
+    const following = id;
+
+    // 팔로우 상태 지정
+    const { data } = await supabase
+      .from("follow")
+      .select("*")
+      .eq("follower", follower)
+      .eq("following", following);
+
+    if (data && data.length > 0) {
+      follow();
+    } else {
+      unFollow();
+    }
+  };
+
+  // 유저 정보, 팔로워 ,팔로잉 수 가져오기, 팔로우 상태 확인 실행
   useEffect(() => {
-    (async () => {
-      // 유저 정보 가져오기
-      const response = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", id)
-        .single();
-      setUser(response.data);
-
-      const user = await api.getUserApi.getUser();
-      const loginUserId = user?.id;
-      setIsButtonVisibility(loginUserId === id);
-
-      // 팔로워, 팔로잉 수 업데이트
-      updateFollowCounts();
-    })();
-  }, [id]);
-
-  // 팔로우 상태 확인
-  useEffect(() => {
-    const checkIfFollowing = async () => {
-      const currentUser = await api.getUserApi.getUser();
-      if (!currentUser) return;
-
-      // 현재 로그인한 사람의 id
-      const follower = currentUser.id;
-
-      // 현재 프로필 페이지의 id
-      const following = id;
-
-      // 팔로우 상태 지정
-      const { data } = await supabase
-        .from("follow")
-        .select("*")
-        .eq("follower", follower)
-        .eq("following", following);
-
-      if (data && data.length > 0) {
-        follow();
-      } else {
-        unFollow();
-      }
-    };
-
+    userUpdate();
     checkIfFollowing();
   }, [id]);
 
@@ -168,9 +169,13 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
 
       {isFollowModal && (
         <FollowModal
-          onClose={handleClickToggleFollowModal}
+          onClose={() => {
+            handleClickToggleFollowModal(
+              modalType === "followers" ? "followers" : "following"
+            );
+          }}
           userId={id}
-          modalType={modalType}
+          modalType={modalType!} // 현재 modalType 값을 사용
         />
       )}
       <div className="grid grid-cols-5 gap-x-10 place-items-center border-b border-white/20 pb-16 mb-10">
@@ -181,9 +186,9 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
             className="z-50"
           />
         </div>
-        <div className="flex flex-col gap-y-2 w-full h-full col-span-2">
+        <div className="flex flex-col gap-y-2 w-full h-full col-span-2 relative">
           <span>userName: {user?.userName}</span>
-          <span>내 소개: {user?.content}</span>
+          <span className="absolute top-8">내 소개: {user?.content}</span>
           <span className="bg-white/20 w-full h-full"></span>
         </div>
         <div className="w-full h-full flex flex-col-reverse items-center gap-y-8 col-span-2">
@@ -208,14 +213,14 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
           <div className="flex gap-x-5 w-full">
             <Button
               className="flex flex-col w-full items-center py-4"
-              onClick={() => handleClickToggleFollowModal("followers")} // 팔로워 버튼 클릭
+              onClick={() => handleClickToggleFollowModal("followers")}
             >
               <span>{followerCount}명</span>
               <span>팔로워</span>
             </Button>
             <Button
               className="flex flex-col w-full items-center py-4"
-              onClick={() => handleClickToggleFollowModal("following")} // 팔로잉 버튼 클릭
+              onClick={() => handleClickToggleFollowModal("following")}
             >
               <span>{followingCount}명</span>
               <span>팔로잉</span>
