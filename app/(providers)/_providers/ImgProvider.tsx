@@ -24,9 +24,8 @@ function ImgProvider({ children }: PropsWithChildren) {
           .single();
 
         setImgUrl(user.data?.imgUrl ?? "");
-        console.log(imgUrl);
       } else {
-        console.log("에러입니다");
+        console.log("이미지 에러입니다");
       }
     })();
   }, [userId, imgUrl]);
