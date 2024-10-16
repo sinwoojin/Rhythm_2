@@ -9,6 +9,7 @@ import { useFollowStore } from "@/zustand/followStore";
 import { useEffect, useState } from "react";
 import Page from "../../_components/_Page/Page";
 import EditModal from "../_components/EditModal";
+import FollowModal from "../_components/FollowModal";
 
 interface ProfileDetailPageProps {
   params: {
@@ -23,7 +24,8 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   const [user, setUser] = useState<User | null>(null);
 
   // 모달 상태 State
-  const [isModal, setIsModal] = useState(false);
+  const [isEditModal, setIsEditModal] = useState(false);
+  const [isFollowModal, setIsFollowModal] = useState(false);
 
   // 로그인 상태에 따라 보여주는 버튼의 State
   const [isButtonVisibility, setIsButtonVisibility] = useState(false);
@@ -38,11 +40,11 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   const unFollow = useFollowStore((state) => state.unFollow);
 
   // 모달 관련 핸들러
-  const handleClickOpenEditModal = () => {
-    setIsModal(true);
+  const handleClickToggleEditModal = () => {
+    setIsEditModal((prev) => !prev);
   };
-  const handleClickCloseEditModal = () => {
-    setIsModal(false);
+  const handleClickToggleFollowModal = () => {
+    setIsFollowModal((prev) => !prev);
   };
 
   // 팔로워 및 팔로잉 수 가져오는 함수
@@ -151,12 +153,16 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
 
   return (
     <Page>
-      {isModal && (
+      {isEditModal && (
         <EditModal
           id={id}
-          modal={isModal}
-          onClose={handleClickCloseEditModal}
+          modal={isEditModal}
+          onClose={handleClickToggleEditModal}
         />
+      )}
+
+      {isFollowModal && (
+        <FollowModal onClose={handleClickToggleFollowModal} userId={id} />
       )}
       <div className="grid grid-cols-5 gap-x-10 place-items-center border-b border-white/20 pb-16 mb-10">
         <div className="h-full rounded-full aspect-square bg-white opacity-90 overflow-hidden">
@@ -175,7 +181,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
           {isButtonVisibility && (
             <Button
               className="w-full text-center"
-              onClick={handleClickOpenEditModal}
+              onClick={handleClickToggleEditModal}
             >
               수정하기
             </Button>
@@ -191,11 +197,17 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
           )}
 
           <div className="flex gap-x-5 w-full">
-            <Button className="flex flex-col w-full items-center py-4">
+            <Button
+              className="flex flex-col w-full items-center py-4"
+              onClick={handleClickToggleFollowModal}
+            >
               <span>{followerCount}명</span>
               <span>팔로워</span>
             </Button>
-            <Button className="flex flex-col w-full items-center py-4">
+            <Button
+              className="flex flex-col w-full items-center py-4"
+              onClick={handleClickToggleFollowModal}
+            >
               <span>{followingCount}명</span>
               <span>팔로잉</span>
             </Button>
