@@ -6,6 +6,7 @@ import { supabase } from "@/supabase/client";
 import { useEffect, useState } from "react";
 import Page from "../../_components/_Page/Page";
 import EditModal from "../_components/EditModal";
+import { useAuthStore } from "@/zustand/authStore";
 
 interface ProfileDetailPageProps {
   params: {
@@ -18,6 +19,8 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   const id = props.params.userId;
   const [user, setUser] = useState<User | null>(null);
   const [isModal, setIsModal] = useState(false);
+
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   /**
    * 모달 수정 버튼
@@ -33,6 +36,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
     setIsModal(false);
   };
 
+  // id가 없을 경우 만들기
   useEffect(() => {
     (async () => {
       const response = await supabase
@@ -42,7 +46,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
         .single();
       setUser(response.data);
     })();
-  }, [id]);
+  }, [id, isLoggedIn]);
   return (
     <Page>
       {isModal ? (
@@ -54,7 +58,11 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
       ) : null}
       <div className="grid grid-cols-5 gap-x-10 place-items-center border-b border-white/20 pb-16 mb-10">
         <div className="h-full rounded-full aspect-square bg-white opacity-90 overflow-hidden">
-          <img src={baseURL + user?.imgUrl} alt="프로필 이미지" className="z-50"/>
+          <img
+            src={baseURL + user?.imgUrl}
+            alt="프로필 이미지"
+            className="z-50"
+          />
         </div>
         <div className="flex flex-col gap-y-2 w-full h-full col-span-2">
           <span>userName: {user?.userName}</span>
