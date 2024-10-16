@@ -47,7 +47,7 @@ function LogInModal() {
     alert("환영합니다!");
     setIsModal(false);
 
-    router.push("/sign-up");
+    router.push("/");
   };
 
   return (
