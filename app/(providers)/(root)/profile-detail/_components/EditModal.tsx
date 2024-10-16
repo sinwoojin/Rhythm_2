@@ -8,137 +8,138 @@ import { useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
 
 interface EditModalProps {
-  id: string;
-  modal: boolean;
-  onClose: () => void;
+	id: string;
+	modal: boolean;
+	onClose: () => void;
 }
 
 function EditModal(props: EditModalProps) {
-  // 홈으로 이동
-  const router = useRouter();
+	// 홈으로 이동
+	const router = useRouter();
 
-  // props
-  const id = props.id;
-  const modal = props.modal;
-  const onClose = props.onClose;
+	// props
+	const id = props.id;
+	const modal = props.modal;
+	const onClose = props.onClose;
 
-  // 유저 정보 State
-  const [user, setUser] = useState<User | null>(null);
+	// 유저 정보 State
+	const [user, setUser] = useState<User | null>(null);
 
-  // table에 들어있는 정보 가져오기, 지정하기
-  const [userName, setUserName] = useState("");
-  const [content, setContent] = useState("");
-  const [image, setImage] = useState<File | null>(null);
+	// table에 들어있는 정보 가져오기, 지정하기
+	const [userName, setUserName] = useState("");
+	const [content, setContent] = useState("");
+	const [image, setImage] = useState<File | null>(null);
 
-  console.log(image);
+	// modal State
+	const [isModal, setIsModal] = useState(modal);
 
-  // modal State
-  const [isModal, setIsModal] = useState(modal);
+	// 바깥영역 클릭시 나가짐
+	const handleToggleModal = () => {
+		onClose();
+	};
 
-  // 바깥영역 클릭시 나가짐
-  const handleToggleModal = () => {
-    onClose();
-  };
+	// 이미지 정보 가져오기
+	const handleChangeFileInput: ComponentProps<"input">["onChange"] = (e) => {
+		const files = e.target.files;
 
-  // 이미지 정보 가져오기
-  const handleChangeFileInput: ComponentProps<"input">["onChange"] = (e) => {
-    const files = e.target.files;
+		if (!files) return;
+		if (files.length === 0) return setImage(null);
 
-    if (!files) return;
-    if (files.length === 0) return setImage(null);
+		const file = files[0];
+		setImage(file);
+	};
 
-    const file = files[0];
-    setImage(file);
-  };
+	// 글 수정하기
+	const handleSubmitModifyDeal = async (e: any) => {
+		e.preventDefault();
+		if (!image) return alert("이미지를 업로드해주세요!");
+		if (!userName) return alert("유저 이름을 작성해주세요!");
+		if (!content) return alert("소개글 내용을 작성해주세요!");
 
-  // 글 수정하기
-  const handleSubmitModifyDeal = async (e: any) => {
-    e.preventDefault();
-    if (!image) return alert("이미지를 업로드해주세요!");
-    if (!userName) return alert("유저 이름을 작성해주세요!");
-    if (!content) return alert("소개글 내용을 작성해주세요!");
+		const uploadImage = await supabase.storage
+			.from("img")
+			.upload(nanoid(), image, { upsert: true });
 
-    const uploadImage = await supabase.storage
-      .from("img")
-      .upload(nanoid(), image, { upsert: true });
+		const imageUrl = uploadImage.data?.fullPath;
 
-    const imageUrl = uploadImage.data?.fullPath;
+		const data: Database["public"]["Tables"]["users"]["Update"] = {
+			userName,
+			content,
+			imgUrl: imageUrl,
+		};
 
-    const data: Database["public"]["Tables"]["users"]["Update"] = {
-      userName,
-      content,
-      imgUrl: imageUrl,
-    };
+		const response = await supabase.from("users").update(data).eq("id", id);
 
-    const response = await supabase.from("users").update(data).eq("id", id);
-    console.log(response);
+		if (response.error) {
+			return alert("프로필 수정에 실패했습니다!...");
+		} else {
+			alert("프로필 수정에 성공했습니다!");
+			onClose();
+		}
+	};
 
-    if (response.error) {
-      return alert("프로필 수정에 실패했습니다!...");
-    } else {
-      alert("프로필 수정에 성공했습니다!");
-      onClose();
-    }
-  };
+	useEffect(() => {
+		(async () => {
+			const response = await supabase
+				.from("users")
+				.select("*")
+				.eq("id", id)
+				.single();
+			setUser(response.data);
+		})();
+	}, [id]);
 
-  useEffect(() => {
-    (async () => {
-      const response = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", id)
-        .single();
-      setUser(response.data);
+	return (
+		<>
+			{/* true때 보임 */}
+			{isModal && (
+				<main
+					className="bg-white/10 flex items-center justify-center fixed top-0 left-0 right-0 bottom-0 z-20"
+					onClick={handleToggleModal}
+				>
+					<div
+						className="absolute top-[50%] left-[50%] w-[500px] h-[530px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white"
+						onClick={(e) => e.stopPropagation()}
+					>
+						<h2 className="text-center mt-10 font-semibold text-3xl">
+							로그인
+						</h2>
+						<form
+							className="flex items-center justify-center flex-col gap-y-3"
+							onSubmit={handleSubmitModifyDeal}
+						>
+							<label htmlFor="img">프로필 이미지</label>
+							<input
+								type="file"
+								id="img"
+								onChange={handleChangeFileInput}
+							/>
 
-      console.log(response.data);
-    })();
-  }, [id]);
+							<label htmlFor="userName">유저 이름</label>
+							<input
+								type="text"
+								id="userName"
+								value={userName}
+								onChange={(e) => setUserName(e.target.value)}
+							/>
 
-  return (
-    <>
-      {/* true때 보임 */}
-      {isModal && (
-        <main
-          className="bg-white/10 flex items-center justify-center fixed top-0 left-0 right-0 bottom-0 z-20"
-          onClick={handleToggleModal}
-        >
-          <div
-            className="absolute top-[50%] left-[50%] w-[500px] h-[530px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-center mt-10 font-semibold text-3xl">로그인</h2>
-            <form
-              className="flex items-center justify-center flex-col gap-y-3"
-              onSubmit={handleSubmitModifyDeal}
-            >
-              <label htmlFor="img">프로필 이미지</label>
-              <input type="file" id="img" onChange={handleChangeFileInput} />
+							<label htmlFor="content">소개글</label>
+							<input
+								type="text"
+								id="content"
+								value={content}
+								onChange={(e) => setContent(e.target.value)}
+							/>
 
-              <label htmlFor="userName">유저 이름</label>
-              <input
-                type="text"
-                id="userName"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-              />
-
-              <label htmlFor="content">소개글</label>
-              <input
-                type="text"
-                id="content"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
-
-              <button className="border border-white bg-[#121212] text-white w-[400px] h-[60px] mt-5 hover:-translate-y-2 transition-all">
-                정보 수정하기
-              </button>
-            </form>
-          </div>
-        </main>
-      )}
-    </>
-  );
+							<button className="border border-white bg-[#121212] text-white w-[400px] h-[60px] mt-5 hover:-translate-y-2 transition-all">
+								정보 수정하기
+							</button>
+						</form>
+					</div>
+				</main>
+			)}
+		</>
+	);
 }
 
 export default EditModal;
