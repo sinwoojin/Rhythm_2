@@ -36,12 +36,11 @@ function SearchPage() {
 
         //검색된 결과를 하나의 객체로 합침
         const response = {
-          tracks: tracksResponse || [],
-          albums: albumsResponse || [],
-          artists: artistsResponse || [],
-          playlists: playlistsResponse || [],
+          tracks: tracksResponse?.tracks?.items || [],
+          albums: albumsResponse?.albums?.items || [],
+          artists: artistsResponse?.artists?.items || [],
+          playlists: playlistsResponse?.playlists?.items || [],
         };
-
         setSearchResults(response);
       } catch (error) {
         console.error("Error fetching search items:", error);
@@ -74,13 +73,64 @@ function SearchPage() {
     /*searchInput(검색한 값)이 바뀔때마다 가져오는 값이 바뀔 수 있도록 */
     [search]
   );
-  console.log(searchResults.tracks);
+
+  /*가져올때 전부 합쳐서 가져와서 사용하기 쉽게 바꿔놓은 것 */
+  const track = searchResults.tracks;
+  const album = searchResults.albums;
+  const playlists = searchResults.playlists;
+  const artists = searchResults.artists;
+
+  console.log(playlists);
+
   return (
     <Page>
       검색
-      <div>
-        <h2>노래</h2>
-      </div>
+      <section className="flex">
+        <div>
+          <h2>노래</h2>
+          <ul>
+            {track.map((track) => (
+              <li key={track.id}>
+                <img src={track.album.images[0].url} />
+                <p>{track.name}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2>앨범</h2>
+          <ul>
+            {album.map((album) => (
+              <li key={album.id}>
+                <img src={album.images[0].url} />
+                <p>{album.name}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2>아티스트</h2>
+          <ul>
+            {artists.map((artists) => (
+              <li key={artists.id}>
+                <img src={artists.images[0].url} />
+                <p>{artists.name}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2>플레이 리스트</h2>
+          <ul>
+            {playlists.map((playlists) => (
+              <li key={playlists.id}>
+                <img src={playlists.images[0].url} />
+                <p>{playlists.name}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
     </Page>
   );
 }
