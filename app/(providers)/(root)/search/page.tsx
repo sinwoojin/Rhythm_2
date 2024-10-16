@@ -2,6 +2,8 @@
 import { api } from "@/api/spotifyApi";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import ChartList from "../_components/_ChartList/ChartList";
+import Musics from "../_components/_Musics/Music";
 import Page from "../_components/_Page/Page";
 
 function SearchPage() {
@@ -79,57 +81,15 @@ function SearchPage() {
   const album = searchResults.albums;
   const playlists = searchResults.playlists;
   const artists = searchResults.artists;
-
-  console.log(playlists);
-
+  console.log(track)
   return (
     <Page>
       검색
-      <section className="flex">
-        <div>
-          <h2>노래</h2>
-          <ul>
-            {track.map((track) => (
-              <li key={track.id}>
-                <img src={track.album.images[0].url} />
-                <p>{track.name}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h2>앨범</h2>
-          <ul>
-            {album.map((album) => (
-              <li key={album.id}>
-                <img src={album.images[0].url} />
-                <p>{album.name}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h2>아티스트</h2>
-          <ul>
-            {artists.map((artists) => (
-              <li key={artists.id}>
-                <img src={artists.images[0].url} />
-                <p>{artists.name}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h2>플레이 리스트</h2>
-          <ul>
-            {playlists.map((playlists) => (
-              <li key={playlists.id}>
-                <img src={playlists.images[0].url} />
-                <p>{playlists.name}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
+      <section className="flex flex-wrap">
+        <Musics title="Song" bestMusics={track} />
+        <ChartList title="Artists" bestMusics={artists} round={true} />
+        <ChartList title="Albums" bestMusics={album} round={false} />
+        <ChartList title="Playlists" bestMusics={playlists} round={false} />
       </section>
     </Page>
   );

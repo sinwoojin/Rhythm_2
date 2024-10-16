@@ -16,8 +16,8 @@ const getPlaylists = async (
       throw new Error("Access token is required");
     }
 
-    const response = await baseURL.spotifyAPI.get<Playlist>(
-      `playlists/${playlistId}`,
+    const response = await baseURL.spotifyPlaylistApi.get<Playlist>(
+      `/${playlistId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

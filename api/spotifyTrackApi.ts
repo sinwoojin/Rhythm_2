@@ -12,7 +12,7 @@ const getTracks = async (trackId: string): Promise<Track | undefined> => {
     if (!accessToken) {
       throw new Error("Access token is required");
     }
-    const response = await baseURL.spotifyAPI.get<Track>(`tracks/${trackId}`, {
+    const response = await baseURL.spotifyTrackApi.get<Track>(`/${trackId}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
