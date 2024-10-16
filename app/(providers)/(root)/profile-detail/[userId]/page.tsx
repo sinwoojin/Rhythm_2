@@ -1,10 +1,12 @@
 "use client";
 
 import Button from "@/app/_components/Button";
-import { User } from "@/schema/type";
+import { baseURL, User } from "@/schema/type";
 import { supabase } from "@/supabase/client";
 import { useEffect, useState } from "react";
 import Page from "../../_components/_Page/Page";
+import EditModal from "../_components/EditModal";
+import { useAuthStore } from "@/zustand/authStore";
 
 interface ProfileDetailPageProps {
   params: {
@@ -15,8 +17,26 @@ interface ProfileDetailPageProps {
 
 function ProfileDetailPage(props: ProfileDetailPageProps) {
   const id = props.params.userId;
-  const [user, setUser] = useState<User | null>();
+  const [user, setUser] = useState<User | null>(null);
+  const [isModal, setIsModal] = useState(false);
 
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+
+  /**
+   * 모달 수정 버튼
+   */
+  const handleClickOpenEditModal = () => {
+    setIsModal(true);
+  };
+
+  /**
+   * 모달 닫기 버튼 (props로 modal에 전달)
+   */
+  const handleClickCloseEditModal = () => {
+    setIsModal(false);
+  };
+
+  // id가 없을 경우 만들기
   useEffect(() => {
     (async () => {
       const response = await supabase
@@ -26,12 +46,23 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
         .single();
       setUser(response.data);
     })();
-  }, [id]);
+  }, [id, isLoggedIn]);
   return (
     <Page>
+      {isModal ? (
+        <EditModal
+          id={id}
+          modal={isModal}
+          onClose={handleClickCloseEditModal}
+        />
+      ) : null}
       <div className="grid grid-cols-5 gap-x-10 place-items-center border-b border-white/20 pb-16 mb-10">
-        <div className="h-full rounded-full aspect-square bg-white opacity-20 overflow-hidden">
-          {/* <img src="" alt="" /> */}
+        <div className="h-full rounded-full aspect-square bg-white opacity-90 overflow-hidden">
+          <img
+            src={baseURL + user?.imgUrl}
+            alt="프로필 이미지"
+            className="z-50"
+          />
         </div>
         <div className="flex flex-col gap-y-2 w-full h-full col-span-2">
           <span>userName: {user?.userName}</span>
@@ -39,6 +70,12 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
           <span className="bg-white/20 w-full h-full"></span>
         </div>
         <div className="w-full h-full flex flex-col-reverse items-center gap-y-8 col-span-2">
+          <Button
+            className="w-full text-center"
+            onClick={handleClickOpenEditModal}
+          >
+            수정하기
+          </Button>
           <Button className="w-full text-center">팔로우</Button>
           <div className="flex gap-x-5 w-full">
             <Button className="flex flex-col w-full items-center py-4">
@@ -52,6 +89,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
           </div>
         </div>
       </div>
+
       <div className="flex flex-col gap-y-4">
         <span>나의 플레이리스트</span>
         <div>

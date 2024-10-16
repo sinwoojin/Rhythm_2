@@ -7,6 +7,7 @@ import { baseURL } from "./spotifyApi";
  * @param trackId
  */
 const getTracks = async (trackId: string): Promise<Track | undefined> => {
+
   try {
     const accessToken = await getAccessToken(); // 액세스 토큰을 비동기로 가져옴
     if (!accessToken) {
@@ -18,13 +19,14 @@ const getTracks = async (trackId: string): Promise<Track | undefined> => {
       },
     });
 
-    // 응답 데이터 출력
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching album information:", error);
-  }
+
+		// 응답 데이터 출력
+		return response.data;
+	} catch (error) {
+		console.error("Error fetching album information:", error);
+	}
 };
 
 export const Tracks = {
-  getTracks,
+	getTracks,
 };

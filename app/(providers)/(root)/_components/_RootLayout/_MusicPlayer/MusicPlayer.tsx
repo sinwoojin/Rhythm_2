@@ -1,4 +1,3 @@
-import React from "react";
 import { BsMusicNoteList, BsRepeat } from "react-icons/bs";
 import { CiHeart } from "react-icons/ci";
 import { FaPlay } from "react-icons/fa";
@@ -9,18 +8,20 @@ import { SlOptions } from "react-icons/sl";
 
 function MusicPlayer() {
   return (
-    <div className="fixed bottom-0 w-full bg-[#121212] grid grid-cols-7 py-6 px-8">
+    <div className="fixed bottom-0 w-full bg-[#121212] grid grid-cols-7 py-6 px-8 max-h-29">
       <div
         id="music-player-left"
         className="col-span-2 flex items-center gap-x-4"
       >
-        <div className="bg-gray-400 w-14 h-14">
+        <div className="bg-gray-400 h-full aspect-square">
           {/* <img src="" alt="" /> */}
           {/* 노래 썸네일? url 넣어주면 됨 */}
         </div>
         <div>
-          <p className="text-white font-bold text-lg">music title</p>
-          <p className="text-gray-400">music singer</p>
+          <p className="text-white font-bold text-lg text-nowrap">
+            music title
+          </p>
+          <p className="text-gray-400 text-nowrap">music singer</p>
         </div>
         <div className="flex items-center gap-x-2">
           <button className="text-gray-400 py-2 text-5xl transition-all duration-75 hover:text-white">

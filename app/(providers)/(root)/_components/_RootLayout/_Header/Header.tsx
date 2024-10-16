@@ -8,7 +8,7 @@ import Profile from "./_Profile/Profile";
 
 function Header() {
   return (
-    <header className="fixed left-0 max-w-[245px] h-full bg-[#121212] text-white">
+    <header className="fixed left-0 w-72 h-screen bg-[#121212] text-white">
       <h1 className="my-6 ml-10">
         <Link href="/" className="flex items-center">
           <span className="font-black text-lg mr-2">SKN</span>
@@ -52,7 +52,7 @@ function Header() {
                 <span className="text-[20px] text-gray-400">유저 리듬</span>
               </li>
             </Link>
-            <Link href="/my">
+            <Link href="/my/likedMusic">
               {/* 링크 URL은 페이지 만들면 카테고리에 맞춰서 넣어주세요 */}
               <li className="flex items-center gap-x-3 mx-[6px]">
                 <span className="text-3xl text-gray-400">

@@ -5,10 +5,8 @@ import MusicPlayer from "./_components/_RootLayout/_MusicPlayer/MusicPlayer";
 function RootLayout({ children }: PropsWithChildren) {
   return (
     <>
-      <div className="flex">
-        <Header />
-        {children}
-      </div>
+      <Header />
+      {children}
       <MusicPlayer />
     </>
   );
