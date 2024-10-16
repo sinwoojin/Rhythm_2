@@ -31,11 +31,11 @@ const spotifySearchApi = axios.create({
 export const baseURL = {
 	spotifyAPI,
 	spotifyUserAPI,
-  spotifyPlaylistApi,
-  spotifyAlbumApi,
-  spotifyArtistApi,
-  spotifyTrackApi,
-  spotifySearchApi
+	spotifyPlaylistApi,
+	spotifyAlbumApi,
+	spotifyArtistApi,
+	spotifyTrackApi,
+	spotifySearchApi,
 };
 
 export const api = {
