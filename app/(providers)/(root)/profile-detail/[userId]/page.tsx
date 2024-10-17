@@ -8,14 +8,13 @@ import { supabase } from "@/supabase/client";
 import { useFollowStore } from "@/zustand/followStore";
 import { useEffect, useState } from "react";
 import Page from "../../_components/_Page/Page";
-import EditModal from "../_components/EditModal";
-import FollowModal from "../_components/FollowModal";
+import EditModal from "../_components/Modals/EditModal";
+import FollowModal from "../_components/Modals/FollowModal";
 
 interface ProfileDetailPageProps {
   params: {
     userId: string;
   };
-  searchParams: {};
 }
 
 function ProfileDetailPage(props: ProfileDetailPageProps) {
@@ -109,7 +108,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   };
 
   // 유저 정보 리렌더링 (useEffect)
-  const userUpdate = async (loginUserId?: string) => {
+  const userUpdate = async (loginUserId: string) => {
     // 유저 정보 가져오기
     const response = await supabase
       .from("users")
@@ -189,7 +188,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
           <img
             src={baseURL + user?.imgUrl}
             alt="프로필 이미지"
-            className="z-50"
+            className="z-50 aspect-square"
           />
         </div>
         <div className="flex flex-col gap-y-2 w-full h-full col-span-2 relative">
