@@ -185,7 +185,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
         />
       )}
       <div className="grid grid-cols-5 gap-x-10 place-items-center border-b border-white/20 pb-16 mb-10">
-        <div className="h-full rounded-full aspect-square bg-white opacity-90 overflow-hidden">
+        <div className="h-[162px] rounded-full aspect-square bg-white opacity-90 overflow-hidden">
           <img
             src={baseURL + user?.imgUrl}
             alt="프로필 이미지"
