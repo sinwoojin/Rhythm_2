@@ -1,12 +1,24 @@
 "use client";
 
+import { api } from "@/api/spotifyApi";
 import Button from "@/app/_components/Button";
 import Input from "@/app/_components/Input";
-import React, { ComponentProps } from "react";
-import PublicCheckButton from "../_PublicCheckButton/PublicCheckButton";
 import { useModalStore } from "@/zustand/modalStore";
+import { useRouter } from "next/navigation";
+import { ComponentProps, useState } from "react";
+import PublicCheckButton from "../_PublicCheckButton/PublicCheckButton";
 
 function CreatePlayListModal() {
+  const router = useRouter()
+  const [title, setTitle] = useState("")
+  const [description, setDescription] = useState("")
+
+  const handleClickCreatePlayList = async ()=>{
+    const createPlaylist = await api.userPlaylist.createPlaylists(title,description)
+    router.push("/")
+    return createPlaylist
+  }
+
   const isCreatePlayListModal = useModalStore(
     (state) => state.isOnCreatePlayListModal
   );
@@ -20,7 +32,7 @@ function CreatePlayListModal() {
   const handleClickCancelButton = () => {
     setIsCreatePlayListModal(false);
   };
-  const handleClickSubmitButton = () => {
+  const handleClickCreatePlayList = () => {
     setIsCreatePlayListModal(false);
     // 여기에서 수퍼베이스에 플리 생성하는 코드 적기
   };
@@ -34,7 +46,8 @@ function CreatePlayListModal() {
           새 플레이리스트
         </h4>
         <div className="flex flex-col gap-y-5">
-          <Input className="outline-none"></Input>
+          <Input className="outline-none" placeholder="플레이 리스트 제목" onChange={(e) => setTitle(e.target.value)} ></Input>
+          <Input className="outline-none" placeholder="플레이 리스트 소개 글" onChange={(e) => setDescription(e.target.value)}></Input>
           <div className="h-16 flex items-center justify-between">
             <span className="text-[15px] px-2.5 py-1 font-semibold">
               공개 설정
@@ -45,9 +58,7 @@ function CreatePlayListModal() {
             <Button onClick={handleClickCancelButton} className="w-full h-12">
               취소
             </Button>
-            <Button onClick={handleClickSubmitButton} className="w-full h-12">
-              만들기
-            </Button>
+            <Button onClick={handleClickCreatePlayList} className="w-full h-12">만들기</Button>
           </div>
         </div>
       </div>

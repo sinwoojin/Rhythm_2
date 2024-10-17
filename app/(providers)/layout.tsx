@@ -1,3 +1,5 @@
+"use client"
+import { SearchProvider } from "@/context/SearchContext";
 import { PropsWithChildren } from "react";
 import AuthProvider from "./_providers/AuthProvider";
 import ModalProvider from "./_providers/ModalProvider";
@@ -6,7 +8,7 @@ import ImgProvider from "./_providers/ImgProvider";
 
 function ProvidersLayout({ children }: PropsWithChildren) {
 	return (
-		<>
+		<SearchProvider>
 			<TanstackQueryProvider>
         <ImgProvider>
 				<ModalProvider>
@@ -14,7 +16,7 @@ function ProvidersLayout({ children }: PropsWithChildren) {
 				</ModalProvider>
         </ImgProvider>
 			</TanstackQueryProvider>
-		</>
+		</SearchProvider>
 	);
 }
 
