@@ -2,7 +2,7 @@ import { api } from "@/api/spotifyApi";
 import Button from "@/app/_components/Button";
 import { User } from "@/schema/type";
 import { supabase } from "@/supabase/client";
-import { useFollowStore } from "@/zustand/followStore";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 interface FollowModalProps {
@@ -130,7 +130,9 @@ const FollowModal: React.FC<FollowModalProps> = ({
                   key={follower.id}
                   className="flex justify-between items-center py-2"
                 >
-                  <span>{follower.userName}</span>
+                  <Link href={`/profile-detail/${follower.id}`}>
+                    <span>{follower.userName}</span>
+                  </Link>
                   {/* {currentUser && currentUser.id !== follower.id && (
                     <Button onClick={() => handleToggleFollow(follower.id)}>
                       {isFollowing ? "언팔로우" : "팔로우"}
