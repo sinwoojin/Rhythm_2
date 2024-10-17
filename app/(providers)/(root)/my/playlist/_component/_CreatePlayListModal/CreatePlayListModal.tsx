@@ -14,12 +14,12 @@ function CreatePlayListModal() {
   const [description, setDescription] = useState("");
 
   const handleClickCreatePlayList = async () => {
+    setIsCreatePlayListModal(false);
     const createPlaylist = await api.userPlaylist.createPlaylists(
       title,
       description
     );
     router.push("/");
-    setIsCreatePlayListModal(false);
     return createPlaylist;
   };
 
