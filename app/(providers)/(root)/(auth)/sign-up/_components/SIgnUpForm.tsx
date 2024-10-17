@@ -1,7 +1,7 @@
 "use client";
 
-import Button from "@/app/_components/Button";
-import Input from "@/app/_components/Input";
+import Button from "@/components/Button";
+import Input from "@/components/Input";
 import { Database } from "@/database.types";
 import { supabase } from "@/supabase/client";
 import { useRouter } from "next/navigation";

@@ -79,18 +79,17 @@ function SearchPage() {
   );
 
   /*가져올때 전부 합쳐서 가져와서 사용하기 쉽게 바꿔놓은 것 */
-  const track = searchResults.tracks;
-  const album = searchResults.albums;
+  const tracks = searchResults.tracks;
+  const albums = searchResults.albums;
   const playlists = searchResults.playlists;
   const artists = searchResults.artists;
-  console.log(track);
   return (
     <Page>
       검색
       <section className="flex flex-wrap">
-        <Musics title="Song" musics={track} />
+        <Musics title="Musics" tracks={tracks} />
         <Artists title="Artists" artists={artists} />
-        <Albums title="Albums" albums={album} />
+        <Albums title="Albums" albums={albums} />
         <Playlists title="Playlists" playlists={playlists} />
       </section>
     </Page>

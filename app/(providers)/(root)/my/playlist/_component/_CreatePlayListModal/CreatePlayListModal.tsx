@@ -1,5 +1,4 @@
 "use client";
-
 import { api } from "@/api/spotifyApi";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
@@ -7,13 +6,11 @@ import { useModalStore } from "@/zustand/modalStore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import PublicCheckButton from "../_PublicCheckButton/PublicCheckButton";
-
 function CreatePlayListModal() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const closeModal = useModalStore((state) => state.closeModal);
-
   const handleClickCreatePlayList = async () => {
     closeModal();
     const createPlaylist = await api.userPlay.createPlaylists(
@@ -23,12 +20,14 @@ function CreatePlayListModal() {
     router.push("/");
     return createPlaylist;
   };
-
   const handleClickCancelButton = () => {
     closeModal();
   };
   return (
-    <div className="absolute top-[50%] left-[50%] w-[500px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white p-10">
+    <div
+      className="absolute top-[50%] left-[50%] w-[500px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white p-10"
+      onClick={(e) => e.stopPropagation()}
+    >
       <h4 className="text-xl font-semibold text-center py-10">
         새 플레이리스트
       </h4>
@@ -61,5 +60,11 @@ function CreatePlayListModal() {
     </div>
   );
 }
-
 export default CreatePlayListModal;
+
+
+
+
+
+
+
