@@ -12,7 +12,7 @@ function ImgProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     (async () => {
-      const response = await api.getUserApi.getUser();
+      const response = await api.getUser.getUser();
       if (!response) return;
       setUserId(response.id);
 

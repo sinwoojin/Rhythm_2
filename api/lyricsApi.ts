@@ -1,12 +1,12 @@
-import { getAccessToken } from "@/axios/getAccessToken";
 import axios from "axios";
-import { baseURL } from "./spotifyApi";
+import { getAccessToken } from "./getToken";
+import { spotifyAPI } from "./spotifyApi";
 
 const fetchSpotifyTrack = async (trackId: string) => {
 	const accessToken = await getAccessToken(); // Spotify API 인증 토큰
 
 	try {
-		const response = await baseURL.spotifyAPI.get(`tracks/${trackId}`, {
+		const response = await spotifyAPI.get(`tracks/${trackId}`, {
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 			},

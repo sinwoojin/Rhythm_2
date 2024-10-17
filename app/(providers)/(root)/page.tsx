@@ -1,10 +1,10 @@
-import Page from "./_components/_Page/Page";
+"use client";
+
+import { redirect } from "next/navigation";
 
 function HomePage() {
-	return (
-		<Page title="홈페이지">
-			<h1>Rhythm 홈페이지입니다!</h1>
-		</Page>
-	);
+  redirect("/today");
+
+  return null;
 }
 export default HomePage;

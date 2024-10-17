@@ -1,6 +1,6 @@
-import { getAccessToken } from "@/axios/getAccessToken";
 import { Track } from "@/schema/type";
-import { baseURL } from "./spotifyApi";
+import { getAccessToken } from "./getToken";
+import { spotifyAPI } from "./spotifyApi";
 
 /**
  * 트랙 가져오기(노래 하나)
@@ -13,7 +13,7 @@ const getTracks = async (trackId: string): Promise<Track | undefined> => {
     if (!accessToken) {
       throw new Error("Access token is required");
     }
-    const response = await baseURL.spotifyTrackApi.get<Track>(`/${trackId}`, {
+    const response = await spotifyAPI.get<Track>(`tracks/${trackId}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -27,6 +27,6 @@ const getTracks = async (trackId: string): Promise<Track | undefined> => {
 	}
 };
 
-export const TracksApi = {
+export const tracksApi = {
 	getTracks,
 };

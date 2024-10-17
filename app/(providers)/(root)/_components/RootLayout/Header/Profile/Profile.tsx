@@ -21,7 +21,7 @@ function Profile() {
     supabase.auth.signOut();
   };
   const handleClickProfile = async () => {
-    const response = await api.getUserApi.getUser();
+    const response = await api.getUser.getUser();
 
     if (!response) return;
     let userId;
@@ -38,7 +38,7 @@ function Profile() {
   useEffect(() => {
     (async () => {
       if (isLoggedIn) {
-        const response = await api.getUserApi.getUser();
+        const response = await api.getUser.getUser();
         if (response?.app_metadata.provider === "spotify") {
           setUserName(response?.user_metadata.name);
         } else if (response?.app_metadata.provider === "email") {

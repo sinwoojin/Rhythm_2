@@ -1,6 +1,6 @@
-import React, { PropsWithChildren } from "react";
-import Header from "./_components/_RootLayout/_Header/Header";
-import MusicPlayer from "./_components/_RootLayout/_MusicPlayer/MusicPlayer";
+import { PropsWithChildren } from "react";
+import Header from "./_components/RootLayout/Header/Header";
+import MusicPlayer from "./_components/RootLayout/MusicPlayer/MusicPlayer";
 
 function RootLayout({ children }: PropsWithChildren) {
   return (

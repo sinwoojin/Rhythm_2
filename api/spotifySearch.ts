@@ -1,6 +1,8 @@
 /* eslint-disable prefer-const */
-import { getAccessToken } from "@/axios/getAccessToken";
-import { baseURL } from "./spotifyApi";
+
+import { getAccessToken } from "./getToken";
+import { spotifyAPI } from "./spotifyApi";
+
 /**
  * 검색한 값에 대한 트랙 가져오기
  * @param searchQuery
@@ -12,8 +14,8 @@ const getTracks = async (searchQuery: string) => {
     if (!accessToken) {
       throw new Error("Access token is required");
     }
-    let response = await baseURL.spotifySearchApi.get(
-      `?q=${searchQuery}&type=track&limit=20`,
+    let response = await spotifyAPI.get(
+      `search?q=${searchQuery}&type=track&limit=20`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -36,8 +38,8 @@ const getAlbums = async (searchQuery: string) => {
     if (!accessToken) {
       throw new Error("Access token is required");
     }
-    let response = await baseURL.spotifySearchApi.get(
-      `?q=${searchQuery}&type=album&limit=20`,
+    let response = await spotifyAPI.get(
+      `search?q=${searchQuery}&type=album&limit=20`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -60,8 +62,8 @@ const getArtists = async (searchQuery: string) => {
     if (!accessToken) {
       throw new Error("Access token is required");
     }
-    let response = await baseURL.spotifySearchApi.get(
-      `?q=${searchQuery}&type=artist&limit=10`,
+    let response = await spotifyAPI.get(
+      `search?q=${searchQuery}&type=artist&limit=10`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -84,8 +86,8 @@ const getPlaylists = async (searchQuery: string) => {
     if (!accessToken) {
       throw new Error("Access token is required");
     }
-    let response = await baseURL.spotifySearchApi.get(
-      `?q=${searchQuery}&type=playlist&limit=15`,
+    let response = await spotifyAPI.get(
+      `search?q=${searchQuery}&type=playlist&limit=15`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -98,7 +100,7 @@ const getPlaylists = async (searchQuery: string) => {
   }
 };
 
-export const searchItemsAPI = {
+export const searchItemsApi = {
   getTracks,
   getAlbums,
   getArtists,

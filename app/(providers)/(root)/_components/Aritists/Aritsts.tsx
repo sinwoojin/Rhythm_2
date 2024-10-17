@@ -1,7 +1,7 @@
 "use client";
 import { Track } from "@/schema/type";
 import Link from "next/link";
-import Page from "../_Page/Page";
+import Page from "../Page/Page";
 
 interface ChartListProps {
   artists: Track[];
