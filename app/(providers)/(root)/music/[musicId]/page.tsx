@@ -1,16 +1,15 @@
 import { api } from "@/api/spotifyApi";
 import dayjs from "dayjs";
 import { FaPlay } from "react-icons/fa";
-import Page from "../../_components/_Page/Page";
+import Page from "../../_components/Page/Page";
 
 interface MusicDetailPageProps {
 	params: { musicId: string };
 }
 
 async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
-  
-	const lyrics = await api.lyricsApi.getSpotifyLyrics(musicId);
-	const chart = await api.TracksApi.getTracks(musicId);
+	const lyrics = await api.genius.getSpotifyLyrics(musicId);
+	const chart = await api.track.getTracks(musicId);
 
 	const album = chart?.album;
 	const release_date = chart!.album.release_date;
