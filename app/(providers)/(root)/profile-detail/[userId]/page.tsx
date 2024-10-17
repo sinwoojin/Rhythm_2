@@ -1,13 +1,13 @@
 "use client";
 
 import { api } from "@/api/spotifyApi";
-import Button from "@/app/_components/Button";
+import Button from "@/components/Button";
 import { Database } from "@/database.types";
 import { baseURL, User } from "@/schema/type";
 import { supabase } from "@/supabase/client";
 import { useFollowStore } from "@/zustand/followStore";
 import { useEffect, useState } from "react";
-import Page from "../../_components/_Page/Page";
+import Page from "../../_components/Page/Page";
 import EditModal from "../_components/Modals/EditModal";
 import FollowModal from "../_components/Modals/FollowModal";
 
@@ -71,7 +71,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
 
   // 팔로우, 언팔로우 버튼 핸들러
   const handleClickToggleFollowButton = async () => {
-    const user = await api.getUserApi.getUser();
+    const user = await api.getUser.getUser();
     if (!user) return;
 
     const follower = user.id;
@@ -150,7 +150,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   // 유저 정보, 팔로워 ,팔로잉 수 가져오기, 팔로우 상태 확인 실행
   useEffect(() => {
     const fetchData = async () => {
-      const user = await api.getUserApi.getUser();
+      const user = await api.getUser.getUser();
       const loginUserId = user?.id;
 
       if (!loginUserId) return;

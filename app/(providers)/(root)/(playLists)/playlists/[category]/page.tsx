@@ -1,4 +1,4 @@
-import Page from "../../../_components/_Page/Page";
+import Page from "../../../_components/Page/Page";
 import Lists from "../_components/Lists/Lists";
 
 interface PlayListPageProps {

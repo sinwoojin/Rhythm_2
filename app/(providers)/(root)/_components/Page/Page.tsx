@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import Nav from "./_Nav/Nav";
+import Nav from "./Nav/Nav";
 
 interface PageProps {
   title?: string;

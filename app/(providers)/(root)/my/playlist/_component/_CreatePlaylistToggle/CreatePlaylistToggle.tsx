@@ -1,7 +1,6 @@
 "use client";
-import Button from "@/app/_components/Button";
+import Button from "@/components/Button";
 import { useModalStore } from "@/zustand/modalStore";
-import React from "react";
 import { IoMdAddCircle } from "react-icons/io";
 import CreatePlayListModal from "../_CreatePlayListModal/CreatePlayListModal";
 

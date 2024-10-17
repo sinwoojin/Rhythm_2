@@ -4,7 +4,7 @@ import { BsFillTrophyFill, BsMusicNoteList } from "react-icons/bs";
 import { CiSearch } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 import { SiYoutubemusic } from "react-icons/si";
-import Profile from "./_Profile/Profile";
+import Profile from "./Profile/Profile";
 
 function Header() {
   return (

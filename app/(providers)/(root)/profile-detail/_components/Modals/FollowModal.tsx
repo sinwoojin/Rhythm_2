@@ -1,5 +1,5 @@
 import { api } from "@/api/spotifyApi";
-import Button from "@/app/_components/Button";
+import Button from "@/components/Button";
 import { User } from "@/schema/type";
 import { supabase } from "@/supabase/client";
 import { useFollowStore } from "@/zustand/followStore";
@@ -56,7 +56,7 @@ const FollowModal: React.FC<FollowModalProps> = ({
 
   // 팔로우, 언팔로우 함수 (미완성)
   const handleToggleFollow = async (targetUserId: string) => {
-    const user = await api.getUserApi.getUser(); // 유저 정보
+    const user = await api.getUser.getUser(); // 유저 정보
     if (!user) return; // 로그인한 유저가 없을 경우
 
     // 로그인한 유저의 id
@@ -93,7 +93,7 @@ const FollowModal: React.FC<FollowModalProps> = ({
     fetchFollowData();
 
     (async () => {
-      const user = await api.getUserApi.getUser();
+      const user = await api.getUser.getUser();
       const currentUser = user?.id;
 
       if (!currentUser) return;

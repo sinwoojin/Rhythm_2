@@ -1,12 +1,9 @@
 /* eslint-disable prefer-const */
 "use client";
-
 import { useRouter } from "next/navigation"; // useRouter 사용
 import { ChangeEvent, KeyboardEvent, useState } from "react";
-import { useSearch } from "../context/SearchContext";
 
 function SearchInput() {
-  const { setSearchQuery } = useSearch();
   const [inputValue, setInputValue] = useState("");
   const router = useRouter();
 
@@ -16,7 +13,6 @@ function SearchInput() {
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      setSearchQuery(inputValue); // 검색어 저장
       router.push(`/search?search=${encodeURIComponent(inputValue)}`); // 페이지 이동
     }
   };

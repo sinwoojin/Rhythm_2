@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Page from "../../_components/_Page/Page";
+import Page from "../../_components/Page/Page";
 
 function PlaylistsPage() {
 	return (

@@ -3,8 +3,8 @@ import { CiHeart } from "react-icons/ci";
 import { FaPlay } from "react-icons/fa";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import { RxShuffle } from "react-icons/rx";
-import LyricsButton from "../_LyricsButton/LyricsButton";
-import OptionButton from "../_OptionButton/OptionButton";
+import LyricsButton from "../LyricsButton/LyricsButton";
+import OptionButton from "../OptionButton/OptionButton";
 
 function MusicPlayer() {
   return (

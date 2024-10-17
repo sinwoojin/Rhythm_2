@@ -1,8 +1,8 @@
 "use client";
 
 import { api } from "@/api/spotifyApi";
-import Button from "@/app/_components/Button";
-import Input from "@/app/_components/Input";
+import Button from "@/components/Button";
+import Input from "@/components/Input";
 import { useModalStore } from "@/zustand/modalStore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -16,7 +16,7 @@ function CreatePlayListModal() {
 
   const handleClickCreatePlayList = async () => {
     closeModal();
-    const createPlaylist = await api.userPlaylist.createPlaylists(
+    const createPlaylist = await api.userPlay.createPlaylists(
       title,
       description
     );

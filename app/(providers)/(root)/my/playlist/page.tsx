@@ -1,9 +1,4 @@
-import React from "react";
-import { FaPlay } from "react-icons/fa";
-import Link from "next/link";
-import { SlOptions } from "react-icons/sl";
-import Page from "../../_components/_Page/Page";
-import Button from "@/app/_components/Button";
+import Page from "../../_components/Page/Page";
 import CreatePlaylistToggle from "./_component/_CreatePlaylistToggle/CreatePlaylistToggle";
 
 function Playlist() {
