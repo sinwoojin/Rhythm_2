@@ -16,8 +16,8 @@ function LogInModal() {
   const [password, setPassword] = useState("");
 
   // 상태 불러오기
-  const isModal = useModalStore((state) => state.isModal);
-  const setIsModal = useModalStore((state) => state.setIsModal);
+  const isModal = useModalStore((state) => state.isOnLogInModal);
+  const setIsModal = useModalStore((state) => state.setIsOnLogInModal);
 
   // 바깥영역 클릭시 나가짐
   const handleToggleModal = () => {

@@ -2,13 +2,13 @@ import { BsMusicNoteList, BsRepeat } from "react-icons/bs";
 import { CiHeart } from "react-icons/ci";
 import { FaPlay } from "react-icons/fa";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
-import { MdOutlineLyrics } from "react-icons/md";
 import { RxShuffle } from "react-icons/rx";
-import { SlOptions } from "react-icons/sl";
+import LyricsButton from "../_LyricsButton/LyricsButton";
+import OptionButton from "../_OptionButton/OptionButton";
 
 function MusicPlayer() {
   return (
-    <div className="fixed bottom-0 w-full bg-[#121212] grid grid-cols-7 py-6 px-8 max-h-29">
+    <div className="fixed bottom-0 w-full bg-[#121212] grid grid-cols-7 py-6 px-8 max-h-[116px]">
       <div
         id="music-player-left"
         className="col-span-2 flex items-center gap-x-4"
@@ -27,12 +27,8 @@ function MusicPlayer() {
           <button className="text-gray-400 py-2 text-5xl transition-all duration-75 hover:text-white">
             <CiHeart />
           </button>
-          <button className="text-gray-400 py-2 text-4xl transition-all duration-75 hover:text-white">
-            <MdOutlineLyrics />
-          </button>
-          <button className="text-gray-400 py-2 text-3xl transition-all duration-75 hover:text-white">
-            <SlOptions />
-          </button>
+          <LyricsButton />
+          <OptionButton />
         </div>
       </div>
       <div

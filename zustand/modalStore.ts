@@ -1,16 +1,24 @@
 import { create } from "zustand";
 
 type ModalStoreState = {
-  isModal: boolean;
-  isCreatePlayListModal: boolean;
-  setIsModal: (isOn: boolean) => void;
-  setIsCreatePlayListModal: (isOn: boolean) => void;
+  isOnLogInModal: boolean;
+  isOnCreatePlayListModal: boolean;
+  isOnLyricsModal: boolean;
+  isOnOptionModal: boolean;
+  setIsOnLogInModal: (isOn: boolean) => void;
+  setIsOnCreatePlayListModal: (isOn: boolean) => void;
+  setIsOnLyricsModal: (isOn: boolean) => void;
+  setIsOnOptionModal: (isOn: boolean) => void;
 };
 
 export const useModalStore = create<ModalStoreState>((set) => ({
-  isModal: false,
-  isCreatePlayListModal: false,
-  setIsModal: (isOn: boolean) => set({ isModal: isOn }),
-  setIsCreatePlayListModal: (isOn: boolean) =>
-    set({ isCreatePlayListModal: isOn }),
+  isOnLogInModal: false,
+  isOnCreatePlayListModal: false,
+  isOnLyricsModal: false,
+  isOnOptionModal: false,
+  setIsOnLogInModal: (isOn: boolean) => set({ isOnLogInModal: isOn }),
+  setIsOnCreatePlayListModal: (isOn: boolean) =>
+    set({ isOnCreatePlayListModal: isOn }),
+  setIsOnLyricsModal: (isOn: boolean) => set({ isOnLyricsModal: isOn }),
+  setIsOnOptionModal: (isOn: boolean) => set({ isOnOptionModal: isOn }),
 }));

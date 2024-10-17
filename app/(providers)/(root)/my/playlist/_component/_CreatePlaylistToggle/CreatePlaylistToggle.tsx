@@ -6,7 +6,7 @@ import { IoMdAddCircle } from "react-icons/io";
 
 function CreatePlaylistToggle() {
   const setIsCreatePlayListModal = useModalStore(
-    (state) => state.setIsCreatePlayListModal
+    (state) => state.setIsOnCreatePlayListModal
   );
 
   const handleClickCreatePlaylistToggle = () => {

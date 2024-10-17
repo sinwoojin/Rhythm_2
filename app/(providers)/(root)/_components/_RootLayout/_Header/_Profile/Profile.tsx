@@ -13,7 +13,7 @@ function Profile() {
   const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
 
   const logOut = useAuthStore((state) => state.LogOut);
-  const modal = useModalStore((state) => state.setIsModal);
+  const modal = useModalStore((state) => state.setIsOnLogInModal);
   const router = useRouter();
 
   const handleClickSignOutButton = () => {

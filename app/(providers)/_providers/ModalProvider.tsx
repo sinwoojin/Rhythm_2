@@ -3,16 +3,22 @@
 import { useModalStore } from "@/zustand/modalStore";
 import { PropsWithChildren } from "react";
 import LogInModal from "../_components/LogInModal";
+import LyricsModal from "../_components/LyricsModal";
+import OptionModal from "../_components/OptionModal";
 
 function ModalProvider({ children }: PropsWithChildren) {
-	const isModal = useModalStore((state) => state.isModal);
+  const isOnLogInModal = useModalStore((state) => state.isOnLogInModal);
+  const isOnLyricsModal = useModalStore((state) => state.isOnLyricsModal);
+  const isOnOptionModal = useModalStore((state) => state.isOnOptionModal);
 
-	return (
-		<>
-			{isModal === true ? <LogInModal /> : null}
-			{children}
-		</>
-	);
+  return (
+    <>
+      {isOnLogInModal ? <LogInModal /> : null}
+      {isOnLyricsModal ? <LyricsModal /> : null}
+      {isOnOptionModal ? <OptionModal /> : null}
+      {children}
+    </>
+  );
 }
 
 export default ModalProvider;
