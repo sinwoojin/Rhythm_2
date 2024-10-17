@@ -4,26 +4,30 @@ import Link from "next/link";
 import Page from "../_Page/Page";
 
 interface ChartListProps {
-  musics: Track[];
+  albums: Track[];
   title: string;
 }
 
-function Musics({ musics, title }: ChartListProps) {
+function Albums({ albums, title }: ChartListProps) {
   return (
     <>
-      <div className="[&+&]:mt-10">
+      <div className="[&+&]:mb-10">
         <h3 className="text-2xl font-bold">{title}</h3>
-        {musics.length > 0 ? (
+        {albums.length > 0 ? (
           <ul className="flex gap-x-3 overflow-auto scrollbar-hide">
-            {musics.map((music) => (
-              <li key={music.id} className="flex flex-col min-w-[17%]">
+            {albums.map((album) => (
+              <li key={album.id} className="flex flex-col min-w-[17%]">
                 <Link
                   href={
                     "/" /*여기에 디테일 페이지로 넘어갈 동적 url 적기 지금은 비워둠*/
                   }
                 >
-                  <img src={music.album.images[0].url} />
-                  <p className="text-xl font-semibold">{music.name}</p>
+                  {album.images.length === 0 ? (
+                    <div className="w-full h-full object-cover bg-slate-600"></div>
+                  ) : (
+                    <img src={album.images[0].url} />
+                  )}
+                  <p className="text-xl font-semibold">{album.name}</p>
                 </Link>
               </li>
             ))}
@@ -36,4 +40,4 @@ function Musics({ musics, title }: ChartListProps) {
   );
 }
 
-export default Musics;
+export default Albums;

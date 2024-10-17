@@ -1,7 +1,8 @@
 import axios from "axios";
 import getUserApi from "./getUser";
 import { AlbumAPI } from "./spotifyAlbumApi";
-import { Artists } from "./spotifyArtistsApi";
+import { ArtistsAPI } from "./spotifyArtistsApi";
+import { userPlaylist } from "./spotifyCreatePlaylistApi";
 import { PlaylistAPI } from "./spotifyPlaylistApi";
 import { searchItemsAPI } from "./spotifySearch";
 import { TracksApi } from "./spotifyTrackApi";
@@ -41,8 +42,9 @@ export const baseURL = {
 export const api = {
   AlbumAPI,
   PlaylistAPI,
-  Artists,
+  ArtistsAPI,
   TracksApi,
   searchItemsAPI,
 	getUserApi,
+  userPlaylist,
 };
