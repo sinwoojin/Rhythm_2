@@ -1,15 +1,14 @@
 "use client";
 
+import LyricsModal from "@/app/(providers)/_components/LyricsModal";
 import { useModalStore } from "@/zustand/modalStore";
 import React from "react";
 import { MdOutlineLyrics } from "react-icons/md";
 
 function Lyrics() {
-  const setIsOnLyricsModal = useModalStore((state) => state.setIsOnLyricsModal);
-  const isOnLyricsModal = useModalStore((state) => state.isOnLyricsModal);
+  const openModal = useModalStore((state) => state.openModal);
   const handleClickLyrics = () => {
-    setIsOnLyricsModal(true);
-    console.log(isOnLyricsModal);
+    openModal({ element: <LyricsModal />, backdrop: true });
   };
   return (
     <button
