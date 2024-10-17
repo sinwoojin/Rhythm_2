@@ -65,21 +65,6 @@ const FollowModal: React.FC<FollowModalProps> = ({
     // 팔로워, 팔로잉된 유저들의 id
     const followId = targetUserId;
 
-    // 현재 팔로우 여부 확인
-    const { data: followUser } = await supabase
-      .from("follow")
-      .select("*")
-      .eq("follower", userId)
-      .eq("following", followId);
-
-    if (followUser) {
-      follow();
-    } else {
-      unFollow();
-    }
-
-    if (!followUser) return;
-
     if (isFollowing === false) {
       // 팔로우하지 않은 경우 -> 팔로우 처리
       await supabase.from("follow").insert({
@@ -106,6 +91,25 @@ const FollowModal: React.FC<FollowModalProps> = ({
   useEffect(() => {
     // 팔로워, 팔로잉 목록 가져오기
     fetchFollowData();
+
+    (async () => {
+      const user = await api.getUserApi.getUser();
+      const currentUser = user?.id;
+
+      if (!currentUser) return;
+
+      // 현재 팔로우 여부 확인하고 상태 지정
+      const followUser = await supabase
+        .from("follow")
+        .select("*")
+        .eq("following", currentUser);
+
+      if (followUser.data!.length > 0) {
+        unFollow();
+      } else {
+        follow();
+      }
+    })();
   }, [userId, modalType]);
 
   return (
