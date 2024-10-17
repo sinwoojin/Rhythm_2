@@ -1,16 +1,17 @@
 import axios from "axios";
 
+const refreshToken = localStorage.getItem("refresh_token");
+const BASEURL = "https://accounts.spotify.com/api/token";
+const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID!;
+
 export const getRefreshToken = async () => {
   try {
-    const refreshToken = localStorage.getItem("refresh_token");
-    const BASEURL = "https://accounts.spotify.com/api/token";
-
     const response = await axios.post(
       BASEURL,
       new URLSearchParams({
         grant_type: "refresh_token",
         refresh_token: refreshToken as string,
-        client_id: process.env.SPOTIFY_CLIENT_ID as string,
+        client_id: clientId as string,
       }),
       {
         headers: {

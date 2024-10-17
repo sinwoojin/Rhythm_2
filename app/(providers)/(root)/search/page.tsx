@@ -2,9 +2,11 @@
 import { api } from "@/api/spotifyApi";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import ChartList from "../_components/_ChartList/ChartList";
+import Albums from "../_components/_Albums/Albums";
+import Artists from "../_components/_Aritists/Aritsts";
 import Musics from "../_components/_Musics/Music";
 import Page from "../_components/_Page/Page";
+import Playlists from "../_components/_Playlists/Playlists";
 
 function SearchPage() {
   /* input에 검색한 내용을 받아오는 코드 */
@@ -30,10 +32,10 @@ function SearchPage() {
           artistsResponse,
           playlistsResponse,
         ] = await Promise.all([
-          api.searchItems.getTracks(search),
-          api.searchItems.getAlbums(search),
-          api.searchItems.getArtists(search),
-          api.searchItems.getPlaylists(search),
+          api.searchItemsAPI.getTracks(search),
+          api.searchItemsAPI.getAlbums(search),
+          api.searchItemsAPI.getArtists(search),
+          api.searchItemsAPI.getPlaylists(search),
         ]);
 
         //검색된 결과를 하나의 객체로 합침
@@ -81,15 +83,15 @@ function SearchPage() {
   const album = searchResults.albums;
   const playlists = searchResults.playlists;
   const artists = searchResults.artists;
-  console.log(track)
+  console.log(track);
   return (
     <Page>
       검색
       <section className="flex flex-wrap">
-        <Musics title="Song" bestMusics={track} />
-        <ChartList title="Artists" bestMusics={artists} round={true} />
-        <ChartList title="Albums" bestMusics={album} round={false} />
-        <ChartList title="Playlists" bestMusics={playlists} round={false} />
+        <Musics title="Song" musics={track} />
+        <Artists title="Artists" artists={artists} />
+        <Albums title="Albums" albums={album} />
+        <Playlists title="Playlists" playlists={playlists} />
       </section>
     </Page>
   );

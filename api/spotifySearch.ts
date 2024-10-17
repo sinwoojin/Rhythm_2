@@ -98,7 +98,7 @@ const getPlaylists = async (searchQuery: string) => {
   }
 };
 
-export const searchItems = {
+export const searchItemsAPI = {
   getTracks,
   getAlbums,
   getArtists,

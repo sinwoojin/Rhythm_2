@@ -8,8 +8,10 @@ interface MusicDetailPageProps {
 }
 
 async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
+  
 	const lyrics = await api.lyricsApi.getSpotifyLyrics(musicId);
-	const chart = await api.Tracks.getTracks(musicId);
+	const chart = await api.TracksApi.getTracks(musicId);
+
 	const album = chart?.album;
 	const release_date = chart!.album.release_date;
 	const day = dayjs(release_date);

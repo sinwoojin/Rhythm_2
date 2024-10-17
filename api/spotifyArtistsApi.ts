@@ -24,6 +24,6 @@ const getArtist = async () => {
   }
 };
 
-export const Artists = {
+export const ArtistsAPI = {
   getArtist,
 };
