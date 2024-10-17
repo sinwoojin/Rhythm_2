@@ -57,7 +57,6 @@ export const getRefreshToken = async () => {
     if (newRefreshToken) {
       localStorage.setItem("refresh_token", newRefreshToken);
     }
-
     return access_token;
   } catch (error) {
     console.error("Failed to refresh token:", error);
