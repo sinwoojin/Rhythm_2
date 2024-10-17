@@ -28,7 +28,10 @@ function CreatePlayListModal() {
     closeModal();
   };
   return (
-    <div className="absolute top-[50%] left-[50%] w-[500px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white p-10">
+    <div
+      className="absolute top-[50%] left-[50%] w-[500px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white p-10"
+      onClick={(e) => e.stopPropagation()}
+    >
       <h4 className="text-xl font-semibold text-center py-10">
         새 플레이리스트
       </h4>
