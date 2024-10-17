@@ -20,17 +20,21 @@ function CreatePlayListModal() {
   }
 
   const isCreatePlayListModal = useModalStore(
-    (state) => state.isCreatePlayListModal
+    (state) => state.isOnCreatePlayListModal
   );
   const setIsCreatePlayListModal = useModalStore(
-    (state) => state.setIsCreatePlayListModal
+    (state) => state.setIsOnCreatePlayListModal
   );
 
   const handleClickDivCancel: ComponentProps<"div">["onClick"] = (e) => {
     if (e.target === e.currentTarget) setIsCreatePlayListModal(false);
   };
-  const handleClickButtonCancel = () => {
+  const handleClickCancelButton = () => {
     setIsCreatePlayListModal(false);
+  };
+  const handleClickCreatePlayList = () => {
+    setIsCreatePlayListModal(false);
+    // 여기에서 수퍼베이스에 플리 생성하는 코드 적기
   };
   return isCreatePlayListModal ? (
     <div
@@ -45,15 +49,16 @@ function CreatePlayListModal() {
           <Input className="outline-none" placeholder="플레이 리스트 제목" onChange={(e) => setTitle(e.target.value)} ></Input>
           <Input className="outline-none" placeholder="플레이 리스트 소개 글" onChange={(e) => setDescription(e.target.value)}></Input>
           <div className="h-16 flex items-center justify-between">
-            <span className="text-xl font-medium">공개 설정</span>
+            <span className="text-[15px] px-2.5 py-1 font-semibold">
+              공개 설정
+            </span>
             <PublicCheckButton />
           </div>
           <div className="flex gap-x-5">
-            <Button onClick={handleClickButtonCancel} className="w-full h-12">
+            <Button onClick={handleClickCancelButton} className="w-full h-12">
               취소
             </Button>
             <Button onClick={handleClickCreatePlayList} className="w-full h-12">만들기</Button>
-            {/* 여기에 핸들러 달아서 데이터 수파베이스로 보내거나 하면 될듯 */}
           </div>
         </div>
       </div>
