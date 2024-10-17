@@ -20,15 +20,15 @@ interface ProfileDetailPageProps {
 
 function ProfileDetailPage(props: ProfileDetailPageProps) {
   // 유저 정보
-  const id = props.params.userId;
+  const profileId = props.params.userId;
   const [user, setUser] = useState<User | null>(null);
 
-  // 모달 상태 State
+  // 수정, 팔로우 모달 상태 State
   const [isEditModal, setIsEditModal] = useState(false);
   const [isFollowModal, setIsFollowModal] = useState(false);
   const [modalType, setModalType] = useState<"followers" | "following" | null>(
     null
-  ); // 모달 타입 상태 추가
+  );
 
   // 로그인 상태에 따라 보여주는 버튼의 State
   const [isButtonVisibility, setIsButtonVisibility] = useState(false);
@@ -53,30 +53,30 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
     setIsFollowModal((prev) => !prev);
   };
 
-  // 팔로워 및 팔로잉 수 가져오는 함수
+  // 팔로워, 팔로잉 수 가져오는 함수
   const updateFollowCounts = async () => {
     // 팔로워 수 가져오기
     const { data: followers } = await supabase
       .from("follow")
       .select("*")
-      .eq("following", id);
+      .eq("following", profileId);
     setFollowerCount(followers ? followers.length : 0);
 
     // 팔로잉 수 가져오기
     const { data: following } = await supabase
       .from("follow")
       .select("*")
-      .eq("follower", id);
+      .eq("follower", profileId);
     setFollowingCount(following ? following.length : 0);
   };
 
-  // 팔로우/언팔로우 버튼 핸들러
+  // 팔로우, 언팔로우 버튼 핸들러
   const handleClickToggleFollowButton = async () => {
     const user = await api.getUserApi.getUser();
     if (!user) return;
 
     const follower = user.id;
-    const following = id;
+    const following = profileId;
 
     if (!isFollowing) {
       if (follower === following)
@@ -109,33 +109,30 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   };
 
   // 유저 정보 리렌더링 (useEffect)
-  const userUpdate = async () => {
+  const userUpdate = async (loginUserId?: string) => {
     // 유저 정보 가져오기
     const response = await supabase
       .from("users")
       .select("*")
-      .eq("id", id)
+      .eq("id", profileId)
       .single();
     setUser(response.data);
 
-    const user = await api.getUserApi.getUser();
-    const loginUserId = user?.id;
-    setIsButtonVisibility(loginUserId === id);
+    setIsButtonVisibility(loginUserId === profileId);
 
     // 팔로워, 팔로잉 수 업데이트
     updateFollowCounts();
   };
 
   // 팔로우 상태 확인 (useEffect)
-  const checkIfFollowing = async () => {
-    const currentUser = await api.getUserApi.getUser();
-    if (!currentUser) return;
+  const checkIfFollowing = async (loginUserId: string) => {
+    if (!loginUserId) return;
 
     // 현재 로그인한 사람의 id
-    const follower = currentUser.id;
+    const follower = loginUserId;
 
     // 현재 프로필 페이지의 id
-    const following = id;
+    const following = profileId;
 
     // 팔로우 상태 지정
     const { data } = await supabase
@@ -154,18 +151,23 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   // 유저 정보, 팔로워 ,팔로잉 수 가져오기, 팔로우 상태 확인 실행
   useEffect(() => {
     const fetchData = async () => {
-      await userUpdate();
-      await checkIfFollowing();
+      const user = await api.getUserApi.getUser();
+      const loginUserId = user?.id;
+
+      if (!loginUserId) return;
+
+      await userUpdate(loginUserId);
+      await checkIfFollowing(loginUserId);
     };
 
     fetchData();
-  }, [id]);
+  }, [profileId]);
 
   return (
     <Page>
       {isEditModal && (
         <EditModal
-          id={id}
+          id={profileId}
           modal={isEditModal}
           onClose={handleClickToggleEditModal}
         />
@@ -178,8 +180,8 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
               modalType === "followers" ? "followers" : "following"
             );
           }}
-          userId={id}
-          modalType={modalType!} // 현재 modalType 값을 사용
+          userId={profileId}
+          modalType={modalType!}
         />
       )}
       <div className="grid grid-cols-5 gap-x-10 place-items-center border-b border-white/20 pb-16 mb-10">
