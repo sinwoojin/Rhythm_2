@@ -7,9 +7,9 @@ import { IoMdAddCircle, IoMdShare } from "react-icons/io";
 import { MdOutlineLyrics } from "react-icons/md";
 
 function OptionModal() {
-  const setIsOnOptionModal = useModalStore((state) => state.setIsOnOptionModal);
+  const closeModal = useModalStore((state) => state.closeModal);
   const handleClickCancel = () => {
-    setIsOnOptionModal(false);
+    closeModal();
   };
   return (
     <div className="absolute w-full h-screen z-20" onClick={handleClickCancel}>

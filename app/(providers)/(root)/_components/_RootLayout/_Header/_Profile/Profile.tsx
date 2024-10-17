@@ -1,6 +1,7 @@
 "use client";
 
 import { api } from "@/api/spotifyApi";
+import LogInModal from "@/app/(providers)/_components/LogInModal";
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/authStore";
 import { useModalStore } from "@/zustand/modalStore";
@@ -13,7 +14,7 @@ function Profile() {
   const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
 
   const logOut = useAuthStore((state) => state.LogOut);
-  const modal = useModalStore((state) => state.setIsOnLogInModal);
+  const openModal = useModalStore((state) => state.openModal);
   const router = useRouter();
 
   const handleClickSignOutButton = () => {
@@ -77,7 +78,9 @@ function Profile() {
           <button
             id="profile"
             className="flex items-center px-1 py-3 gap-x-2 mb-5"
-            onClick={() => modal(true)}
+            onClick={() =>
+              openModal({ element: <LogInModal />, backdrop: true })
+            }
           >
             <div
               id="profile-img"

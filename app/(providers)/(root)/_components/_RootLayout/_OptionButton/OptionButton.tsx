@@ -1,15 +1,14 @@
 "use client";
 
+import OptionModal from "@/app/(providers)/_components/OptionModal";
 import { useModalStore } from "@/zustand/modalStore";
 import React from "react";
 import { SlOptions } from "react-icons/sl";
 
 function OptionButton() {
-  const setIsOnLyricsModal = useModalStore((state) => state.setIsOnOptionModal);
-  const isOnOptionModal = useModalStore((state) => state.isOnOptionModal);
+  const openModal = useModalStore((state) => state.openModal);
   const handleClickOption = () => {
-    setIsOnLyricsModal(true);
-    console.log(isOnOptionModal);
+    openModal({ element: <OptionModal />, backdrop: false });
   };
   return (
     <button

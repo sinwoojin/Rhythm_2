@@ -2,20 +2,28 @@
 
 import { useModalStore } from "@/zustand/modalStore";
 import { PropsWithChildren } from "react";
-import LogInModal from "../_components/LogInModal";
-import LyricsModal from "../_components/LyricsModal";
-import OptionModal from "../_components/OptionModal";
 
 function ModalProvider({ children }: PropsWithChildren) {
-  const isOnLogInModal = useModalStore((state) => state.isOnLogInModal);
-  const isOnLyricsModal = useModalStore((state) => state.isOnLyricsModal);
-  const isOnOptionModal = useModalStore((state) => state.isOnOptionModal);
+  const modal = useModalStore((state) => state.modal);
+  const closeModal = useModalStore((state) => state.closeModal);
+
+  // 바깥영역 클릭시 나가짐
+  const handleToggleModal = () => {
+    closeModal();
+  };
 
   return (
     <>
-      {isOnLogInModal ? <LogInModal /> : null}
-      {isOnLyricsModal ? <LyricsModal /> : null}
-      {isOnOptionModal ? <OptionModal /> : null}
+      {modal?.backdrop ? (
+        <div
+          className="bg-white/10 flex items-center justify-center fixed top-0 left-0 right-0 bottom-0 z-20"
+          onClick={handleToggleModal}
+        >
+          {modal?.element}
+        </div>
+      ) : (
+        modal?.element
+      )}
       {children}
     </>
   );

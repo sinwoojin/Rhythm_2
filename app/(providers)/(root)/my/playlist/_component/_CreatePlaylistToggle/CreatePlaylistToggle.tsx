@@ -3,14 +3,13 @@ import Button from "@/app/_components/Button";
 import { useModalStore } from "@/zustand/modalStore";
 import React from "react";
 import { IoMdAddCircle } from "react-icons/io";
+import CreatePlayListModal from "../_CreatePlayListModal/CreatePlayListModal";
 
 function CreatePlaylistToggle() {
-  const setIsCreatePlayListModal = useModalStore(
-    (state) => state.setIsOnCreatePlayListModal
-  );
+  const openModal = useModalStore((state) => state.openModal);
 
   const handleClickCreatePlaylistToggle = () => {
-    setIsCreatePlayListModal(true);
+    openModal({ element: <CreatePlayListModal />, backdrop: true });
   };
   return (
     <Button
