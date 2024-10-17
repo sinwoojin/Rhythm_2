@@ -1,30 +1,37 @@
 import { create } from "zustand";
 
+// 유저 정보 타입
+type CurrentUser = {
+  id: string;
+  userName: string;
+  email: string;
+  content: string;
+  imgUrl: string;
+} | null;
+
 type AuthStoreState = {
-	// 로그인 타입 (헤더)
-	isLoggedIn: boolean;
-	LogIn: () => void;
-	LogOut: () => void;
+  // 로그인 상태
+  isLoggedIn: boolean;
+  LogIn: () => void;
+  LogOut: () => void;
 
-	// 유저 정보 타입 (버튼 컴포넌트)
-	isUser: boolean;
-	setIsUser: () => void;
-	setIsNotUser: () => void;
+  // 로딩 상태
+  isAuthInitialized: boolean;
+  setAuthInitialized: () => void;
 
-	// 로딩 상태
-	isAuthInitialized: boolean;
-	setAuthInitialized: () => void;
+  // 현재 로그인한 유저 정보
+  currentUser: CurrentUser;
+  setCurrentUser: (user: CurrentUser) => void;
 };
 
 export const useAuthStore = create<AuthStoreState>((set) => ({
-	isLoggedIn: false,
-	LogIn: () => set({ isLoggedIn: true }),
-	LogOut: () => set({ isLoggedIn: false }),
+  isLoggedIn: false,
+  LogIn: () => set({ isLoggedIn: true }),
+  LogOut: () => set({ isLoggedIn: false, currentUser: null }),
 
-	isUser: false,
-	setIsUser: () => set({ isUser: true }),
-	setIsNotUser: () => set({ isUser: false }),
+  isAuthInitialized: false,
+  setAuthInitialized: () => set({ isAuthInitialized: true }),
 
-	isAuthInitialized: false,
-	setAuthInitialized: () => set({ isAuthInitialized: true }),
+  currentUser: null,
+  setCurrentUser: (user) => set({ currentUser: user }),
 }));

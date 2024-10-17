@@ -4,7 +4,6 @@ import { Database } from "@/database.types";
 import { User } from "@/schema/type";
 import { supabase } from "@/supabase/client";
 import { nanoid } from "nanoid";
-import { useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
 
 interface EditModalProps {
@@ -14,9 +13,6 @@ interface EditModalProps {
 }
 
 function EditModal(props: EditModalProps) {
-  // 홈으로 이동
-  const router = useRouter();
-
   // props
   const id = props.id;
   const modal = props.modal;
@@ -29,9 +25,6 @@ function EditModal(props: EditModalProps) {
   const [userName, setUserName] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState<File | null>(null);
-
-  // modal State
-  const [isModal, setIsModal] = useState(modal);
 
   // 바깥영역 클릭시 나가짐
   const handleToggleModal = () => {
@@ -92,7 +85,7 @@ function EditModal(props: EditModalProps) {
   return (
     <>
       {/* true때 보임 */}
-      {isModal && (
+      {modal && (
         <main
           className="bg-white/10 flex items-center justify-center fixed top-0 left-0 right-0 bottom-0 z-20"
           onClick={handleToggleModal}
@@ -113,7 +106,7 @@ function EditModal(props: EditModalProps) {
               <input
                 type="text"
                 id="userName"
-                value={userName}
+                value={user?.userName}
                 onChange={(e) => setUserName(e.target.value)}
               />
 
@@ -121,7 +114,7 @@ function EditModal(props: EditModalProps) {
               <input
                 type="text"
                 id="content"
-                value={content}
+                value={String(user?.content)}
                 onChange={(e) => setContent(e.target.value)}
               />
 
