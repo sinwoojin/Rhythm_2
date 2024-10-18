@@ -1,22 +1,22 @@
-"use client";
-import { getAuthAccessToken } from "@/api/getToken";
-import { api } from "@/api/spotifyApi";
-import Button from "@/components/Button";
-import Input from "@/components/Input";
-import { useModalStore } from "@/zustand/modalStore";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import PublicCheckButton from "../_PublicCheckButton/PublicCheckButton";
+'use client';
+import { getAuthAccessToken } from '@/api/getToken';
+import { api } from '@/api/spotifyApi';
+import Button from '@/components/Button';
+import Input from '@/components/Input';
+import { useModalStore } from '@/zustand/modalStore';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import PublicCheckButton from '../_PublicCheckButton/PublicCheckButton';
 
 function CreatePlayListModal() {
   const router = useRouter();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [accessToken, setAccessToken] = useState<string | null>(null); // access token state
   const closeModal = useModalStore((state) => state.closeModal);
 
   useEffect(() => {
-    const code = new URLSearchParams(window.location.search).get("code"); // URL에서 code 가져오기
+    const code = new URLSearchParams(window.location.search).get('code'); // URL에서 code 가져오기
 
     if (code) {
       getAuthAccessToken(code) // authorization code로 access token 요청
@@ -24,14 +24,14 @@ function CreatePlayListModal() {
           setAccessToken(token);
         })
         .catch((error) => {
-          console.error("Access Token 가져오기 오류:", error);
+          console.error('Access Token 가져오기 오류:', error);
         });
     }
   }, []);
 
   const handleClickCreatePlayList = async () => {
     if (!accessToken) {
-      alert("Access token이 없습니다. 다시 로그인해주세요.");
+      alert('Access token이 없습니다. 다시 로그인해주세요.');
       return;
     }
 
@@ -41,13 +41,13 @@ function CreatePlayListModal() {
       const createPlaylist = await api.userPlay.createPlaylists(
         title,
         description,
-        accessToken // access token 전달
+        accessToken, // access token 전달
       );
-      router.push("/");
+      router.push('/');
       return createPlaylist;
     } catch (error) {
-      console.error("플레이리스트 생성 중 오류 발생:", error);
-      alert("플레이리스트 생성에 실패했습니다."); // 에러 핸들링 추가
+      console.error('플레이리스트 생성 중 오류 발생:', error);
+      alert('플레이리스트 생성에 실패했습니다.'); // 에러 핸들링 추가
     }
   };
 
