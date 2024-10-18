@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { api } from "@/api/spotifyApi";
-import { Database } from "@/database.types";
-import { supabase } from "@/supabase/client";
-import { useAuthStore } from "@/zustand/authStore";
+import { Database } from '@/database.types';
+import { supabase } from '@/supabase/client';
+import { useAuthStore } from '@/zustand/authStore';
 
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect } from 'react';
 
 function AuthProvider({ children }: PropsWithChildren) {
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const logIn = useAuthStore((state) => state.LogIn);
   const logOut = useAuthStore((state) => state.LogOut);
   const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
@@ -18,6 +18,7 @@ function AuthProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     (async () => {
       supabase.auth.onAuthStateChange((_event, session) => {
+        console.log('isLoggedIn', session);
         if (session?.user) {
           logIn();
 
@@ -29,13 +30,30 @@ function AuthProvider({ children }: PropsWithChildren) {
               user.user_metadata?.full_name || user.user_metadata.display_name;
             const email = String(user.email);
 
-            const data: Database["public"]["Tables"]["users"]["Insert"] = {
+            const data: Database['public']['Tables']['users']['Insert'] = {
               id,
               userName,
               email,
             };
 
-            await supabase.from("users").upsert(data);
+            await supabase.from('users').upsert(data);
+
+            const loggedUser = await supabase
+              .from('users')
+              .select('*')
+              .eq('id', id)
+              .single();
+            if (!loggedUser) return;
+
+            const currentUser = {
+              id,
+              userName: loggedUser.data!.userName,
+              email: loggedUser.data!.email,
+              content: loggedUser.data!.content ?? '',
+              imgUrl: loggedUser.data!.imgUrl ?? '',
+            };
+
+            setCurrentUser(currentUser);
           })();
         } else {
           logOut();
@@ -44,32 +62,6 @@ function AuthProvider({ children }: PropsWithChildren) {
       });
     })();
   }, []);
-
-  // 로그인한 유저 정보를 zustand로 관리하기
-  useEffect(() => {
-    (async () => {
-      const data = await api.getUser.getUser();
-      if (!data) return;
-      const id = data?.id;
-
-      const loggedUser = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", id)
-        .single();
-      if (!loggedUser) return;
-
-      const currentUser = {
-        id,
-        userName: loggedUser.data!.userName,
-        email: loggedUser.data!.email,
-        content: loggedUser.data!.content ?? "",
-        imgUrl: loggedUser.data!.imgUrl ?? "",
-      };
-
-      setCurrentUser(currentUser);
-    })();
-  }, [setCurrentUser]);
 
   return children;
 }

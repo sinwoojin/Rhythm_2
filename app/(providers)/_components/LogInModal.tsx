@@ -1,20 +1,19 @@
-"use client";
+'use client';
 
-import { getAuthorizeUrl } from "@/api/getToken";
-import { supabase } from "@/supabase/client";
-import { useModalStore } from "@/zustand/modalStore";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { ComponentProps, useState } from "react";
-import SpotifyLogInPage from "../(root)/(auth)/sign-up/_components/SpotifySignUpForm";
+import { supabase } from '@/supabase/client';
+import { useModalStore } from '@/zustand/modalStore';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { ComponentProps, useState } from 'react';
+import SpotifyLogInPage from '../(root)/(auth)/sign-up/_components/SpotifySignUpForm';
 
 function LogInModal() {
   // 홈으로 이동
   const router = useRouter();
 
   // 로그인용 State
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   // 상태 불러오기
   const closeModal = useModalStore((state) => state.closeModal);
@@ -25,16 +24,10 @@ function LogInModal() {
   };
 
   // 로그인 버튼
-  const handleSubmitSignUpButton: ComponentProps<"form">["onSubmit"] = async (
-    e
+  const handleSubmitSignUpButton: ComponentProps<'form'>['onSubmit'] = async (
+    e,
   ) => {
     e.preventDefault();
-    if (!email.includes("@") || !email.includes(".")) {
-      return alert("이메일 형식을 맞추어 입력해주세요!");
-    }
-    if (!password) {
-      return alert("비밀번호를 입력해주세요!");
-    }
 
     const data = {
       email,
@@ -43,15 +36,15 @@ function LogInModal() {
 
     const result = await supabase.auth.signInWithPassword(data);
 
-    if (!result.data.user) return alert("회원 정보가 없습니다!");
-    alert("환영합니다!");
+    if (!result.data.user) return alert('회원 정보가 없습니다!');
+    alert('환영합니다!');
 
-    const authorizeUrl = getAuthorizeUrl();
-    window.location.href = authorizeUrl;
+    // const authorizeUrl = getAuthorizeUrl();
+    // window.location.href = authorizeUrl;
 
     closeModal();
 
-    router.push("/");
+    router.push('/');
   };
 
   return (
@@ -93,7 +86,7 @@ function LogInModal() {
         </form>
         <SpotifyLogInPage />
         <span className="flex gap-x-5 justify-center mt-5">
-          <Link href={"/sign-up"} onClick={handleToggleModal}>
+          <Link href={'/sign-up'} onClick={handleToggleModal}>
             <p>회원가입</p>
           </Link>
           <p>비밀번호 찾기</p>

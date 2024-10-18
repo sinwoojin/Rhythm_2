@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useModalStore } from "@/zustand/modalStore";
-import { PropsWithChildren } from "react";
+import { useModalStore } from '@/zustand/modalStore';
+import { PropsWithChildren } from 'react';
 
 function ModalProvider({ children }: PropsWithChildren) {
   const modal = useModalStore((state) => state.modal);
