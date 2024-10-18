@@ -8,19 +8,18 @@ interface MusicDetailPageProps {
 }
 
 async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
-	const lyrics = await api.genius.getSpotifyLyrics(musicId);
-	const chart = await api.track.getTracks(musicId);
+	const lyric = await api.genius.getSpotifyLyricsUrl(musicId);
+	console.log("lyric", lyric);
+	const track = await api.track.getTracks(musicId);
 
-	const album = chart?.album;
-	const release_date = chart!.album.release_date;
+	const album = track?.album;
+	const release_date = track!.album.release_date;
 	const day = dayjs(release_date);
-	const release_create_day = day.format("YYYY년 YY월 DD일");
 	const release_year = day.format("YYYY");
 
-	const albumImg = chart?.album.images[1].url;
-	const artists = chart?.artists[0];
-
-	console.log("가사", lyrics);
+	const albumTitle = track?.album.name;
+	const albumImg = track?.album.images[1].url;
+	const artists = album?.artists[0].name;
 
 	return (
 		<Page>
@@ -30,14 +29,14 @@ async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
 				</div>
 				<div className="flex flex-col gap-y-4 w-full">
 					<h2 className="font-bold text-7xl whitespace-pre-wrap line">
-						{chart?.name}
+						{track?.name}
 					</h2>
 					<div className="flex">
-						<p>{artists?.name}</p>
+						<p>{artists}</p>
 						<span className="px-3">•</span>
-						<span>{album?.name}</span>
+						<span>{albumTitle}</span>
 						<span className="px-3">•</span>
-						<span title={release_create_day}>{release_year}</span>
+						<span>{release_year}</span>
 					</div>
 					<div>
 						<button className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl">
@@ -49,7 +48,7 @@ async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
 			<div className="pb-9 ">
 				<h2 className="mb-5 text-3xl font-bold">가사</h2>
 				<p className="whitespace-pre-wrap break-words break-all  text-base">
-					{lyrics}
+					{lyric}
 				</p>
 			</div>
 		</Page>
