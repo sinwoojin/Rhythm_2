@@ -1,32 +1,60 @@
 "use client";
-
+import { getAuthAccessToken } from "@/api/getToken";
 import { api } from "@/api/spotifyApi";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useModalStore } from "@/zustand/modalStore";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PublicCheckButton from "../_PublicCheckButton/PublicCheckButton";
 
 function CreatePlayListModal() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [accessToken, setAccessToken] = useState<string | null>(null); // access token state
   const closeModal = useModalStore((state) => state.closeModal);
 
+  useEffect(() => {
+    const code = new URLSearchParams(window.location.search).get("code"); // URL에서 code 가져오기
+    console.log(code)
+    if (code) {
+      getAuthAccessToken(code) // authorization code로 access token 요청
+        .then((token) => {
+          setAccessToken(token);
+        })
+        .catch((error) => {
+          console.error("Access Token 가져오기 오류:", error);
+        });
+    }
+  }, []);
+
   const handleClickCreatePlayList = async () => {
+    if (!accessToken) {
+      alert("Access token이 없습니다. 다시 로그인해주세요.");
+      return;
+    }
+
     closeModal();
-    const createPlaylist = await api.userPlay.createPlaylists(
-      title,
-      description
-    );
-    router.push("/");
-    return createPlaylist;
+
+    try {
+      const createPlaylist = await api.userPlay.createPlaylists(
+        title,
+        description,
+        accessToken // access token 전달
+      );
+      router.push("/");
+      return createPlaylist;
+    } catch (error) {
+      console.error("플레이리스트 생성 중 오류 발생:", error);
+      alert("플레이리스트 생성에 실패했습니다."); // 에러 핸들링 추가
+    }
   };
 
   const handleClickCancelButton = () => {
     closeModal();
   };
+
   return (
     <div
       className="absolute top-[50%] left-[50%] w-[500px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white p-10"
@@ -40,12 +68,12 @@ function CreatePlayListModal() {
           className="outline-none"
           placeholder="플레이 리스트 제목"
           onChange={(e) => setTitle(e.target.value)}
-        ></Input>
+        />
         <Input
           className="outline-none"
           placeholder="플레이 리스트 소개 글"
           onChange={(e) => setDescription(e.target.value)}
-        ></Input>
+        />
         <div className="h-16 flex items-center justify-between">
           <span className="text-[15px] px-2.5 py-1 font-semibold">
             공개 설정

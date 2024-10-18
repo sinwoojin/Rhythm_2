@@ -1,19 +1,47 @@
 import axios from "axios";
 
-const BASEURL = "https://accounts.spotify.com/api/token";
+const SPOTIFY_AUTHORIZE_URL = "https://accounts.spotify.com/authorize";
+const SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token";
+const scopes = "playlist-modify-private playlist-modify-public";
 const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID!;
 const clientSecret = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET!;
+const redirectUri = process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI!;
+
+export const getAuthorizeUrl = () => {
+  return `${SPOTIFY_AUTHORIZE_URL}?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(
+    redirectUri
+  )}&scope=${encodeURIComponent(scopes)}`;
+};
+
+export const getAccessToken = async () => {
+  const response = await axios.post(
+    SPOTIFY_TOKEN_URL,
+    new URLSearchParams({
+      grant_type: "client_credentials",
+      client_id: clientId,
+      client_secret: clientSecret,
+    }).toString(),
+    {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    }
+  );
+
+  const { access_token } = response.data;
+  return access_token;
+};
 
 // POST로 accessToken 불러오는 함수
-export const getAccessToken = async () => {
+export const getAuthAccessToken = async (code: string) => {
   try {
     const response = await axios.post(
-      BASEURL,
+      SPOTIFY_TOKEN_URL,
       new URLSearchParams({
-        grant_type: "client_credentials",
+        grant_type: "authorization_code",
+        code,
+        redirect_uri: redirectUri,
         client_id: clientId,
         client_secret: clientSecret,
-      }),
+      }).toString(),
       {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -21,16 +49,11 @@ export const getAccessToken = async () => {
       }
     );
 
-    // access_token이 정의되어 있는지 확인하고 반환
-    if (response.data.access_token) {
-      return response.data.access_token;
-    } else {
-      const newToken = await getRefreshToken();
-      return newToken;
-    }
+    const { access_token } = response.data;
+    return access_token;
   } catch (error) {
-    console.error("액세스 토큰 패치 오류:", error);
-    throw error; // 에러를 다시 던져서 호출한 곳에서 처리할 수 있도록 합니다.
+    console.error("Access Token 요청 중 오류 발생:", error);
+    throw new Error("Access Token을 가져오는 데 실패했습니다.");
   }
 };
 
@@ -38,29 +61,28 @@ export const getRefreshToken = async () => {
   const refreshToken = localStorage.getItem("refresh_token");
   try {
     const response = await axios.post(
-      BASEURL,
+      SPOTIFY_TOKEN_URL,
       new URLSearchParams({
         grant_type: "refresh_token",
-        refresh_token: refreshToken as string,
-        client_id: clientId as string,
-      }),
+        refresh_token: refreshToken!,
+        client_id: clientId,
+        client_secret: clientSecret,
+      }).toString(),
       {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
       }
     );
 
     const { access_token, refresh_token: newRefreshToken } = response.data;
-
     localStorage.setItem("access_token", access_token);
+
     if (newRefreshToken) {
       localStorage.setItem("refresh_token", newRefreshToken);
     }
 
     return access_token;
   } catch (error) {
-    console.error("Failed to refresh token:", error);
-    // 필요에 따라 사용자에게 알림을 띄우거나 추가 처리 수행
+    console.error("Refresh token을 가져오는 중 오류 발생:", error);
+    throw new Error("Refresh token을 가져오는 데 실패했습니다.");
   }
 };

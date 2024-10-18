@@ -67,35 +67,35 @@ function SearchPage() {
 		}
 	};
 
-	useEffect(
-		() => {
-			const debounced = setTimeout(() => {
-				/*검색한 내용의 따라 값 띄워주기  */
-				fetchItems();
-			});
-			return () => clearTimeout(debounced); // 이전 타임아웃 정리
-		},
-		/*searchInput(검색한 값)이 바뀔때마다 가져오는 값이 바뀔 수 있도록 */
-		[search]
-	);
+  useEffect(
+    () => {
+      const debounced = setTimeout(() => {
+        /*검색한 내용의 따라 값 띄워주기  */
+        fetchItems();
+      });
+      return () => clearTimeout(debounced); // 이전 타임아웃 정리
+    },
+    /*searchInput(검색한 값)이 바뀔때마다 가져오는 값이 바뀔 수 `있도록 */
+    [search]
+  );
 
-	/*가져올때 전부 합쳐서 가져와서 사용하기 쉽게 바꿔놓은 것 */
-	const track = searchResults.tracks;
-	const album = searchResults.albums;
-	const playlists = searchResults.playlists;
-	const artists = searchResults.artists;
-	console.log(track);
-	return (
-		<Page>
-			검색
-			<section className="flex flex-wrap">
-				<Musics title="Song" musics={track} />
-				<Artists title="Artists" artists={artists} />
-				<Albums title="Albums" albums={album} />
-				<Playlists title="Playlists" playlists={playlists} />
-			</section>
-		</Page>
-	);
+  /*가져올때 전부 합쳐서 가져와서 사용하기 쉽게 바꿔놓은 것 */
+  const tracks = searchResults.tracks;
+  const albums = searchResults.albums;
+  const playlists = searchResults.playlists;
+  const artists = searchResults.artists;
+  return (
+    <Page>
+      검색
+      <section className="flex flex-wrap">
+        <Musics title="Musics" tracks={tracks} />
+        <Artists title="Artists" artists={artists} />
+        <Albums title="Albums" albums={albums} />
+        <Playlists title="Playlists" playlists={playlists} />
+      </section>
+    </Page>
+  );
+
 }
 
 export default SearchPage;
