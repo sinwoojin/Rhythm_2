@@ -1,7 +1,7 @@
-"use client";
-import { Track } from "@/schema/type";
-import Link from "next/link";
-import Page from "../Page/Page";
+'use client';
+import { Track } from '@/schema/type';
+import Link from 'next/link';
+import Page from '../Page/Page';
 
 interface ChartListProps {
   artists: Track[];
@@ -20,7 +20,7 @@ function Artists({ artists, title }: ChartListProps) {
                 <Link
                   className="w-full aspect-square"
                   href={
-                    "/" /*여기에 디테일 페이지로 넘어갈 동적 url 적기 지금은 비워둠*/
+                    '/' /*여기에 디테일 페이지로 넘어갈 동적 url 적기 지금은 비워둠*/
                   }
                 >
                   {artist.images.length === 0 ? (
