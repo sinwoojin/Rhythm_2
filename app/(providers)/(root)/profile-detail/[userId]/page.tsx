@@ -90,7 +90,6 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
       };
 
       const response = await supabase.from("follow").insert(data);
-      console.log(response);
 
       follow();
       alert("사용자를 팔로우 하셨습니다.");
@@ -100,7 +99,6 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
         .delete()
         .eq("follower", follower)
         .eq("following", following);
-      console.log(response);
 
       unFollow();
       alert("사용자를 언팔로우 하셨습니다");
