@@ -35,20 +35,29 @@ function MusicPlayer() {
         id="music-player-middle"
         className="mx-20 col-span-3 justify-evenly items-center flex"
       >
+        {/* 셔플 버튼 */}
         <button className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110">
           <RxShuffle />
         </button>
+
+        {/* 이전 곡 버튼 */}
         <button className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110">
           <IoMdSkipBackward />
         </button>
+
         <div className="rounded-full transition-all duration-300 hover:bg-white hover:bg-opacity-30">
+          {/* play 버튼 */}
           <button className="text-4xl py-4 pl-5 pr-3 text-red-500">
             <FaPlay />
           </button>
         </div>
+
+        {/* 다음 곡 버튼 */}
         <button className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110">
           <IoMdSkipForward />
         </button>
+
+        {/* 반복재생 버튼 */}
         <button className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110">
           <BsRepeat />
         </button>
@@ -57,6 +66,7 @@ function MusicPlayer() {
         id="music-player-right"
         className="col-span-2 flex flex-row-reverse items-center"
       >
+        {/* 현재 재생한 곡들의 목록 */}
         <button className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110">
           <BsMusicNoteList />
         </button>

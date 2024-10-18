@@ -45,6 +45,7 @@ function AuthProvider({ children }: PropsWithChildren) {
     })();
   }, []);
 
+  // 로그인한 유저 정보를 zustand로 관리하기
   useEffect(() => {
     (async () => {
       const data = await api.getUser.getUser();
