@@ -2,11 +2,11 @@
 import { api } from "@/api/spotifyApi";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Albums from "../_components/_Albums/Albums";
-import Artists from "../_components/_Aritists/Aritsts";
-import Musics from "../_components/_Musics/Music";
-import Page from "../_components/_Page/Page";
-import Playlists from "../_components/_Playlists/Playlists";
+import Albums from "../_components/Albums/Albums";
+import Artists from "../_components/Aritists/Aritsts";
+import Musics from "../_components/Musics/Music";
+import Page from "../_components/Page/Page";
+import Playlists from "../_components/Playlists/Playlists";
 
 function SearchPage() {
   /* input에 검색한 내용을 받아오는 코드 */
@@ -32,10 +32,10 @@ function SearchPage() {
           artistsResponse,
           playlistsResponse,
         ] = await Promise.all([
-          api.searchItemsAPI.getTracks(search),
-          api.searchItemsAPI.getAlbums(search),
-          api.searchItemsAPI.getArtists(search),
-          api.searchItemsAPI.getPlaylists(search),
+          api.search.getTracks(search),
+          api.search.getAlbums(search),
+          api.search.getArtists(search),
+          api.search.getPlaylists(search),
         ]);
 
         //검색된 결과를 하나의 객체로 합침
