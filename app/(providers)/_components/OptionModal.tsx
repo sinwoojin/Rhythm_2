@@ -12,8 +12,8 @@ function OptionModal() {
     closeModal();
   };
   return (
-    <div className="absolute w-full h-screen z-20" onClick={handleClickCancel}>
-      <div className="absolute bottom-[116px] left-80 w-60 bg-black z-30 rounded-md">
+    <div className="fixed w-full h-screen z-20" onClick={handleClickCancel}>
+      <div className="fixed bottom-[116px] left-80 w-60 bg-black z-30 rounded-md">
         <ul className="bg-white bg-opacity-20 w-full text-white pb-4 rounded-md">
           <li className="flex gap-x-4 items-center py-4 px-4 hover:bg-white/[0.05]">
             <Link
@@ -27,10 +27,10 @@ function OptionModal() {
               /> */}
             </Link>
             <div className="flex flex-col overflow-x-hidden">
-              <span className="text-nowrap text-lg">
+              <span className="text-lg line-clamp-1">
                 SEVENTEEN 12th Mini Album SPILL THE FEELS{/* {노래 제목} */}
               </span>
-              <span className="text-nowrap text-base text-white text-opacity-50">
+              <span className="text-base text-white text-opacity-50 line-clamp-1">
                 세븐틴 (SEVENTEEN)
                 {/* {가수 이름} */}
               </span>
