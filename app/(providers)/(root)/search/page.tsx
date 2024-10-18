@@ -3,10 +3,10 @@ import { api } from "@/api/spotifyApi";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import Musics from "../_components/_Musics/Music";
-import Page from "../_components/_Page/Page";
 import Albums from "../_components/Albums/Albums";
 import Artists from "../_components/Aritists/Aritsts";
+import Musics from "../_components/Musics/Music";
+import Page from "../_components/Page/Page";
 import Playlists from "../_components/Playlists/Playlists";
 
 function SearchPage() {
@@ -22,22 +22,22 @@ function SearchPage() {
 		playlists: [],
 	});
 
-	/*검색한 결과(앨범,가수,플레이리스트,트랙)를 담기 useEffect할때 넣어줘야함 */
-	const fetchItems = async () => {
-		if (search) {
-			try {
-				// 병렬로 API 호출 수행
-				const [
-					tracksResponse,
-					albumsResponse,
-					artistsResponse,
-					playlistsResponse,
-				] = await Promise.all([
-					api.search.getTracks(search),
-					api.search.getAlbums(search),
-					api.search.getArtists(search),
-					api.search.getPlaylists(search),
-				]);
+  /*검색한 결과(앨범,가수,플레이리스트,트랙)를 담기 useEffect할때 넣어줘야함 */
+  const fetchItems = async () => {
+    if (search) {
+      try {
+        // 병렬로 API 호출 수행
+        const [
+          tracksResponse,
+          albumsResponse,
+          artistsResponse,
+          playlistsResponse,
+        ] = await Promise.all([
+          api.search.getTracks(search),
+          api.search.getAlbums(search),
+          api.search.getArtists(search),
+          api.search.getPlaylists(search),
+        ]);
 
 				//검색된 결과를 하나의 객체로 합침
 				const response = {
