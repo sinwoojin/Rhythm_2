@@ -16,6 +16,7 @@ function CreatePlayListModal() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
+
   const closeModal = useModalStore((state) => state.closeModal);
   const currentUser = useAuthStore((state) => state.currentUser);
 
@@ -41,6 +42,7 @@ function CreatePlayListModal() {
     };
 
     fetchAccessToken();
+
   }, []);
 
   const ensureAccessToken = async () => {
@@ -63,6 +65,7 @@ function CreatePlayListModal() {
   const handleClickCreatePlayList = async () => {
     if (!title || !description) {
       alert('제목과 설명을 모두 입력해 주세요.');
+
       return;
     }
 
@@ -80,7 +83,6 @@ function CreatePlayListModal() {
         currentUser!.spotifyUserId,
         token,
       );
-
       router.push('/');
       return createPlaylist;
     } catch (error) {
@@ -88,6 +90,7 @@ function CreatePlayListModal() {
       alert('플레이리스트 생성에 실패했습니다.');
     } finally {
       setIsLoading(false);
+
     }
   };
 
