@@ -11,7 +11,6 @@ async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
 	const track = await api.track.getTracks(musicId);
 	const lyricUrl = await api.genius.getSpotifyLyricsUrl(musicId);
 	const lyric = await api.genius.scrapeLyricsFromGenius(lyricUrl);
-	console.log("lyric", lyric);
 
 	const album = track?.album;
 	const release_date = dayjs(track!.album.release_date);
