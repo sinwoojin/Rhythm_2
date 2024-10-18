@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as cheerio from "cheerio";
 import { getAccessToken } from "./getToken";
 import { spotifyAPI } from "./spotifyApi";
 
@@ -77,6 +78,35 @@ const getSpotifyLyricsUrl = async (trackId: string) => {
 	}
 };
 
+/**
+ *
+ * @param lyricsUrl
+ * @returns Genius 가사 페이지에서 가사를 추출
+ */
+const scrapeLyricsFromGenius = async (
+	lyricsUrl: string
+): Promise<string | null> => {
+	try {
+		const response = await axios.get(lyricsUrl);
+		const html = response.data;
+
+		const $ = cheerio.load(html);
+
+		const lyrics =
+			$(".lyrics").text() || $("[data-lyrics-container]").text();
+
+		if (lyrics) {
+			return lyrics.trim();
+		}
+
+		return null;
+	} catch (error) {
+		console.error("Genius 가사 스크래핑 실패:", error);
+		return null;
+	}
+};
+
 export const lyricsApi = {
 	getSpotifyLyricsUrl,
+	scrapeLyricsFromGenius,
 };

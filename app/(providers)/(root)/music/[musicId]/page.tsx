@@ -8,14 +8,14 @@ interface MusicDetailPageProps {
 }
 
 async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
-	const lyric = await api.genius.getSpotifyLyricsUrl(musicId);
-	console.log("lyric", lyric);
 	const track = await api.track.getTracks(musicId);
+	const lyricUrl = await api.genius.getSpotifyLyricsUrl(musicId);
+	const lyric = await api.genius.scrapeLyricsFromGenius(lyricUrl);
+	console.log("lyric", lyric);
 
 	const album = track?.album;
-	const release_date = track!.album.release_date;
-	const day = dayjs(release_date);
-	const release_year = day.format("YYYY");
+	const release_date = dayjs(track!.album.release_date);
+	const release_year = release_date.format("YYYY");
 
 	const albumTitle = track?.album.name;
 	const albumImg = track?.album.images[1].url;
