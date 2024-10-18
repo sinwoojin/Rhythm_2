@@ -1,5 +1,5 @@
 import Page from "../../_components/Page/Page";
-import Lists from "../_components/Lists/Lists";
+import PlayLists from "../_components/Lists/Lists";
 
 interface PlayListPageProps {
   params: {
@@ -10,7 +10,7 @@ interface PlayListPageProps {
 function playListPage({ params: { category } }: PlayListPageProps) {
   return (
     <Page title={category}>
-      <Lists />
+      <PlayLists />
     </Page>
   );
 }
