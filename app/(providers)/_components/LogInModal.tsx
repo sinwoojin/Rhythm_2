@@ -1,5 +1,6 @@
 "use client";
 
+import { getAuthorizeUrl } from "@/api/getToken";
 import { supabase } from "@/supabase/client";
 import { useModalStore } from "@/zustand/modalStore";
 import Link from "next/link";
@@ -44,6 +45,10 @@ function LogInModal() {
 
     if (!result.data.user) return alert("회원 정보가 없습니다!");
     alert("환영합니다!");
+
+    const authorizeUrl = getAuthorizeUrl();
+    window.location.href = authorizeUrl;
+
     closeModal();
 
     router.push("/");

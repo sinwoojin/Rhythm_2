@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getAccessToken } from "./getToken";
 import { api, spotifyAPI } from "./spotifyApi";
 
 /**
@@ -7,7 +6,11 @@ import { api, spotifyAPI } from "./spotifyApi";
  * @param title - 플레이리스트 제목
  * @param description - 플레이리스트 설명
  */
-const createPlaylists = async (title: string, description: string) => {
+const createPlaylists = async (
+  title: string,
+  description: string,
+  accessToken: string
+) => {
   try {
     // 사용자 정보 가져오기
     const user = await api.getUser.getUser();
@@ -15,12 +18,6 @@ const createPlaylists = async (title: string, description: string) => {
 
     if (!userId) {
       throw new Error("사용자 ID를 찾을 수 없습니다.");
-    }
-
-    // 액세스 토큰 가져오기
-    const accessToken = await getAccessToken();
-    if (!accessToken) {
-      throw new Error("Access token이 필요합니다.");
     }
 
     // Spotify API에 플레이리스트 생성 요청
