@@ -24,6 +24,7 @@ function Musics({ tracks, title }: ChartListProps) {
                 >
                   <img
                     src={track.album.images?.[0]?.url || "/default-image.jpg"}
+                    alt="이미지"
                   />
                   <p className="text-xl font-semibold">{track.name}</p>
                 </Link>
@@ -36,3 +37,6 @@ function Musics({ tracks, title }: ChartListProps) {
       </div>
     </>
   );
+}
+
+export default Musics;
