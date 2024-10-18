@@ -26,6 +26,7 @@ function Playlists({ playlists, title }: ChartListProps) {
                     <div className="w-full h-full aspect-square bg-slate-600 "></div>
                   ) : (
                     <img
+                      alt={playlist.name}
                       src={playlist.images[0].url}
                       className="w-full h-full object-cover m-auto"
                     />

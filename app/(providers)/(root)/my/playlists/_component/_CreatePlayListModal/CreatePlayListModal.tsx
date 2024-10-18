@@ -17,7 +17,7 @@ function CreatePlayListModal() {
 
   useEffect(() => {
     const code = new URLSearchParams(window.location.search).get("code"); // URL에서 code 가져오기
-    console.log(code)
+
     if (code) {
       getAuthAccessToken(code) // authorization code로 access token 요청
         .then((token) => {

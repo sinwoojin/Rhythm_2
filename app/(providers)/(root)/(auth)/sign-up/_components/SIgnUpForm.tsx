@@ -80,8 +80,7 @@ function SIgnUpForm() {
       email,
     };
 
-    const userData = await supabase.from("users").insert(data);
-    console.log(userData);
+    await supabase.from("users").insert(data);
 
     if (!signUp.data.user) return alert("로그인에 실패 하였습니다");
     router.push("/");

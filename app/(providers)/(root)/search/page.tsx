@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { api } from "@/api/spotifyApi";
 import { useSearchParams } from "next/navigation";

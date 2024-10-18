@@ -89,12 +89,12 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
         following,
       };
 
-      const response = await supabase.from("follow").insert(data);
+      await supabase.from("follow").insert(data);
 
       follow();
       alert("사용자를 팔로우 하셨습니다.");
     } else {
-      const response = await supabase
+      await supabase
         .from("follow")
         .delete()
         .eq("follower", follower)
