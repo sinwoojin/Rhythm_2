@@ -1,6 +1,5 @@
 'use client';
 
-import { getAuthorizeUrl } from '@/api/getToken';
 import { supabase } from '@/supabase/client';
 import { useModalStore } from '@/zustand/modalStore';
 import Link from 'next/link';
@@ -29,12 +28,6 @@ function LogInModal() {
     e,
   ) => {
     e.preventDefault();
-    if (!email.includes('@') || !email.includes('.')) {
-      return alert('이메일 형식을 맞추어 입력해주세요!');
-    }
-    if (!password) {
-      return alert('비밀번호를 입력해주세요!');
-    }
 
     const data = {
       email,
@@ -46,9 +39,8 @@ function LogInModal() {
     if (!result.data.user) return alert('회원 정보가 없습니다!');
     alert('환영합니다!');
 
-    //accessToken 교환 시켜줘서 playlist를 만들 수 있도록 해주는 코드
-    const authorizeUrl = getAuthorizeUrl();
-    window.location.href = authorizeUrl;
+    // const authorizeUrl = getAuthorizeUrl();
+    // window.location.href = authorizeUrl;
 
     closeModal();
 

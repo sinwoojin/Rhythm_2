@@ -17,11 +17,7 @@ function Musics({ tracks, title }: ChartListProps) {
           <ul className="flex gap-x-3 overflow-auto scrollbar-hide">
             {tracks.map((track) => (
               <li key={track.id} className="flex flex-col min-w-[17%]">
-                <Link
-                  href={
-                    `music/${track.id}` /*여기에 디테일 페이지로 넘어갈 동적 url 적기 지금은 비워둠*/
-                  }
-                >
+                <Link href={`/music/${track.id}`}>
                   <img
                     src={track.album.images?.[0]?.url || '/default-image.jpg'}
                     alt="이미지"

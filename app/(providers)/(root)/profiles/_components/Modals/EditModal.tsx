@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
-import { Database } from "@/database.types";
-import { supabase } from "@/supabase/client";
-import { nanoid } from "nanoid";
-import { ComponentProps, useEffect, useState } from "react";
+import Input from '@/components/Input';
+import { Database } from '@/database.types';
+import { supabase } from '@/supabase/client';
+import { nanoid } from 'nanoid';
+import { ComponentProps, useEffect, useState } from 'react';
 
 interface EditModalProps {
   id: string;
@@ -18,8 +19,8 @@ function EditModal(props: EditModalProps) {
   const onClose = props.onClose;
 
   // table에 들어있는 정보 가져오기, 지정하기
-  const [userName, setUserName] = useState("");
-  const [content, setContent] = useState("");
+  const [userName, setUserName] = useState('');
+  const [content, setContent] = useState('');
   const [image, setImage] = useState<File | null>(null);
 
   // 바깥영역 클릭시 나가짐
@@ -28,7 +29,7 @@ function EditModal(props: EditModalProps) {
   };
 
   // 이미지 정보 가져오기
-  const handleChangeFileInput: ComponentProps<"input">["onChange"] = (e) => {
+  const handleChangeFileInput: ComponentProps<'input'>['onChange'] = (e) => {
     const files = e.target.files;
 
     if (!files) return;
@@ -40,31 +41,31 @@ function EditModal(props: EditModalProps) {
 
   // 글 수정하기
   const handleSubmitModifyDeal = async (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault();
-    if (!image) return alert("이미지를 업로드해주세요!");
-    if (!userName) return alert("유저 이름을 작성해주세요!");
-    if (!content) return alert("소개글 내용을 작성해주세요!");
+    if (!image) return alert('이미지를 업로드해주세요!');
+    if (!userName) return alert('유저 이름을 작성해주세요!');
+    if (!content) return alert('소개글 내용을 작성해주세요!');
 
     const uploadImage = await supabase.storage
-      .from("img")
+      .from('img')
       .upload(nanoid(), image, { upsert: true });
 
     const imageUrl = uploadImage.data?.fullPath;
 
-    const data: Database["public"]["Tables"]["users"]["Update"] = {
+    const data: Database['public']['Tables']['users']['Update'] = {
       userName,
       content,
       imgUrl: imageUrl,
     };
 
-    const response = await supabase.from("users").update(data).eq("id", id);
+    const response = await supabase.from('users').update(data).eq('id', id);
 
     if (response.error) {
-      return alert("프로필 수정에 실패했습니다!...");
+      return alert('프로필 수정에 실패했습니다!...');
     } else {
-      alert("프로필 수정에 성공했습니다!");
+      alert('프로필 수정에 성공했습니다!');
       onClose();
     }
   };
@@ -72,9 +73,9 @@ function EditModal(props: EditModalProps) {
   useEffect(() => {
     (async () => {
       const response = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", id)
+        .from('users')
+        .select('*')
+        .eq('id', id)
         .single();
 
       if (response.data) {
@@ -105,7 +106,7 @@ function EditModal(props: EditModalProps) {
               <input type="file" id="img" onChange={handleChangeFileInput} />
 
               <label htmlFor="userName">유저 이름</label>
-              <input
+              <Input
                 type="text"
                 id="userName"
                 value={userName}
@@ -114,7 +115,7 @@ function EditModal(props: EditModalProps) {
               />
 
               <label htmlFor="content">소개글</label>
-              <input
+              <Input
                 type="text"
                 id="content"
                 value={content}
