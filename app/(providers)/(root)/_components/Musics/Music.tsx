@@ -1,7 +1,7 @@
-"use client";
-import { Track } from "@/schema/type";
-import Link from "next/link";
-import Page from "../Page/Page";
+'use client';
+import { Track } from '@/schema/type';
+import Link from 'next/link';
+import Page from '../Page/Page';
 
 interface ChartListProps {
   tracks: Track[];
@@ -19,11 +19,11 @@ function Musics({ tracks, title }: ChartListProps) {
               <li key={track.id} className="flex flex-col min-w-[17%]">
                 <Link
                   href={
-                    "/" /*여기에 디테일 페이지로 넘어갈 동적 url 적기 지금은 비워둠*/
+                    `music/${track.id}` /*여기에 디테일 페이지로 넘어갈 동적 url 적기 지금은 비워둠*/
                   }
                 >
                   <img
-                    src={track.album.images?.[0]?.url || "/default-image.jpg"}
+                    src={track.album.images?.[0]?.url || '/default-image.jpg'}
                     alt="이미지"
                   />
                   <p className="text-xl font-semibold">{track.name}</p>

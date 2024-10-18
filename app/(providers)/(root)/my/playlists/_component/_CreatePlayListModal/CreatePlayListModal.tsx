@@ -1,59 +1,99 @@
-"use client";
-import { getAuthAccessToken } from "@/api/getToken";
-import { api } from "@/api/spotifyApi";
-import Button from "@/components/Button";
-import Input from "@/components/Input";
-import { useModalStore } from "@/zustand/modalStore";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import PublicCheckButton from "../_PublicCheckButton/PublicCheckButton";
+'use client';
+import { getAuthAccessToken } from '@/api/getToken';
+import { api } from '@/api/spotifyApi';
+import Button from '@/components/Button';
+import Input from '@/components/Input';
+import { useAuthStore } from '@/zustand/authStore';
+import { useModalStore } from '@/zustand/modalStore';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import PublicCheckButton from '../_PublicCheckButton/PublicCheckButton';
 
 function CreatePlayListModal() {
   const router = useRouter();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [accessToken, setAccessToken] = useState<string | null>(null); // access token state
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPublic, setIsPublic] = useState(false);
   const closeModal = useModalStore((state) => state.closeModal);
+  const currentUser = useAuthStore((state) => state.currentUser);
 
   useEffect(() => {
-    const code = new URLSearchParams(window.location.search).get("code"); // URL에서 code 가져오기
-
-    if (code) {
-      getAuthAccessToken(code) // authorization code로 access token 요청
-        .then((token) => {
+    const fetchAccessToken = async () => {
+      try {
+        const code = new URLSearchParams(window.location.search).get('code');
+        if (code) {
+          const token = await getAuthAccessToken(code); //authAccessToken을 가져오는 함수(이게 있어야 플레이 리스트를 만들수 있음)
           setAccessToken(token);
-        })
-        .catch((error) => {
-          console.error("Access Token 가져오기 오류:", error);
-        });
-    }
+        } else {
+          const storedToken = window.localStorage.getItem(
+            'spotify_provider_token',
+          ); //토큰을 localStorage에서 가져오는 함수
+          if (storedToken) setAccessToken(storedToken);
+        }
+      } catch (error) {
+        console.error('Access Token 가져오기 오류:', error);
+        alert(
+          'Access Token을 가져오는 중 오류가 발생했습니다. 다시 시도해 주세요.',
+        );
+      }
+    };
+
+    fetchAccessToken();
   }, []);
 
-  const handleClickCreatePlayList = async () => {
+  const ensureAccessToken = async () => {
+    // Refresh logic: 필요시 토큰을 갱신하거나 기존 저장된 토큰 사용
     if (!accessToken) {
-      alert("Access token이 없습니다. 다시 로그인해주세요.");
+      try {
+        const token = window.localStorage.getItem('spotify_provider_token');
+        if (token) return token;
+
+        alert('Access token이 없습니다. 다시 로그인해 주세요.');
+        return null;
+      } catch (error) {
+        console.error('토큰 갱신 중 오류:', error);
+        return null;
+      }
+    }
+    return accessToken;
+  };
+
+  const handleClickCreatePlayList = async () => {
+    if (!title || !description) {
+      alert('제목과 설명을 모두 입력해 주세요.');
       return;
     }
 
+    setIsLoading(true);
     closeModal();
 
     try {
+      const token = await ensureAccessToken();
+      if (!token) return; // 토큰 없으면 종료
+
       const createPlaylist = await api.userPlay.createPlaylists(
         title,
         description,
-        accessToken // access token 전달
+        isPublic,
+        currentUser!.spotifyUserId,
+        token,
       );
-      router.push("/");
+
+      router.push('/');
       return createPlaylist;
     } catch (error) {
-      console.error("플레이리스트 생성 중 오류 발생:", error);
-      alert("플레이리스트 생성에 실패했습니다."); // 에러 핸들링 추가
+      console.error('플레이리스트 생성 중 오류 발생:', error);
+      alert('플레이리스트 생성에 실패했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleClickCancelButton = () => {
-    closeModal();
-  };
+  const handleToggleCheck = () => setIsPublic((prev) => !prev);
+
+  const handleClickCancelButton = () => closeModal();
 
   return (
     <div
@@ -78,14 +118,23 @@ function CreatePlayListModal() {
           <span className="text-[15px] px-2.5 py-1 font-semibold">
             공개 설정
           </span>
-          <PublicCheckButton />
+          <PublicCheckButton
+            isChecked={isPublic}
+            onToggle={handleToggleCheck}
+          />
         </div>
         <div className="flex gap-x-5">
           <Button onClick={handleClickCancelButton} className="w-full h-12">
             취소
           </Button>
-          <Button onClick={handleClickCreatePlayList} className="w-full h-12">
-            만들기
+          <Button
+            onClick={handleClickCreatePlayList}
+            className={`w-full h-12 ${
+              isLoading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            disabled={isLoading}
+          >
+            {isLoading ? '생성 중...' : '만들기'}
           </Button>
         </div>
       </div>

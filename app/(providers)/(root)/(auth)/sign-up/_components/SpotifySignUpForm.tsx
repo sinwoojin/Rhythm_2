@@ -1,17 +1,21 @@
-"use client";
+'use client';
 
-import Button from "@/components/Button";
-import { supabase } from "@/supabase/client";
-import { FaSpotify } from "react-icons/fa";
+import Button from '@/components/Button';
+import { supabase } from '@/supabase/client';
+import { FaSpotify } from 'react-icons/fa';
 
 function SpotifyLogInPage() {
   const handleClickSpotifyLogIn = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: "spotify",
+      provider: 'spotify',
+      options: {
+        scopes: 'playlist-modify-private',
+        skipBrowserRedirect: false,
+      },
     });
 
     if (error) {
-      console.error("Error with Spotify login:", error.message);
+      console.error('Error with Spotify login:', error.message);
     }
   };
 
