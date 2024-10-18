@@ -1,16 +1,16 @@
-"use client";
-import { useState } from "react";
-import { FaCheckSquare, FaSquare } from "react-icons/fa";
+'use client';
+import { FaCheckSquare, FaSquare } from 'react-icons/fa';
 
-function PublicCheckButton() {
-  const [isClickedCheck, setIsClickedCheck] = useState(false);
-  const handleClickCheckButton = () => {
-    setIsClickedCheck((prev) => !prev);
-  };
+interface PublicCheckButtonProps {
+  isChecked: boolean;
+  onToggle: () => void; // 부모 컴포넌트에 전달할 토글 함수
+}
+
+function PublicCheckButton({ isChecked, onToggle }: PublicCheckButtonProps) {
   return (
-    <button onClick={handleClickCheckButton}>
+    <button onClick={onToggle}>
       <span className="text-3xl opacity-20">
-        {isClickedCheck ? <FaCheckSquare /> : <FaSquare />}
+        {isChecked ? <FaCheckSquare /> : <FaSquare />}
       </span>
     </button>
   );

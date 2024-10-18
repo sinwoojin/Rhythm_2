@@ -18,7 +18,12 @@ function AuthProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     (async () => {
       supabase.auth.onAuthStateChange((_event, session) => {
-        console.log('isLoggedIn', session);
+        if (session && session.provider_token) {
+          window.localStorage.setItem(
+            'spotify_provider_token',
+            session.provider_token,
+          );
+        }
         if (session?.user) {
           logIn();
 
