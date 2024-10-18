@@ -69,7 +69,7 @@ function AuthProvider({ children }: PropsWithChildren) {
 
       setCurrentUser(currentUser);
     })();
-  }, []);
+  }, [setCurrentUser]);
 
   return children;
 }
