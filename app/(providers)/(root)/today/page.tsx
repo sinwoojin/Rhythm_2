@@ -1,8 +1,8 @@
-import { api } from "@/api/spotifyApi";
-import Musics from "../_components/Musics/Music";
-import Page from "../_components/Page/Page";
+import { api } from '@/api/spotifyApi';
+import Musics from '../_components/Musics/Music';
+import Page from '../_components/Page/Page';
 
-const TOP_100_MUSIC_ID="5ABHKGoOzxkaa28ttQV9sE";
+const TOP_100_MUSIC_ID = '5ABHKGoOzxkaa28ttQV9sE';
 
 async function TodayPage() {
   /*spotify Top 100 음악 가져오는 api */
@@ -13,12 +13,6 @@ async function TodayPage() {
     <Page title="투데이">
       <div id="popular-music">
         <Musics title="Music-100" tracks={tracks!} />
-      </div>
-      <div id="popular-rhythm">
-        <Musics title="Rhythm-100" tracks={tracks!} />
-      </div>
-      <div id="popular-user">
-        <Musics title="User-100" tracks={tracks!} />
       </div>
     </Page>
   );
