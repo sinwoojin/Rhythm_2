@@ -1,10 +1,8 @@
 "use client";
 
 import { Database } from "@/database.types";
-import { User } from "@/schema/type";
 import { supabase } from "@/supabase/client";
 import { nanoid } from "nanoid";
-import { useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
 
 interface EditModalProps {
@@ -14,24 +12,15 @@ interface EditModalProps {
 }
 
 function EditModal(props: EditModalProps) {
-  // 홈으로 이동
-  const router = useRouter();
-
   // props
   const id = props.id;
   const modal = props.modal;
   const onClose = props.onClose;
 
-  // 유저 정보 State
-  const [user, setUser] = useState<User | null>(null);
-
   // table에 들어있는 정보 가져오기, 지정하기
   const [userName, setUserName] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState<File | null>(null);
-
-  // modal State
-  const [isModal, setIsModal] = useState(modal);
 
   // 바깥영역 클릭시 나가짐
   const handleToggleModal = () => {
@@ -50,7 +39,9 @@ function EditModal(props: EditModalProps) {
   };
 
   // 글 수정하기
-  const handleSubmitModifyDeal = async (e: any) => {
+  const handleSubmitModifyDeal = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
     if (!image) return alert("이미지를 업로드해주세요!");
     if (!userName) return alert("유저 이름을 작성해주세요!");
@@ -85,14 +76,18 @@ function EditModal(props: EditModalProps) {
         .select("*")
         .eq("id", id)
         .single();
-      setUser(response.data);
+
+      if (response.data) {
+        setUserName(response.data.userName);
+        setContent(String(response.data.content));
+      }
     })();
   }, [id]);
 
   return (
     <>
       {/* true때 보임 */}
-      {isModal && (
+      {modal && (
         <main
           className="bg-white/10 flex items-center justify-center fixed top-0 left-0 right-0 bottom-0 z-20"
           onClick={handleToggleModal}
@@ -115,6 +110,7 @@ function EditModal(props: EditModalProps) {
                 id="userName"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
+                className="text-black"
               />
 
               <label htmlFor="content">소개글</label>
@@ -123,6 +119,7 @@ function EditModal(props: EditModalProps) {
                 id="content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
+                className="text-black"
               />
 
               <button className="border border-white bg-[#121212] text-white w-[400px] h-[60px] mt-5 hover:-translate-y-2 transition-all">

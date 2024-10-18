@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as cheerio from "cheerio";
 import { getAccessToken } from "./getToken";
 import { spotifyAPI } from "./spotifyApi";
 
@@ -23,12 +24,13 @@ const fetchSpotifyTrack = async (trackId: string) => {
 };
 
 const fetchLyricsFromGenius = async (trackTitle: string, artist: string) => {
-	const accessToken = await getAccessToken(); // Genius API 인증 토큰
+	const accessToken = process.env.NEXT_PUBLIC_GENIUS_CLIENT_TOKEN; // Genius API 인증 토큰
 	const query = `${trackTitle} ${artist}`;
+	const baseUrl = "https://api.genius.com";
 
 	try {
 		const response = await axios.get(
-			`https://api.genius.com/search?q=${encodeURIComponent(query)}`,
+			baseUrl + `/search?q=${encodeURIComponent(query)}`,
 			{
 				headers: {
 					Authorization: `Bearer ${accessToken}`,
@@ -53,16 +55,18 @@ const fetchLyricsFromGenius = async (trackTitle: string, artist: string) => {
  * @param trackId string props로 받아온 값
  * @returns
  */
-const getSpotifyLyrics = async (trackId: string) => {
+const getSpotifyLyricsUrl = async (trackId: string) => {
 	try {
 		// 1. Spotify에서 트랙 정보 가져오기
 		const trackInfo = await fetchSpotifyTrack(trackId);
 
 		if (trackInfo) {
 			// 2. Genius에서 가사 검색하기
+			const trackName = trackInfo.title.split("-")[0];
+			const trackArtist = trackInfo.artist;
 			const lyricsUrl = await fetchLyricsFromGenius(
-				trackInfo.title,
-				trackInfo.artist
+				trackName,
+				trackArtist
 			);
 
 			if (lyricsUrl) {
@@ -76,6 +80,35 @@ const getSpotifyLyrics = async (trackId: string) => {
 	}
 };
 
+/**
+ *
+ * @param lyricsUrl
+ * @returns Genius 가사 페이지에서 가사를 추출
+ */
+const scrapeLyricsFromGenius = async (
+	lyricsUrl: string
+): Promise<string | null> => {
+	try {
+		const response = await axios.get(lyricsUrl);
+		const html = response.data;
+
+		const $ = cheerio.load(html);
+
+		const lyrics =
+			$(".lyrics").text() || $("[data-lyrics-container]").text();
+
+		if (lyrics) {
+			return lyrics.trim();
+		}
+
+		return null;
+	} catch (error) {
+		console.error("Genius 가사 스크래핑 실패:", error);
+		return null;
+	}
+};
+
 export const lyricsApi = {
-	getSpotifyLyrics,
+	getSpotifyLyricsUrl,
+	scrapeLyricsFromGenius,
 };

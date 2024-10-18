@@ -24,7 +24,10 @@ function MusicPlayer() {
           <p className="text-gray-400 text-nowrap">music singer</p>
         </div>
         <div className="flex items-center gap-x-2">
-          <button className="text-gray-400 py-2 text-5xl transition-all duration-75 hover:text-white">
+          <button
+            aria-label="좋아요 버튼"
+            className="text-gray-400 py-2 text-5xl transition-all duration-75 hover:text-white"
+          >
             <CiHeart />
           </button>
           <LyricsButton />
@@ -35,21 +38,45 @@ function MusicPlayer() {
         id="music-player-middle"
         className="mx-20 col-span-3 justify-evenly items-center flex"
       >
-        <button className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110">
+        {/* 셔플 버튼 */}
+        <button
+          aria-label="셔플 버튼"
+          className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110"
+        >
           <RxShuffle />
         </button>
-        <button className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110">
+
+        {/* 이전 곡 버튼 */}
+        <button
+          aria-label="이전 곡 버튼"
+          className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110"
+        >
           <IoMdSkipBackward />
         </button>
+
         <div className="rounded-full transition-all duration-300 hover:bg-white hover:bg-opacity-30">
-          <button className="text-4xl py-4 pl-5 pr-3 text-red-500">
+          {/* play 버튼 */}
+          <button
+            aria-label="플레이 버튼"
+            className="text-4xl py-4 pl-5 pr-3 text-red-500"
+          >
             <FaPlay />
           </button>
         </div>
-        <button className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110">
+
+        {/* 다음 곡 버튼 */}
+        <button
+          aria-label="다음 곡 버튼"
+          className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110"
+        >
           <IoMdSkipForward />
         </button>
-        <button className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110">
+
+        {/* 반복 재생 버튼 */}
+        <button
+          aria-label="반복 재생 버튼"
+          className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110"
+        >
           <BsRepeat />
         </button>
       </div>
@@ -57,7 +84,11 @@ function MusicPlayer() {
         id="music-player-right"
         className="col-span-2 flex flex-row-reverse items-center"
       >
-        <button className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110">
+        {/* 현재 재생한 곡들의 목록 */}
+        <button
+          aria-label="재생한 곡 목록 버튼"
+          className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110"
+        >
           <BsMusicNoteList />
         </button>
       </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { api } from "@/api/spotifyApi";
 import { Database } from "@/database.types";
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/authStore";
@@ -9,9 +10,11 @@ import { PropsWithChildren, useEffect } from "react";
 function AuthProvider({ children }: PropsWithChildren) {
   const logIn = useAuthStore((state) => state.LogIn);
   const logOut = useAuthStore((state) => state.LogOut);
+  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
 
   const setAuthInitialized = useAuthStore((state) => state.setAuthInitialized);
 
+  // 로그인 상태 확인, 로그인 정보 supabase에 넣기
   useEffect(() => {
     (async () => {
       supabase.auth.onAuthStateChange((_event, session) => {
@@ -39,6 +42,32 @@ function AuthProvider({ children }: PropsWithChildren) {
         }
         setAuthInitialized();
       });
+    })();
+  }, []);
+
+  // 로그인한 유저 정보를 zustand로 관리하기
+  useEffect(() => {
+    (async () => {
+      const data = await api.getUser.getUser();
+      if (!data) return;
+      const id = data?.id;
+
+      const loggedUser = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", id)
+        .single();
+      if (!loggedUser) return;
+
+      const currentUser = {
+        id,
+        userName: loggedUser.data!.userName,
+        email: loggedUser.data!.email,
+        content: loggedUser.data!.content ?? "",
+        imgUrl: loggedUser.data!.imgUrl ?? "",
+      };
+
+      setCurrentUser(currentUser);
     })();
   }, []);
 

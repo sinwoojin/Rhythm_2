@@ -2,9 +2,11 @@
 
 import { api } from "@/api/spotifyApi";
 import Button from "@/components/Button";
+import { baseURL } from "@/config/config";
 import { Database } from "@/database.types";
-import { baseURL, User } from "@/schema/type";
+import { User } from "@/schema/type";
 import { supabase } from "@/supabase/client";
+import { useAuthStore } from "@/zustand/authStore";
 import { useFollowStore } from "@/zustand/followStore";
 import { useEffect, useState } from "react";
 import Page from "../../_components/Page/Page";
@@ -21,6 +23,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   // 유저 정보
   const profileId = props.params.userId;
   const [user, setUser] = useState<User | null>(null);
+  const currentUser = useAuthStore((state) => state.currentUser);
 
   // 수정, 팔로우 모달 상태 State
   const [isEditModal, setIsEditModal] = useState(false);
@@ -44,7 +47,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   // 모달 관련 핸들러
   const handleClickToggleEditModal = () => {
     setIsEditModal((prev) => !prev);
-    userUpdate();
+    userUpdate(currentUser!.id);
   };
 
   const handleClickToggleFollowModal = (type: "followers" | "following") => {

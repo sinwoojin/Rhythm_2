@@ -36,6 +36,3 @@ function Musics({ tracks, title }: ChartListProps) {
       </div>
     </>
   );
-}
-
-export default Musics;
