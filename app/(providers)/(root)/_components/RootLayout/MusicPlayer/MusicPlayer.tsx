@@ -38,10 +38,7 @@ function MusicPlayer() {
         const storedToken = window.localStorage.getItem(
           'spotify_provider_token',
         ); //토큰을 localStorage에서 가져오는 함수
-        if (storedToken)
-          setAccessToken(
-            'BQAKtt775gt31uMYIu9nYtBOMDiGWi-jOAqyIBO4w73gG4jkumpyW-c7BmhnDCOHAkQn5a97mtVMuoWU_KYr2DDc8E1uhTT3XeO7L54UPu9iADVDYEC1HPmF4Qo4M-x9DDxIlgw7smit79zMqoA0sWgcQ6RMD5rcT5fWv6xgRnhzHhkbn4MgIzdG7S_jOmrHRM-zqfXtqzaKW72gz7qwcMr9_rP-4UkXv5n7',
-          );
+        if (storedToken) setAccessToken(storedToken);
       } catch (error) {
         console.error('Access Token 가져오기 오류:', error);
         alert(

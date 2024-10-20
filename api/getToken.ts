@@ -29,7 +29,6 @@ export const getAccessToken = async () => {
   );
 
   const { access_token } = response.data;
-  console.log(getAuthorizeUrl())
   return access_token;
 };
 
