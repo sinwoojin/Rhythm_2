@@ -8,7 +8,7 @@ interface ChartListProps {
   title: string;
 }
 
-function Artists({ artists, title }: ChartListProps) {
+function ArtistsLayout({ artists, title }: ChartListProps) {
   return (
     <>
       <div className="[&+&]:mt-10">
@@ -51,4 +51,4 @@ function Artists({ artists, title }: ChartListProps) {
   );
 }
 
-export default Artists;
+export default ArtistsLayout;
