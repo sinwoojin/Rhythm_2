@@ -1,5 +1,5 @@
 import { api } from '@/api/spotifyApi';
-import MusicsLayout from '../_components/MusicsLayout/MusicLayout';
+import Musics from '../_components/Musics/Music';
 import Page from '../_components/Page/Page';
 
 const TOP_100_MUSIC_ID = '5ABHKGoOzxkaa28ttQV9sE';
@@ -12,13 +12,7 @@ async function TodayPage() {
   return (
     <Page title="투데이">
       <div id="popular-music">
-        <MusicsLayout title="Music-100" tracks={tracks!} />
-      </div>
-      <div id="popular-rhythm">
-        <MusicsLayout title="Rhythm-100" tracks={tracks!} />
-      </div>
-      <div id="popular-user">
-        <MusicsLayout title="User-100" tracks={tracks!} />
+        <Musics title="Music-100" tracks={tracks!} />
       </div>
     </Page>
   );

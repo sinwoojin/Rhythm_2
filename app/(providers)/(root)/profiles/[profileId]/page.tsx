@@ -1,35 +1,35 @@
-"use client";
+'use client';
 
-import { api } from "@/api/spotifyApi";
-import Button from "@/components/Button";
-import { baseURL } from "@/config/config";
-import { Database } from "@/database.types";
-import { User } from "@/schema/type";
-import { supabase } from "@/supabase/client";
-import { useAuthStore } from "@/zustand/authStore";
-import { useFollowStore } from "@/zustand/followStore";
-import { useEffect, useState } from "react";
-import Page from "../../_components/Page/Page";
-import EditModal from "../_components/Modals/EditModal";
-import FollowModal from "../_components/Modals/FollowModal";
+import { api } from '@/api/spotifyApi';
+import Button from '@/components/Button';
+import { baseURL } from '@/config/config';
+import { Database } from '@/database.types';
+import { User } from '@/schema/type';
+import { supabase } from '@/supabase/client';
+import { useAuthStore } from '@/zustand/authStore';
+import { useFollowStore } from '@/zustand/followStore';
+import { useEffect, useState } from 'react';
+import Page from '../../_components/Page/Page';
+import EditModal from '../_components/Modals/EditModal';
+import FollowModal from '../_components/Modals/FollowModal';
 
 interface ProfileDetailPageProps {
   params: {
-    userId: string;
+    profileId: string;
   };
 }
 
 function ProfileDetailPage(props: ProfileDetailPageProps) {
   // 유저 정보
-  const profileId = props.params.userId;
+  const profileId = props.params.profileId;
   const [user, setUser] = useState<User | null>(null);
   const currentUser = useAuthStore((state) => state.currentUser);
 
   // 수정, 팔로우 모달 상태 State
   const [isEditModal, setIsEditModal] = useState(false);
   const [isFollowModal, setIsFollowModal] = useState(false);
-  const [modalType, setModalType] = useState<"followers" | "following" | null>(
-    null
+  const [modalType, setModalType] = useState<'followers' | 'following' | null>(
+    null,
   );
 
   // 로그인 상태에 따라 보여주는 버튼의 State
@@ -50,7 +50,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
     userUpdate(currentUser!.id);
   };
 
-  const handleClickToggleFollowModal = (type: "followers" | "following") => {
+  const handleClickToggleFollowModal = (type: 'followers' | 'following') => {
     setModalType(type); // 클릭한 버튼에 따라 모달 타입 설정
     setIsFollowModal((prev) => !prev);
   };
@@ -59,16 +59,16 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   const updateFollowCounts = async () => {
     // 팔로워 수 가져오기
     const { data: followers } = await supabase
-      .from("follow")
-      .select("*")
-      .eq("following", profileId);
+      .from('follow')
+      .select('*')
+      .eq('following', profileId);
     setFollowerCount(followers ? followers.length : 0);
 
     // 팔로잉 수 가져오기
     const { data: following } = await supabase
-      .from("follow")
-      .select("*")
-      .eq("follower", profileId);
+      .from('follow')
+      .select('*')
+      .eq('follower', profileId);
     setFollowingCount(following ? following.length : 0);
   };
 
@@ -82,26 +82,26 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
 
     if (!isFollowing) {
       if (follower === following)
-        return alert("자기 자신을 팔로우 할 수 없습니다");
+        return alert('자기 자신을 팔로우 할 수 없습니다');
 
-      const data: Database["public"]["Tables"]["follow"]["Insert"] = {
+      const data: Database['public']['Tables']['follow']['Insert'] = {
         follower,
         following,
       };
 
-      await supabase.from("follow").insert(data);
+      await supabase.from('follow').insert(data);
 
       follow();
-      alert("사용자를 팔로우 하셨습니다.");
+      alert('사용자를 팔로우 하셨습니다.');
     } else {
       await supabase
-        .from("follow")
+        .from('follow')
         .delete()
-        .eq("follower", follower)
-        .eq("following", following);
+        .eq('follower', follower)
+        .eq('following', following);
 
       unFollow();
-      alert("사용자를 언팔로우 하셨습니다");
+      alert('사용자를 언팔로우 하셨습니다');
     }
 
     // 팔로우,언팔로우 이후 업데이트
@@ -112,9 +112,9 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   const userUpdate = async (loginUserId: string) => {
     // 유저 정보 가져오기
     const response = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", profileId)
+      .from('users')
+      .select('*')
+      .eq('id', profileId)
       .single();
     setUser(response.data);
 
@@ -136,10 +136,10 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
 
     // 팔로우 상태 지정
     const { data } = await supabase
-      .from("follow")
-      .select("*")
-      .eq("follower", follower)
-      .eq("following", following);
+      .from('follow')
+      .select('*')
+      .eq('follower', follower)
+      .eq('following', following);
 
     if (data && data.length > 0) {
       follow();
@@ -177,7 +177,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
         <FollowModal
           onClose={() => {
             handleClickToggleFollowModal(
-              modalType === "followers" ? "followers" : "following"
+              modalType === 'followers' ? 'followers' : 'following',
             );
           }}
           userId={profileId}
@@ -212,21 +212,21 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
               className="w-full text-center"
               onClick={handleClickToggleFollowButton}
             >
-              {isFollowing ? "언팔로우" : "팔로우"}
+              {isFollowing ? '언팔로우' : '팔로우'}
             </Button>
           )}
 
           <div className="flex gap-x-5 w-full">
             <Button
               className="flex flex-col w-full items-center py-4"
-              onClick={() => handleClickToggleFollowModal("followers")}
+              onClick={() => handleClickToggleFollowModal('followers')}
             >
               <span>{followerCount}명</span>
               <span>팔로워</span>
             </Button>
             <Button
               className="flex flex-col w-full items-center py-4"
-              onClick={() => handleClickToggleFollowModal("following")}
+              onClick={() => handleClickToggleFollowModal('following')}
             >
               <span>{followingCount}명</span>
               <span>팔로잉</span>

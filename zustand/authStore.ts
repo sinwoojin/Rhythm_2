@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 // 유저 정보 타입
 type CurrentUser = {
@@ -7,6 +7,7 @@ type CurrentUser = {
   email: string;
   content: string;
   imgUrl: string;
+  spotifyUserId?: string;
 } | null;
 
 type AuthStoreState = {
