@@ -1,14 +1,14 @@
-import Page from "../_components/Page/Page";
-import Chart from "./_components/Chart/Chart";
+import ChartLayout from '../_components/ChartLayout/ChartLayout';
+import Page from '../_components/Page/Page';
 
 function ChartPage() {
-	return (
-		<Page title="차트">
-			<Chart title="오늘의 top 100" />
-			<Chart title="국내 급 상승" />
-			<Chart title="외국" />
-		</Page>
-	);
+  return (
+    <Page title="차트">
+      <ChartLayout title="오늘의 top 100" />
+      <ChartLayout title="국내 급 상승" />
+      <ChartLayout title="외국" />
+    </Page>
+  );
 }
 
 export default ChartPage;
