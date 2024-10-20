@@ -4,40 +4,40 @@ import Link from 'next/link';
 import Page from '../Page/Page';
 
 interface ChartListProps {
-  playlists: Track[];
+  artists: Track[];
   title: string;
 }
 
-function Playlists({ playlists, title }: ChartListProps) {
+function ArtistsLayout({ artists, title }: ChartListProps) {
   return (
     <>
       <div className="[&+&]:mt-10">
         <h3 className="text-2xl font-bold mb-6">{title}</h3>
-        {playlists.length > 0 ? (
-          <ul className="flex gap-x-3 overflow-auto scrollbar-hide">
-            {playlists.map((playlist) => (
+        {artists.length > 0 ? (
+          <ul className="flex gap-x-4 overflow-auto scrollbar-hide">
+            {artists.map((artist) => (
               <li
-                key={playlist.id}
-                className="flex flex-col min-w-[200px] w-[200px]"
+                key={artist.id}
+                className="flex flex-col w-[200px] min-w-[200px]"
               >
                 <Link
                   href={
                     '/' /*여기에 디테일 페이지로 넘어갈 동적 url 적기 지금은 비워둠*/
                   }
                 >
-                  {playlist.images.length === 0 ? (
-                    <div className="w-full aspect-square bg-slate-600 "></div>
+                  {artist.images.length === 0 ? (
+                    <div className="rounded-full overflow-hidden w-full aspect-square"></div>
                   ) : (
-                    <div className="w-full aspect-square bg-slate-600 ">
+                    <div className="rounded-full overflow-hidden w-full aspect-square bg-red-500">
                       <img
-                        alt={playlist.name}
-                        src={playlist.images[0].url}
+                        src={artist.images[1].url}
                         className="object-cover"
                       />
                     </div>
                   )}
+
                   <p className="text-xl font-semibold line-clamp-1">
-                    {playlist.name}
+                    {artist.name}
                   </p>
                 </Link>
               </li>
@@ -51,4 +51,4 @@ function Playlists({ playlists, title }: ChartListProps) {
   );
 }
 
-export default Playlists;
+export default ArtistsLayout;
