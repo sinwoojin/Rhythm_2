@@ -5,8 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import AlbumsLayout from '../_components/AlbumsLayout/AlbumsLayout';
-import AritistsLayout from '../_components/AritistsLayout/Aritsts';
-import MusicsLayout from '../_components/MusicsLayout/Music';
+import AritistsLayout from '../_components/AritistsLayout/AritstsLayout';
+import MusicsLayout from '../_components/MusicsLayout/MusicLayout';
 import Page from '../_components/Page/Page';
 import Playlists from '../_components/Playlists/Playlists';
 

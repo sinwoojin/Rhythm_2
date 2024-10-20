@@ -1,5 +1,5 @@
 import { api } from '@/api/spotifyApi';
-import MusicsLayout from '../_components/MusicsLayout/Music';
+import MusicsLayout from '../_components/MusicsLayout/MusicLayout';
 import Page from '../_components/Page/Page';
 
 const TOP_100_MUSIC_ID = '5ABHKGoOzxkaa28ttQV9sE';
