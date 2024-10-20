@@ -7,7 +7,6 @@ import { useAuthStore } from '@/zustand/authStore';
 import { PropsWithChildren, useEffect } from 'react';
 
 function AuthProvider({ children }: PropsWithChildren) {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const logIn = useAuthStore((state) => state.LogIn);
   const logOut = useAuthStore((state) => state.LogOut);
   const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
