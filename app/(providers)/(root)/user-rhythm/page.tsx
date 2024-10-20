@@ -1,5 +1,5 @@
-import Link from "next/link";
-import Page from "../_components/Page/Page";
+import Link from 'next/link';
+import Page from '../_components/Page/Page';
 
 function PlaylistsPage() {
   return (
@@ -8,7 +8,7 @@ function PlaylistsPage() {
         {/* 각 블록을 클릭하면 해당 카테고리의 플레이리스트가 모여서 보이게 (이미지로 설정)*/}
 
         <div className="flex flex-wrap items-center justify-center">
-          <Link href={"/playlists/k-pop"}>
+          <Link href={'/user-rhythm/k-pop'}>
             <p className="mb-1 w-full text-center">K-POP</p>
             <div className="object-cover transition-all overflow-hidden rounded-lg">
               <img
@@ -21,7 +21,7 @@ function PlaylistsPage() {
         </div>
 
         <div className="flex flex-wrap items-center justify-center">
-          <Link href={"/playlists/j-pop"}>
+          <Link href={'/user-rhythm/j-pop'}>
             <p className="mb-1 text-center">J-POP</p>
             <div className="object-cover transition-all overflow-hidden rounded-lg">
               <img
@@ -34,12 +34,12 @@ function PlaylistsPage() {
         </div>
 
         <div className="flex flex-wrap items-center justify-center">
-          <Link href={"/playlists/hip-pop"}>
+          <Link href={'/user-rhythm/hip-pop'}>
             <p className="mb-1 text-center">HIP-HOP</p>
             <div className="object-cover transition-all overflow-hidden rounded-lg">
               <img
                 src=""
-                alt=""
+                alt="hip-hop 이미지"
                 className="aspect-video w-[400px] bg-slate-700 hover:scale-125 duration-500"
               />
             </div>
@@ -47,12 +47,12 @@ function PlaylistsPage() {
         </div>
 
         <div className="flex flex-wrap items-center justify-center">
-          <Link href={"/playlists/band"}>
+          <Link href={'/user-rhythm/band'}>
             <p className="mb-1 text-center">BAND</p>
             <div className="object-cover transition-all overflow-hidden rounded-lg">
               <img
                 src=""
-                alt=""
+                alt="band 이미지"
                 className="aspect-video w-[400px] bg-slate-700 hover:scale-125 duration-500"
               />
             </div>
