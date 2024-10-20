@@ -80,7 +80,7 @@ function CreatePlayListModal() {
         title,
         description,
         isPublic,
-        currentUser!.spotifyUserId,
+        String(currentUser!.spotifyUserId),
         token,
       );
       router.push('/');
