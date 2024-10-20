@@ -2,7 +2,8 @@ import axios from 'axios';
 
 const SPOTIFY_AUTHORIZE_URL = 'https://accounts.spotify.com/authorize';
 const SPOTIFY_TOKEN_URL = 'https://accounts.spotify.com/api/token';
-const scopes = 'playlist-modify-private playlist-modify-public';
+const scopes =
+  'playlist-modify-private playlist-modify-public streaming user-read-playback-state user-modify-playback-state user-read-currently-playing';
 const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID!;
 const clientSecret = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET!;
 const redirectUri = process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI!;
@@ -21,12 +22,14 @@ export const getAccessToken = async () => {
       client_id: clientId,
       client_secret: clientSecret,
     }).toString(),
+
     {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     },
   );
 
   const { access_token } = response.data;
+  console.log(getAuthorizeUrl())
   return access_token;
 };
 
