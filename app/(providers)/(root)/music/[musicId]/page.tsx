@@ -1,7 +1,7 @@
-import { api } from "@/api/spotifyApi";
-import dayjs from "dayjs";
-import { FaPlay } from "react-icons/fa";
-import Page from "../../_components/Page/Page";
+import { api } from '@/api/spotifyApi';
+import dayjs from 'dayjs';
+import Page from '../../_components/Page/Page';
+import PlayButton from '../_components/Button/Button';
 
 interface MusicDetailPageProps {
   params: { musicId: string };
@@ -14,7 +14,7 @@ async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
 
   const album = track?.album;
   const release_date = dayjs(track!.album.release_date);
-  const release_year = release_date.format("YYYY");
+  const release_year = release_date.format('YYYY');
 
   const albumTitle = track?.album.name;
   const albumImg = track?.album.images[1].url;
@@ -37,11 +37,7 @@ async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
             <span className="px-3">•</span>
             <span>{release_year}</span>
           </div>
-          <div>
-            <button className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl">
-              <FaPlay type="button" />
-            </button>
-          </div>
+          <PlayButton track={track} />
         </div>
       </div>
       <div className="pb-9 ">
