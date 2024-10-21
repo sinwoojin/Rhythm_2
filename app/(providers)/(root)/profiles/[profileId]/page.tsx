@@ -194,7 +194,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
         </div>
         <div className="flex flex-col gap-y-2 w-full h-full col-span-2 relative">
           <span>userName: {user?.userName}</span>
-          <span className="absolute top-8">내 소개: {user?.content}</span>
+          <span className="absolute top-8 p-4">내 소개: {user?.content}</span>
           <span className="bg-white/20 w-full h-full"></span>
         </div>
         <div className="w-full h-full flex flex-col-reverse items-center gap-y-8 col-span-2">
