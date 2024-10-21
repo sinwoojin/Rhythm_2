@@ -40,7 +40,7 @@ function Profile() {
   return (
     <>
       {isAuthInitialized &&
-        (isLoggedIn ? ( // 여기는 이제 로그인 했을때 사용자 id랑
+        (isLoggedIn ? (
           <div className="flex justify-between">
             <Link
               href={`/profiles/${currentUser?.id}`}
@@ -57,7 +57,7 @@ function Profile() {
                 />
               </div>
               <div className="flex justify-between w-full">
-                <span className="text-sm font-medium">
+                <span className="text-sm font-medium line-clamp-1">
                   {currentUser?.userName}
                 </span>
               </div>
