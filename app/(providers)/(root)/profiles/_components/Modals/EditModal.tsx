@@ -75,7 +75,7 @@ function EditModal({ id }: EditModalProps) {
       }
     })();
   }, [id]);
-
+  
   return (
      <div>
           <div
