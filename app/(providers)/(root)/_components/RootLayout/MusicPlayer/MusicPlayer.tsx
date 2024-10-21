@@ -1,6 +1,8 @@
 'use client';
 
+import { nextTrack, pauseTrack, playTrack } from '@/api/spotifyPlayAPI';
 import { PlayTrack } from '@/schema/type';
+import { useAuthStore } from '@/zustand/authStore';
 import { useCurrentTrackStore } from '@/zustand/useCurrentTrackStore';
 import { useEffect, useState } from 'react';
 import { BsMusicNoteList, BsRepeat } from 'react-icons/bs';
@@ -11,27 +13,26 @@ import { RxShuffle } from 'react-icons/rx';
 import LyricsButton from '../LyricsButton/LyricsButton';
 import OptionButton from '../OptionButton/OptionButton';
 
-interface Player {
-  addListener: (event: string, callback: (...args: unknown[]) => void) => void;
-  connect: () => Promise<void>;
-  togglePlay: () => Promise<void>;
-  queue: (trackUri: string) => Promise<boolean>;
-}
-
 function MusicPlayer() {
-  // 플레이어 정보
-  const [player, setPlayer] = useState<Player | null>(null);
   // 현재 엑세스 토큰
   const [accessToken, setAccessToken] = useState<string | null>('null');
+
   // 재생 상태
   const [isPaused, setPaused] = useState(true);
+
   // 현재 재생하고있는 트랙 정보
   const [currentTrack, setCurrentTrack] = useState<PlayTrack | null>(null);
+
   // 현재 사용하고 있는 디바이스 id (웹 페이지, 앱)
   const [deviceId, setDeviceId] = useState<string | null>(null);
 
+  // 현재 가지고있는 트랙 uri
   const currentTrackId = useCurrentTrackStore((state) => state.currentTrackId);
 
+  // 로그인 정보
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+
+  // 로그인한 유저의 토큰 가져오기
   useEffect(() => {
     const fetchAccessToken = async () => {
       try {
@@ -49,15 +50,15 @@ function MusicPlayer() {
     fetchAccessToken();
   }, []);
 
+  // 장치 설정
   useEffect(() => {
+    if (!isLoggedIn) return;
     if (!accessToken) return;
 
-    // Spotify Player SDK 스크립트 추가
     const script = document.createElement('script');
     script.src = 'https://sdk.scdn.co/spotify-player.js';
     document.body.appendChild(script);
 
-    // SDK가 준비되면 플레이어 초기화
     window.onSpotifyWebPlaybackSDKReady = () => {
       const player = new window.Spotify.Player({
         name: 'Web Playback SDK',
@@ -68,7 +69,7 @@ function MusicPlayer() {
       });
 
       player.addListener('ready', ({ device_id }) => {
-        setDeviceId(device_id); // 장치 ID 저장
+        setDeviceId(device_id);
       });
 
       player.addListener('player_state_changed', (state) => {
@@ -78,71 +79,12 @@ function MusicPlayer() {
       });
 
       player.connect();
-      setPlayer(player);
     };
 
     return () => {
       document.body.removeChild(script);
     };
-  }, [accessToken]);
-
-  const playTrack = async (uri: string) => {
-    if (player && deviceId) {
-      await fetch(`https://api.spotify.com/v1/me/player`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          device_ids: [deviceId],
-          play: true,
-        }),
-      });
-
-      // 현재 트랙 재생
-      fetch(`https://api.spotify.com/v1/me/player/play`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ uris: [uri] }),
-      });
-    }
-  };
-
-  const pauseTrack = async () => {
-    if (player && deviceId) {
-      try {
-        await fetch(`https://api.spotify.com/v1/me/player/pause`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-      } catch (error) {
-        console.error('Error pausing track:', error);
-      }
-    }
-  };
-
-  const nextTrack = async () => {
-    if (player && deviceId) {
-      try {
-        await fetch(`https://api.spotify.com/v1/me/player/next`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-      } catch (error) {
-        console.error('Error skipping to next track:', error);
-      }
-    }
-  };
+  }, [accessToken, isLoggedIn]);
 
   return (
     <div className="fixed bottom-0 w-full bg-[#121212] grid grid-cols-7 py-6 px-8 max-h-[116px]">
@@ -150,12 +92,13 @@ function MusicPlayer() {
         id="music-player-left"
         className="col-span-2 flex items-center gap-x-4"
       >
-        <div className="bg-gray-400 h-full aspect-square">
-          {currentTrack ? (
-            <img src={currentTrack.album.images[0].url} alt="" />
-          ) : null}
-          {/* 노래 썸네일? url 넣어주면 됨 */}
-        </div>
+        {currentTrack ? (
+          <img src={currentTrack.album.images[1].url} alt="" />
+        ) : (
+          <div className="bg-gray-400 h-full aspect-square"></div>
+        )}
+        {/* 노래 썸네일? url 넣어주면 됨 */}
+
         <div>
           <p className="text-white font-bold text-lg text-nowrap overflow-hidden text-ellipsis whitespace-nowrap w-[200px]">
             {currentTrack ? currentTrack.name : 'music title'}
@@ -203,7 +146,9 @@ function MusicPlayer() {
             <button
               aria-label="플레이 버튼"
               className="text-4xl py-4 pl-5 pr-3 text-red-500"
-              onClick={() => playTrack(currentTrackId)}
+              onClick={() =>
+                playTrack(currentTrackId, String(accessToken), String(deviceId))
+              }
             >
               <FaPlay />
             </button>
@@ -211,7 +156,7 @@ function MusicPlayer() {
             <button
               aria-label="멈춤 버튼"
               className="text-4xl py-4 pl-5 pr-3 text-red-500"
-              onClick={() => pauseTrack()}
+              onClick={() => pauseTrack(String(accessToken))}
             >
               <FaPause />
             </button>
@@ -222,7 +167,7 @@ function MusicPlayer() {
         <button
           aria-label="다음 곡 버튼"
           className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110"
-          onClick={() => nextTrack()}
+          onClick={() => nextTrack(String(accessToken))}
         >
           <IoMdSkipForward />
         </button>

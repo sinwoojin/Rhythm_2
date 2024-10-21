@@ -12,7 +12,7 @@ function SpotifyLogInPage() {
         scopes:
           'playlist-modify-private playlist-modify-public streaming user-read-playback-state user-modify-playback-state user-read-currently-playing',
         skipBrowserRedirect: false,
-        redirectTo: 'https://rhythm-bice.vercel.app',
+        redirectTo: window.location.origin,
       },
     });
 
