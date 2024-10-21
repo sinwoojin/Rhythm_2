@@ -28,7 +28,7 @@ function MusicsLayout({ tracks, title }: ChartListProps) {
                   <div className="w-full aspect-square">
                     <img
                       className="object-cover"
-                      src={track.album.images?.[0]?.url || '/default-image.jpg'}
+                      src={track.album.images[0]?.url || '/default-image.jpg'}
                       alt="이미지"
                     />
                   </div>
