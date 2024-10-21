@@ -40,12 +40,15 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   const follow = useFollowStore((state) => state.follow);
   const unFollow = useFollowStore((state) => state.unFollow);
 
-  const currentUserId = currentUser!.id;
+  const currentUserId = currentUser?.id;
 
   // 모달 관련 핸들러
   const handleClickToggleEditModal = () => {
-    openModal({ element: <EditModal id={user!.id} userUpdate={userUpdate} />, backdrop: true });
-    userUpdate(currentUserId);
+    openModal({
+      element: <EditModal id={user!.id} userUpdate={userUpdate} />,
+      backdrop: true,
+    });
+    userUpdate(String(currentUserId));
   };
 
   const handleClickToggleFollowModal = (type: 'followers' | 'following') => {
