@@ -1,7 +1,8 @@
 'use client';
 import { Track } from '@/schema/type';
 import Link from 'next/link';
-import Page from '../Page/Page';
+import Page from '../../Page/Page';
+import PrevNextButton from '../PrevNextButton/PrevNextButton';
 
 interface ChartListProps {
   albums: Track[];
@@ -11,10 +12,11 @@ interface ChartListProps {
 function AlbumsLayout({ albums, title }: ChartListProps) {
   return (
     <>
-      <div className="[&+&]:mb-10">
+      <div className="[&+&]:mb-10 relative max-w-full">
+        <PrevNextButton />
         <h3 className="text-2xl font-bold mb-6">{title}</h3>
         {albums.length > 0 ? (
-          <ul className="flex gap-x-4 overflow-auto scrollbar-hide">
+          <ul className="flex gap-x-4 overflow-hidden scrollbar-hide max-w-full">
             {albums.map((album) => (
               <li
                 key={album.id}
