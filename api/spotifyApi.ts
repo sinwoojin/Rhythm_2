@@ -19,5 +19,5 @@ export const api = {
   search: searchItemsApi,
   getUser: getUserApi,
   userPlay: userPlaylistApi,
-  genius: lyricsApi,
+  lyrics: lyricsApi,
 };
