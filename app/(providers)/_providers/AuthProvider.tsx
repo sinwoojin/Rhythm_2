@@ -55,6 +55,7 @@ function AuthProvider({ children }: PropsWithChildren) {
               email: loggedUser.data!.email,
               content: loggedUser.data!.content ?? '',
               imgUrl: loggedUser.data!.imgUrl ?? '',
+              spotifyId: user.identities?.[0].id,
             };
 
             setCurrentUser(currentUser);

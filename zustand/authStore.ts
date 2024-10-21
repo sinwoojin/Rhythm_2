@@ -7,7 +7,7 @@ type CurrentUser = {
   email: string;
   content: string;
   imgUrl: string;
-  spotifyUserId?: string;
+  spotifyId?: string;
 } | null;
 
 type AuthStoreState = {
