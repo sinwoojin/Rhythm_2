@@ -3,6 +3,7 @@ interface ChartProps {
 }
 
 function ChartLayout({ title }: ChartProps) {
+  console.log(title);
   return null;
   //     <div className="[&+&]:mt-16 py-6 px-6">
   //       <h2 className="font-bold text-2xl mb-6">{title}</h2>
