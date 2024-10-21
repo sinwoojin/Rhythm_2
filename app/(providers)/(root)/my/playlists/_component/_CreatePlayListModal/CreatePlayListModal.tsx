@@ -1,5 +1,5 @@
 'use client';
-import { getAuthAccessToken } from '@/api/getToken';
+import { getRefreshToken } from '@/api/getToken';
 import { api } from '@/api/spotifyApi';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
@@ -19,15 +19,12 @@ function CreatePlayListModal() {
 
   const closeModal = useModalStore((state) => state.closeModal);
   const currentUser = useAuthStore((state) => state.currentUser);
+  console.log(currentUser);
 
   useEffect(() => {
     const fetchAccessToken = async () => {
       try {
-        const code = new URLSearchParams(window.location.search).get('code');
-        if (code) {
-          const token = await getAuthAccessToken(code); //authAccessToken을 가져오는 함수(이게 있어야 플레이 리스트를 만들수 있음)
-          setAccessToken(token);
-        } else {
+        {
           const storedToken = window.localStorage.getItem(
             'spotify_provider_token',
           ); //토큰을 localStorage에서 가져오는 함수
@@ -42,15 +39,23 @@ function CreatePlayListModal() {
     };
 
     fetchAccessToken();
-
   }, []);
 
   const ensureAccessToken = async () => {
-    // Refresh logic: 필요시 토큰을 갱신하거나 기존 저장된 토큰 사용
     if (!accessToken) {
       try {
+        // LocalStorage에 저장된 토큰 가져오기
         const token = window.localStorage.getItem('spotify_provider_token');
+        const refreshToken = window.localStorage.getItem('refresh_token');
+
         if (token) return token;
+
+        if (refreshToken) {
+          // Refresh Token으로 새 Access Token 발급
+          const newAccessToken = await getRefreshToken();
+          setAccessToken(newAccessToken); // 상태 업데이트
+          return newAccessToken; // 새 액세스 토큰 반환
+        }
 
         alert('Access token이 없습니다. 다시 로그인해 주세요.');
         return null;
@@ -59,7 +64,7 @@ function CreatePlayListModal() {
         return null;
       }
     }
-    return accessToken;
+    return accessToken; // 이미 유효한 토큰이 있는 경우 반환
   };
 
   const handleClickCreatePlayList = async () => {
@@ -80,7 +85,7 @@ function CreatePlayListModal() {
         title,
         description,
         isPublic,
-        String(currentUser!.spotifyUserId),
+        String(currentUser!.spotifyId),
         token,
       );
       router.push('/');
@@ -90,7 +95,6 @@ function CreatePlayListModal() {
       alert('플레이리스트 생성에 실패했습니다.');
     } finally {
       setIsLoading(false);
-
     }
   };
 

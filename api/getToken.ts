@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 
 const SPOTIFY_AUTHORIZE_URL = 'https://accounts.spotify.com/authorize';
@@ -72,14 +73,22 @@ export const getAuthAccessToken = async (code: string) => {
 };
 
 // accessToken이 만료되었을때 다시 accessToken을 불러오는 것
-export const getRefreshToken = async () => {
+
+export const getRefreshToken = async (): Promise<string | null> => {
   const refreshToken = localStorage.getItem('refresh_token');
+
+  if (!refreshToken) {
+    console.error('Refresh token이 없습니다. 다시 로그인해 주세요.');
+    alert('로그인이 필요합니다.');
+    return null; // 로그인 유도
+  }
+
   try {
     const response = await axios.post(
       SPOTIFY_TOKEN_URL,
       new URLSearchParams({
         grant_type: 'refresh_token',
-        refresh_token: refreshToken!,
+        refresh_token: refreshToken,
         client_id: clientId,
         client_secret: clientSecret,
       }).toString(),
@@ -89,15 +98,22 @@ export const getRefreshToken = async () => {
     );
 
     const { access_token, refresh_token: newRefreshToken } = response.data;
-    localStorage.setItem('access_token', access_token);
 
+    // 새로운 access_token과 refresh_token 저장
+    localStorage.setItem('spotify_provider_token', access_token);
     if (newRefreshToken) {
       localStorage.setItem('refresh_token', newRefreshToken);
     }
 
     return access_token;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Refresh token을 가져오는 중 오류 발생:', error);
-    throw new Error('Refresh token을 가져오는 데 실패했습니다.');
+
+    // 401 또는 403일 경우 다시 로그인 하도록 alert 띄어주기
+    if (error.response && [401, 403].includes(error.response.status)) {
+      alert('세션이 만료되었습니다. 다시 로그인해 주세요.');
+    }
+
+    return null;
   }
 };
