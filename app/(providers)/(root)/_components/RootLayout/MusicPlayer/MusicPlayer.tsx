@@ -1,6 +1,6 @@
 'use client';
 
-import { nextTrack, pauseTrack, playTrack } from '@/api/spotifyPlayAPI';
+import { nextTrack, pauseTrack, playTrack } from '@/api/spotifyPlayMusicAPI';
 import { PlayTrack } from '@/schema/type';
 import { useAuthStore } from '@/zustand/authStore';
 import { useCurrentTrackStore } from '@/zustand/useCurrentTrackStore';
@@ -27,7 +27,9 @@ function MusicPlayer() {
   const [deviceId, setDeviceId] = useState<string | null>(null);
 
   // 현재 가지고있는 트랙 uri
-  const currentTrackId = useCurrentTrackStore((state) => state.currentTrackId);
+  const setCurrentTrackURI = useCurrentTrackStore(
+    (state) => state.currentTrackURI,
+  );
 
   // 로그인 정보
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -147,7 +149,11 @@ function MusicPlayer() {
               aria-label="플레이 버튼"
               className="text-4xl py-4 pl-5 pr-3 text-red-500"
               onClick={() =>
-                playTrack(currentTrackId, String(accessToken), String(deviceId))
+                playTrack(
+                  setCurrentTrackURI,
+                  String(accessToken),
+                  String(deviceId),
+                )
               }
             >
               <FaPlay />
@@ -155,7 +161,7 @@ function MusicPlayer() {
           ) : (
             <button
               aria-label="멈춤 버튼"
-              className="text-4xl py-4 pl-5 pr-3 text-red-500"
+              className="text-4xl py-4 pl-4 pr-4 text-red-500"
               onClick={() => pauseTrack(String(accessToken))}
             >
               <FaPause />

@@ -1,9 +1,10 @@
 'use client';
 
+import { pauseTrack, playTrack } from '@/api/spotifyPlayMusicAPI';
 import { Track } from '@/schema/type';
 import { useCurrentTrackStore } from '@/zustand/useCurrentTrackStore';
 import { useEffect, useState } from 'react';
-import { FaPlay } from 'react-icons/fa';
+import { FaPause, FaPlay } from 'react-icons/fa';
 
 interface PlayButtonProps {
   track: Track | undefined;
@@ -17,23 +18,27 @@ interface Player {
 }
 
 function PlayButton(props: PlayButtonProps) {
-  // 플레이어 정보
-  const [player, setPlayer] = useState<Player | null>(null);
   // 현재 엑세스 토큰
   const [accessToken, setAccessToken] = useState<string | null>('null');
   // 현재 사용하고 있는 디바이스 id (웹 페이지, 앱)
   const [deviceId, setDeviceId] = useState<string | null>(null);
+  // 재생 상태
+  const [isPaused, setPaused] = useState(true);
 
-  const setCurrentTrackId = useCurrentTrackStore(
-    (state) => state.setCurrentTrackId,
+  const setCurrentTrackURI = useCurrentTrackStore(
+    (state) => state.setCurrentTrackURI,
   );
+
+  // 현재 페이지의 트랙 uri 정보
   const trackUri = props.track?.uri;
 
+  // 재생 버튼
   const handleClickPlayButton = () => {
-    setCurrentTrackId(String(trackUri));
-    playTrack(String(trackUri));
+    setCurrentTrackURI(String(trackUri));
+    playTrack(String(trackUri), String(accessToken), String(deviceId));
   };
 
+  // 현재 토큰 불러오기
   useEffect(() => {
     const fetchAccessToken = async () => {
       try {
@@ -51,15 +56,14 @@ function PlayButton(props: PlayButtonProps) {
     fetchAccessToken();
   }, []);
 
+  // 장치 설정
   useEffect(() => {
     if (!accessToken) return;
 
-    // Spotify Player SDK 스크립트 추가
     const script = document.createElement('script');
     script.src = 'https://sdk.scdn.co/spotify-player.js';
     document.body.appendChild(script);
 
-    // SDK가 준비되면 플레이어 초기화
     window.onSpotifyWebPlaybackSDKReady = () => {
       const player = new window.Spotify.Player({
         name: 'Web Playback SDK',
@@ -70,15 +74,15 @@ function PlayButton(props: PlayButtonProps) {
       });
 
       player.addListener('ready', ({ device_id }) => {
-        setDeviceId(device_id); // 장치 ID 저장
+        setDeviceId(device_id);
       });
 
       player.addListener('player_state_changed', (state) => {
         if (!state) return;
+        setPaused(state.paused);
       });
 
       player.connect();
-      setPlayer(player);
     };
 
     return () => {
@@ -86,41 +90,25 @@ function PlayButton(props: PlayButtonProps) {
     };
   }, [accessToken]);
 
-  const playTrack = async (uri: string) => {
-    if (player && deviceId) {
-      await fetch(`https://api.spotify.com/v1/me/player`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          device_ids: [deviceId],
-          play: true,
-        }),
-      });
-
-      // 현재 트랙 재생
-      fetch(`https://api.spotify.com/v1/me/player/play`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ uris: [uri] }),
-      });
-    }
-  };
-
   return (
     <div>
-      <button
-        aria-label="재생 버튼"
-        className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl"
-        onClick={handleClickPlayButton}
-      >
-        <FaPlay type="button" />
-      </button>
+      {isPaused ? (
+        <button
+          aria-label="재생 버튼"
+          className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl"
+          onClick={handleClickPlayButton}
+        >
+          <FaPlay type="button" />
+        </button>
+      ) : (
+        <button
+          aria-label="멈춤 버튼"
+          className="bg-red-500 py-4 pl-4 pr-4 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl"
+          onClick={() => pauseTrack(String(accessToken))}
+        >
+          <FaPause />
+        </button>
+      )}
     </div>
   );
 }
