@@ -5,6 +5,7 @@ import { supabase } from '@/supabase/client';
 import { useAuthStore } from '@/zustand/authStore';
 
 import { PropsWithChildren, useEffect } from 'react';
+import LogInInfoToast from '../_components/LogInInfoToast';
 
 function AuthProvider({ children }: PropsWithChildren) {
   const logIn = useAuthStore((state) => state.LogIn);
@@ -28,6 +29,14 @@ function AuthProvider({ children }: PropsWithChildren) {
 
           (async () => {
             const user = session.user;
+
+            if (user.app_metadata.provider === 'email') {
+              setTimeout(() => {
+                <LogInInfoToast type="supabase" />;
+              }, 5000);
+            } else if (user.app_metadata.provider === 'spotify') {
+              <LogInInfoToast type="spotify" />;
+            }
 
             const id = user.id;
             const userName =
