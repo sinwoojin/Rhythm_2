@@ -4,11 +4,11 @@ import { api } from '@/api/spotifyApi';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import AlbumsLayout from '../_components/AlbumsLayout/AlbumsLayout';
-import AritistsLayout from '../_components/AritistsLayout/AritstsLayout';
-import MusicsLayout from '../_components/MusicsLayout/MusicsLayout';
+import AlbumsLayout from '../_components/layouts/AlbumsLayout/AlbumsLayout';
+import AritistsLayout from '../_components/layouts/AritistsLayout/AritstsLayout';
+import MusicsLayout from '../_components/layouts/MusicsLayout/MusicsLayout';
 import Page from '../_components/Page/Page';
-import PlaylistsLayout from '../_components/PlaylistsLayout/PlaylistsLayout';
+import PlaylistsLayout from '../_components/layouts/PlaylistsLayout/PlaylistsLayout';
 
 function SearchPage() {
   /* input에 검색한 내용을 받아오는 코드 */
