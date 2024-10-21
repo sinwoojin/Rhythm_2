@@ -22,6 +22,10 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
   const follow = useFollowStore((state) => state.follow);
   const unFollow = useFollowStore((state) => state.unFollow);
 
+  const handleClickModalClose = () => {
+    closeModal();
+  };
+
   // 팔로워, 팔로잉 목록 가져오는 함수
   const fetchFollowData = async () => {
     let followData;
@@ -131,8 +135,10 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
                 key={follower.id}
                 className="flex justify-between items-center py-2"
               >
-                <Link href={`/profile-detail/${follower.id}`}>
-                  <span>{follower.userName}</span>
+                <Link href={`/profiles/${follower.id}`}>
+                  <span onClick={handleClickModalClose}>
+                    {follower.userName}
+                  </span>
                 </Link>
 
                 <Button onClick={() => handleToggleFollow(follower.id)}>

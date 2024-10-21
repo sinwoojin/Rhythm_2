@@ -9,9 +9,10 @@ import { ComponentProps, useEffect, useState } from 'react';
 
 type EditModalProps = {
   id: string;
+  userUpdate: (loginUserId: string) => void;
 };
 
-function EditModal({ id }: EditModalProps) {
+function EditModal({ id, userUpdate }: EditModalProps) {
   // table에 들어있는 정보 가져오기, 지정하기
   const [userName, setUserName] = useState('');
   const [content, setContent] = useState('');
@@ -58,6 +59,7 @@ function EditModal({ id }: EditModalProps) {
     } else {
       alert('프로필 수정에 성공했습니다!');
       closeModal();
+      userUpdate(id);
     }
   };
 
