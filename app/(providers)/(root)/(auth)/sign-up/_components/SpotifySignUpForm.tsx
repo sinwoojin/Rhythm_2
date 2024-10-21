@@ -9,7 +9,8 @@ function SpotifyLogInPage() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'spotify',
       options: {
-        scopes: 'playlist-modify-private',
+        scopes:
+          'playlist-modify-private playlist-modify-public streaming user-read-playback-state user-modify-playback-state user-read-currently-playing',
         skipBrowserRedirect: false,
       },
     });
