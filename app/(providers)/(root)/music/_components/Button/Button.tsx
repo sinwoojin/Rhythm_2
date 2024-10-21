@@ -10,13 +10,6 @@ interface PlayButtonProps {
   track: Track | undefined;
 }
 
-interface Player {
-  addListener: (event: string, callback: (...args: unknown[]) => void) => void;
-  connect: () => Promise<void>;
-  togglePlay: () => Promise<void>;
-  queue: (trackUri: string) => Promise<boolean>;
-}
-
 function PlayButton(props: PlayButtonProps) {
   // 현재 엑세스 토큰
   const [accessToken, setAccessToken] = useState<string | null>('null');

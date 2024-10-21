@@ -1,6 +1,12 @@
 'use client';
 
-import { nextTrack, pauseTrack, playTrack } from '@/api/spotifyPlayMusicAPI';
+import {
+  nextTrack,
+  pauseTrack,
+  playTrack,
+  previousTrack,
+  RandomPlayTrack,
+} from '@/api/spotifyPlayMusicAPI';
 import { PlayTrack } from '@/schema/type';
 import { useAuthStore } from '@/zustand/authStore';
 import { useCurrentTrackStore } from '@/zustand/useCurrentTrackStore';
@@ -129,6 +135,7 @@ function MusicPlayer() {
         {/* 셔플 버튼 */}
         <button
           aria-label="셔플 버튼"
+          onClick={() => RandomPlayTrack(String(accessToken), String(deviceId))}
           className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110"
         >
           <RxShuffle />
@@ -137,6 +144,7 @@ function MusicPlayer() {
         {/* 이전 곡 버튼 */}
         <button
           aria-label="이전 곡 버튼"
+          onClick={() => previousTrack(String(accessToken))}
           className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110"
         >
           <IoMdSkipBackward />
