@@ -48,12 +48,12 @@ function Profile() {
             >
               <div
                 id="profile-img"
-                className="rounded-full bg-gray-400 min-w-10 aspect-square text-gray-100 mr-1"
+                className="rounded-full bg-gray-400 min-w-8 max-w-8 aspect-square text-gray-100 mr-1 overflow-hidden"
               >
                 <img
                   src={baseURL + currentUser?.imgUrl}
                   alt=""
-                  className="aspect-square max-w-10 rounded-full bg-gray-400"
+                  className="w-full h-full object-cover bg-gray-400"
                 />
               </div>
               <div className="flex justify-between w-full">
@@ -72,14 +72,14 @@ function Profile() {
         ) : (
           <button
             id="profile"
-            className="flex items-center px-1 py-3 gap-x-2 mb-5"
+            className="flex items-center pl-2 py-3 gap-x-2 mb-5"
             onClick={() =>
               openModal({ element: <LogInModal />, backdrop: true })
             }
           >
             <div
               id="profile-img"
-              className="rounded-full bg-gray-400 min-w-8 aspect-square text-gray-100 "
+              className="rounded-full bg-gray-400 min-w-8 aspect-square text-gray-100"
             ></div>
 
             <span className="text-sm font-medium">로그인</span>
