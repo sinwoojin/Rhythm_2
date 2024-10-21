@@ -38,7 +38,7 @@ function PlaylistsPage() {
             <p className="mb-1 text-center">HIP-HOP</p>
             <div className="aspect-video w-[400px] transition-all overflow-hidden rounded-lg flex justify-center items-center">
               <img
-                src=""
+                src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fpng.pngtree.com%2Fpng-clipart%2F20191128%2Fourlarge%2Fpngtree-hiphop-hip-hop-color-gradient-theme-effect-creative-font-png-image_86092.jpg&type=a340"
                 alt="hip-hop 이미지"
                 className="object-cover hover:scale-125 duration-500"
               />
@@ -51,7 +51,7 @@ function PlaylistsPage() {
             <p className="mb-1 text-center">BAND</p>
             <div className="aspect-video w-[400px] transition-all overflow-hidden rounded-lg flex justify-center items-center">
               <img
-                src=""
+                src="https://media.rainpos.com/7370/50227.jpg"
                 alt="band 이미지"
                 className="object-cover hover:scale-125 duration-500"
               />
