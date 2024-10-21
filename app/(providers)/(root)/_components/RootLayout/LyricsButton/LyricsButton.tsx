@@ -1,9 +1,8 @@
-"use client";
+'use client';
 
-import LyricsModal from "@/app/(providers)/_components/LyricsModal";
-import { useModalStore } from "@/zustand/modalStore";
-import React from "react";
-import { MdOutlineLyrics } from "react-icons/md";
+import LyricsModal from '@/app/(providers)/_components/LyricsModal';
+import { useModalStore } from '@/zustand/modalStore';
+import { MdOutlineLyrics } from 'react-icons/md';
 
 function Lyrics() {
   const openModal = useModalStore((state) => state.openModal);
@@ -12,6 +11,7 @@ function Lyrics() {
   };
   return (
     <button
+      aria-label="가사 버튼"
       onClick={handleClickLyrics}
       className="text-gray-400 py-2 text-4xl transition-all duration-75 hover:text-white"
     >
