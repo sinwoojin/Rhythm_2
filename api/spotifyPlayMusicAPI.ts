@@ -1,3 +1,5 @@
+import { api } from './spotifyApi';
+
 /**
  * 노래 재생
  * @param uri
@@ -70,4 +72,51 @@ export const nextTrack = async (accessToken: string) => {
   } catch (error) {
     console.error('Error skipping to next track:', error);
   }
+};
+
+/**
+ * 이전 노래 재생
+ * @param accessToken
+ */
+export const previousTrack = async (accessToken: string) => {
+  if (!accessToken) return;
+  try {
+    await fetch(`https://api.spotify.com/v1/me/player/previous`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  } catch (error) {
+    console.error('Error skipping to previous track:', error);
+  }
+};
+
+/**
+ * 랜덤한 노래 재생
+ * @param accessToken
+ * @param deviceId
+ */
+export const RandomPlayTrack = async (
+  accessToken: string,
+  deviceId: string,
+) => {
+  if (!accessToken && !deviceId) return;
+
+  const playlists = await api.playlist.getPlaylists('4cRo44TavIHN54w46OqRVc');
+
+  const tracks = playlists?.tracks.items.map((item) => item.track);
+  const currentTrackUri = tracks?.map((item) => item.uri);
+
+  const getRandomTrack = (uris: string[]) => {
+    const randomIndex = Math.floor(Math.random() * uris.length);
+    return uris[randomIndex];
+  };
+
+  if (!currentTrackUri) return;
+
+  const randomUri = getRandomTrack(currentTrackUri);
+
+  await playTrack(randomUri, accessToken, deviceId);
 };
