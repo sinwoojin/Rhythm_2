@@ -3,16 +3,17 @@ import Button from '@/components/Button';
 import { User } from '@/schema/type';
 import { supabase } from '@/supabase/client';
 import { useFollowStore } from '@/zustand/followStore';
+import { useModalStore } from '@/zustand/modalStore';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 interface FollowModalProps {
-  onClose: () => void;
   userId: string; // 현재 프로필의 유저 ID
   modalType: 'followers' | 'following'; // 모달 타입 추가
 }
 
-const FollowModal = ({ onClose, userId, modalType }: FollowModalProps) => {
+const FollowModal = ({ userId, modalType }: FollowModalProps) => {
+  const closeModal = useModalStore((state) => state.closeModal);
   // 팔로워 목록 상태
   const [followers, setFollowers] = useState<User[]>([]);
 
@@ -111,7 +112,7 @@ const FollowModal = ({ onClose, userId, modalType }: FollowModalProps) => {
   return (
     <main
       className="bg-white/10 flex items-center justify-center fixed top-0 left-0 right-0 bottom-0 z-20"
-      onClick={onClose}
+      onClick={closeModal}
     >
       <div
         className="absolute top-[50%] left-[50%] w-[500px] h-[530px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white"
@@ -145,7 +146,7 @@ const FollowModal = ({ onClose, userId, modalType }: FollowModalProps) => {
               ))}
             </ul>
           )}
-          <Button className="mt-4 absolute bottom-10" onClick={onClose}>
+          <Button className="mt-4 absolute bottom-10" onClick={closeModal}>
             닫기
           </Button>
         </div>

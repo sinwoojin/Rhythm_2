@@ -3,30 +3,21 @@
 import Input from '@/components/Input';
 import { Database } from '@/database.types';
 import { supabase } from '@/supabase/client';
+import { useModalStore } from '@/zustand/modalStore';
 import { nanoid } from 'nanoid';
 import { ComponentProps, useEffect, useState } from 'react';
 
-interface EditModalProps {
+type EditModalProps = {
   id: string;
-  modal: boolean;
-  onClose: () => void;
-}
+};
 
-function EditModal(props: EditModalProps) {
-  // props
-  const id = props.id;
-  const modal = props.modal;
-  const onClose = props.onClose;
-
+function EditModal({ id }: EditModalProps) {
   // table에 들어있는 정보 가져오기, 지정하기
   const [userName, setUserName] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState<File | null>(null);
 
-  // 바깥영역 클릭시 나가짐
-  const handleToggleModal = () => {
-    onClose();
-  };
+  const closeModal = useModalStore((state) => state.closeModal);
 
   // 이미지 정보 가져오기
   const handleChangeFileInput: ComponentProps<'input'>['onChange'] = (e) => {
@@ -66,7 +57,7 @@ function EditModal(props: EditModalProps) {
       return alert('프로필 수정에 실패했습니다!...');
     } else {
       alert('프로필 수정에 성공했습니다!');
-      onClose();
+      closeModal;
     }
   };
 
@@ -84,16 +75,9 @@ function EditModal(props: EditModalProps) {
       }
     })();
   }, [id]);
-  console.log('image', image);
 
   return (
-    <>
-      {/* true때 보임 */}
-      {modal && (
-        <main
-          className="bg-white/10 flex items-center justify-center fixed top-0 left-0 right-0 bottom-0 z-20"
-          onClick={handleToggleModal}
-        >
+     <div>
           <div
             className="absolute top-[50%] left-[50%] w-[500px] h-[530px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white"
             onClick={(e) => e.stopPropagation()}
@@ -145,9 +129,7 @@ function EditModal(props: EditModalProps) {
               </button>
             </form>
           </div>
-        </main>
-      )}
-    </>
+        </div>
   );
 }
 
