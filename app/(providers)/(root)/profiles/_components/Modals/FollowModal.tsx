@@ -1,22 +1,18 @@
-import { api } from "@/api/spotifyApi";
-import Button from "@/components/Button";
-import { User } from "@/schema/type";
-import { supabase } from "@/supabase/client";
-import { useFollowStore } from "@/zustand/followStore";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { api } from '@/api/spotifyApi';
+import Button from '@/components/Button';
+import { User } from '@/schema/type';
+import { supabase } from '@/supabase/client';
+import { useFollowStore } from '@/zustand/followStore';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 interface FollowModalProps {
   onClose: () => void;
   userId: string; // 현재 프로필의 유저 ID
-  modalType: "followers" | "following"; // 모달 타입 추가
+  modalType: 'followers' | 'following'; // 모달 타입 추가
 }
 
-const FollowModal: React.FC<FollowModalProps> = ({
-  onClose,
-  userId,
-  modalType,
-}) => {
+const FollowModal = ({ onClose, userId, modalType }: FollowModalProps) => {
   // 팔로워 목록 상태
   const [followers, setFollowers] = useState<User[]>([]);
 
@@ -29,27 +25,27 @@ const FollowModal: React.FC<FollowModalProps> = ({
   const fetchFollowData = async () => {
     let followData;
 
-    if (modalType === "followers") {
+    if (modalType === 'followers') {
       // 팔로워 목록 가져오기
       const { data } = await supabase
-        .from("follow")
-        .select("follower")
-        .eq("following", userId);
+        .from('follow')
+        .select('follower')
+        .eq('following', userId);
       followData = data?.map((follow) => follow.follower) || [];
     } else {
       // 팔로잉 목록 가져오기
       const { data } = await supabase
-        .from("follow")
-        .select("following")
-        .eq("follower", userId);
+        .from('follow')
+        .select('following')
+        .eq('follower', userId);
       followData = data?.map((follow) => follow.following) || [];
     }
 
     // 팔로워, 팔로잉의 정보를 가져옴
     const { data: usersData } = await supabase
-      .from("users")
-      .select("*")
-      .in("id", followData);
+      .from('users')
+      .select('*')
+      .in('id', followData);
 
     setFollowers(usersData || []);
   };
@@ -67,7 +63,7 @@ const FollowModal: React.FC<FollowModalProps> = ({
 
     if (isFollowing === false) {
       // 팔로우하지 않은 경우 -> 팔로우 처리
-      await supabase.from("follow").insert({
+      await supabase.from('follow').insert({
         follower: userId,
         following: followId,
       });
@@ -76,10 +72,10 @@ const FollowModal: React.FC<FollowModalProps> = ({
     } else {
       // 이미 팔로우한 경우 -> 언팔로우 처리
       await supabase
-        .from("follow")
+        .from('follow')
         .delete()
-        .eq("follower", userId)
-        .eq("following", followId);
+        .eq('follower', userId)
+        .eq('following', followId);
       unFollow();
       alert(`${targetUserId}를 언팔로우 했습니다.`);
     }
@@ -100,9 +96,9 @@ const FollowModal: React.FC<FollowModalProps> = ({
 
       // 현재 팔로우 여부 확인하고 상태 지정
       const followUser = await supabase
-        .from("follow")
-        .select("*")
-        .eq("following", currentUser);
+        .from('follow')
+        .select('*')
+        .eq('following', currentUser);
 
       if (followUser.data!.length > 0) {
         unFollow();
@@ -123,13 +119,13 @@ const FollowModal: React.FC<FollowModalProps> = ({
       >
         <div className="bg-black rounded-xl p-10 w-full h-full">
           <h2 className="text-lg font-semibold mb-4">
-            {modalType === "followers" ? "팔로워 목록" : "팔로잉 목록"}
+            {modalType === 'followers' ? '팔로워 목록' : '팔로잉 목록'}
           </h2>
           {followers.length === 0 ? (
             <p>
-              {modalType === "followers"
-                ? "팔로워가 없습니다."
-                : "팔로잉이 없습니다."}
+              {modalType === 'followers'
+                ? '팔로워가 없습니다.'
+                : '팔로잉이 없습니다.'}
             </p>
           ) : (
             <ul>
@@ -143,7 +139,7 @@ const FollowModal: React.FC<FollowModalProps> = ({
                   </Link>
 
                   <Button onClick={() => handleToggleFollow(follower.id)}>
-                    {isFollowing ? "언팔로우" : "팔로우"}
+                    {isFollowing ? '언팔로우' : '팔로우'}
                   </Button>
                 </li>
               ))}
