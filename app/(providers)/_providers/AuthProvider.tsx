@@ -16,6 +16,7 @@ function AuthProvider({ children }: PropsWithChildren) {
   // 로그인 상태 확인, 로그인 정보 supabase에 넣기
   useEffect(() => {
     (async () => {
+      await supabase.auth.refreshSession();
       supabase.auth.onAuthStateChange((_event, session) => {
         if (session && session.provider_token) {
           window.localStorage.setItem(
