@@ -110,48 +110,43 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
   }, [userId, modalType]);
 
   return (
-    <main
-      className="bg-white/10 flex items-center justify-center fixed top-0 left-0 right-0 bottom-0 z-20"
-      onClick={closeModal}
+    <div
+      className="absolute top-[50%] left-[50%] w-[500px] h-[530px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white"
+      onClick={(e) => e.stopPropagation()}
     >
-      <div
-        className="absolute top-[50%] left-[50%] w-[500px] h-[530px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="bg-black rounded-xl p-10 w-full h-full">
-          <h2 className="text-lg font-semibold mb-4">
-            {modalType === 'followers' ? '팔로워 목록' : '팔로잉 목록'}
-          </h2>
-          {followers.length === 0 ? (
-            <p>
-              {modalType === 'followers'
-                ? '팔로워가 없습니다.'
-                : '팔로잉이 없습니다.'}
-            </p>
-          ) : (
-            <ul>
-              {followers.map((follower) => (
-                <li
-                  key={follower.id}
-                  className="flex justify-between items-center py-2"
-                >
-                  <Link href={`/profile-detail/${follower.id}`}>
-                    <span>{follower.userName}</span>
-                  </Link>
+      <div className="bg-black rounded-xl p-10 w-full h-full">
+        <h2 className="text-lg font-semibold mb-4">
+          {modalType === 'followers' ? '팔로워 목록' : '팔로잉 목록'}
+        </h2>
+        {followers.length === 0 ? (
+          <p>
+            {modalType === 'followers'
+              ? '팔로워가 없습니다.'
+              : '팔로잉이 없습니다.'}
+          </p>
+        ) : (
+          <ul>
+            {followers.map((follower) => (
+              <li
+                key={follower.id}
+                className="flex justify-between items-center py-2"
+              >
+                <Link href={`/profile-detail/${follower.id}`}>
+                  <span>{follower.userName}</span>
+                </Link>
 
-                  <Button onClick={() => handleToggleFollow(follower.id)}>
-                    {isFollowing ? '언팔로우' : '팔로우'}
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          )}
-          <Button className="mt-4 absolute bottom-10" onClick={closeModal}>
-            닫기
-          </Button>
-        </div>
+                <Button onClick={() => handleToggleFollow(follower.id)}>
+                  {isFollowing ? '언팔로우' : '팔로우'}
+                </Button>
+              </li>
+            ))}
+          </ul>
+        )}
+        <Button className="mt-4 absolute bottom-10" onClick={closeModal}>
+          닫기
+        </Button>
       </div>
-    </main>
+    </div>
   );
 };
 
