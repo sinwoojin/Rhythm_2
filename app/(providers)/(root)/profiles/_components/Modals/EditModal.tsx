@@ -84,8 +84,6 @@ function EditModal(props: EditModalProps) {
       }
     })();
   }, [id]);
-  console.log('image', image);
-
   return (
     <>
       {/* true때 보임 */}
