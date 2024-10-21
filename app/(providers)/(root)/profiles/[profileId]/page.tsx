@@ -8,6 +8,7 @@ import { User } from '@/schema/type';
 import { supabase } from '@/supabase/client';
 import { useAuthStore } from '@/zustand/authStore';
 import { useFollowStore } from '@/zustand/followStore';
+import { useModalStore } from '@/zustand/modalStore';
 import { useEffect, useState } from 'react';
 import Page from '../../_components/Page/Page';
 import EditModal from '../_components/Modals/EditModal';
@@ -25,12 +26,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   const [user, setUser] = useState<User | null>(null);
   const currentUser = useAuthStore((state) => state.currentUser);
 
-  // 수정, 팔로우 모달 상태 State
-  const [isEditModal, setIsEditModal] = useState(false);
-  const [isFollowModal, setIsFollowModal] = useState(false);
-  const [modalType, setModalType] = useState<'followers' | 'following' | null>(
-    null,
-  );
+  const openModal = useModalStore((state) => state.openModal);
 
   // 로그인 상태에 따라 보여주는 버튼의 State
   const [isButtonVisibility, setIsButtonVisibility] = useState(false);
@@ -46,13 +42,15 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
 
   // 모달 관련 핸들러
   const handleClickToggleEditModal = () => {
-    setIsEditModal((prev) => !prev);
+    openModal({ element: <EditModal id={user!.id} />, backdrop: true });
     userUpdate(currentUser!.id);
   };
 
   const handleClickToggleFollowModal = (type: 'followers' | 'following') => {
-    setModalType(type); // 클릭한 버튼에 따라 모달 타입 설정
-    setIsFollowModal((prev) => !prev);
+    openModal({
+      element: <FollowModal modalType={type} userId={user!.id} />,
+      backdrop: true,
+    });
   };
 
   // 팔로워, 팔로잉 수 가져오는 함수
@@ -165,25 +163,6 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
 
   return (
     <Page>
-      {isEditModal && (
-        <EditModal
-          id={profileId}
-          modal={isEditModal}
-          onClose={handleClickToggleEditModal}
-        />
-      )}
-
-      {isFollowModal && (
-        <FollowModal
-          onClose={() => {
-            handleClickToggleFollowModal(
-              modalType === 'followers' ? 'followers' : 'following',
-            );
-          }}
-          userId={profileId}
-          modalType={modalType!}
-        />
-      )}
       <div className="grid grid-cols-5 gap-x-10 place-items-center border-b border-white/20 pb-16 mb-10">
         <div className="h-[162px] rounded-full aspect-square bg-white opacity-90 overflow-hidden">
           <img

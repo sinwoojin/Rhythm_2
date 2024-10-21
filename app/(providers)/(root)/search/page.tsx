@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 
 import AlbumsLayout from '../_components/AlbumsLayout/AlbumsLayout';
 import AritistsLayout from '../_components/AritistsLayout/AritstsLayout';
-import MusicsLayout from '../_components/MusicsLayout/MusicLayout';
+import MusicsLayout from '../_components/MusicsLayout/MusicsLayout';
 import Page from '../_components/Page/Page';
-import Playlists from '../_components/Playlists/Playlists';
+import PlaylistsLayout from '../_components/PlaylistsLayout/PlaylistsLayout';
 
 function SearchPage() {
   /* input에 검색한 내용을 받아오는 코드 */
@@ -91,7 +91,7 @@ function SearchPage() {
         <MusicsLayout title="Musics" tracks={tracks} />
         <AritistsLayout title="Artists" artists={artists} />
         <AlbumsLayout title="Albums" albums={albums} />
-        <Playlists title="Playlists" playlists={playlists} />
+        <PlaylistsLayout title="Playlists" playlists={playlists} />
       </section>
     </Page>
   );

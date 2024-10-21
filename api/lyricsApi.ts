@@ -62,8 +62,10 @@ const getSpotifyLyricsUrl = async (trackId: string) => {
 
     if (trackInfo) {
       // 2. Genius에서 가사 검색하기
-      const trackName = trackInfo.title.split('-')[0];
-      const trackArtist = trackInfo.artist;
+      const trackName = trackInfo.title.split('-')[0].split(' (')[0];
+      const featuring = trackInfo.title.match(/\(with (.+?)\)/)?.[1] || '';
+      const trackArtist = trackInfo.artist + ' & ' + featuring;
+      console.log(trackArtist);
       const lyricsUrl = await fetchLyricsFromGenius(trackName, trackArtist);
 
       if (lyricsUrl) {
@@ -91,7 +93,13 @@ const scrapeLyricsFromGenius = async (
 
     const $ = cheerio.load(html);
 
-    const lyrics = $('.lyrics').text() || $('[data-lyrics-container]').text();
+    const lyrics =
+      ($('.lyrics')?.text() ||
+        $('[data-lyrics-container]')
+          ?.html()
+          ?.replace(/<(?:.|\n)*?>/gm, '\n')
+          ?.replace(/\n\s*\n/g, '\n')) ??
+      '';
 
     if (lyrics) {
       return lyrics.trim();
