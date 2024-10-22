@@ -15,7 +15,7 @@ function MusicsLayout({ tracks, title }: ChartListProps) {
       <div className="[&+&]:mt-20 relative max-w-full">
         <PrevNextButton />
         <h3 className="text-2xl font-bold mb-6">{title}</h3>
-        {tracks.length > 0 ? (
+        {tracks && tracks.length > 0 ? (
           <ul className="flex gap-x-4 overflow-hidden scrollbar-hide max-w-full">
             {tracks.map((track) => (
               <li
