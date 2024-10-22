@@ -1,4 +1,5 @@
 import { PlayTrack } from '@/schema/type';
+import { toast } from 'react-toastify';
 import { api } from './spotifyApi';
 
 /**
@@ -19,7 +20,7 @@ export const fetchAccessToken = async (
       if (storedToken) setAccessToken(storedToken);
     } catch (error) {
       console.error('Access Token 가져오기 오류:', error);
-      alert(
+      toast.error(
         'Access Token을 가져오는 중 오류가 발생했습니다. 다시 시도해 주세요.',
       );
     }

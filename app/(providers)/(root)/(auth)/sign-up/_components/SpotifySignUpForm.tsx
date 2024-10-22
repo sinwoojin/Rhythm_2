@@ -18,9 +18,9 @@ function SpotifyLogInPage() {
     });
 
     if (error) {
-      console.error('Error with Spotify login:', error.message);
+      toast.error(error.message);
     }
-    toast('🦄 프리미엄 계정으로 로그인 하셨습니다!', {
+    toast.success(' 프리미엄 계정으로 로그인 하셨습니다!', {
       position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
