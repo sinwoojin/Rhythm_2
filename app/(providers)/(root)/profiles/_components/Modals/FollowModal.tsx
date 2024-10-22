@@ -6,6 +6,7 @@ import { useFollowStore } from '@/zustand/followStore';
 import { useModalStore } from '@/zustand/modalStore';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface FollowModalProps {
   userId: string; // 현재 프로필의 유저 ID
@@ -73,7 +74,7 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
         following: followId,
       });
       follow();
-      alert(`${targetUserId}를 팔로우 했습니다.`);
+      toast.success(`${targetUserId}를 팔로우 했습니다.`);
     } else {
       // 이미 팔로우한 경우 -> 언팔로우 처리
       await supabase
@@ -82,7 +83,7 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
         .eq('follower', userId)
         .eq('following', followId);
       unFollow();
-      alert(`${targetUserId}를 언팔로우 했습니다.`);
+      toast.success(`${targetUserId}를 언팔로우 했습니다.`);
     }
 
     // 데이터 업데이트

@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import AlbumsLayout from '../_components/Layouts/AlbumsLayout/AlbumsLayout';
-import ArtistsLayout from '../_components/Layouts/ArtistsLayout/ArtistsLayout';
+import ArtistsLayout from '../_components/Layouts/AritistsLayout/AritstsLayout';
 import MusicsLayout from '../_components/Layouts/MusicsLayout/MusicsLayout';
 import PlaylistsLayout from '../_components/Layouts/PlaylistsLayout/PlaylistsLayout';
 import Page from '../_components/Page/Page';
