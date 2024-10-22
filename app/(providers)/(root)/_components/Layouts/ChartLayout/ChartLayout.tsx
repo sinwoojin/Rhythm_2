@@ -1,11 +1,9 @@
 import { Track } from '@/schema/type';
 import Link from 'next/link';
-
 interface ChartProps {
   tracks: Track[];
   title: string;
 }
-
 function ChartLayout({ title, tracks }: ChartProps) {
   return (
     <div className="[&+&]:mt-16 py-6 px-6">
@@ -40,5 +38,4 @@ function ChartLayout({ title, tracks }: ChartProps) {
     </div>
   );
 }
-
 export default ChartLayout;

@@ -39,10 +39,50 @@ const createPlaylists = async (
         error.response?.data?.error?.message || error.message
       }`,
     );
-    throw error; // 에러를 다시 던져 상위에서 처리하도록 합니다.
+    throw error;
+  }
+};
+
+/**
+ *플레이 리스트에 트랙을 추가하는 api
+ * @param uri 트랙에 uri
+ * @param accessToken 사용자의 accessToken
+ * @param playlistId 사용자의 플레이 리스트 명
+ * @returns
+ */
+const addTrackToPlaylists = async (
+  uri: string,
+  accessToken: string,
+  playlistId: string,
+) => {
+  try {
+    // Spotify API에 플레이리스트 생성 요청
+    const response = await spotifyAPI.post(
+      `playlists/${playlistId}/tracks`,
+      {
+        uris: uri,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error: any) {
+    // 에러 메시지를 명확히 출력
+    console.error(
+      `플레이리스트 생성 중 오류 발생: ${
+        error.response?.data?.error?.message || error.message
+      }`,
+    );
+    throw error;
   }
 };
 
 export const userPlaylistApi = {
   createPlaylists,
+  addTrackToPlaylists,
 };
