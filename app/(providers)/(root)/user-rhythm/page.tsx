@@ -3,62 +3,70 @@ import Page from '../_components/Page/Page';
 
 function PlaylistsPage() {
   return (
-    <Page>
-      <h2 className="text-4xl font-bold mb-10 text-center">User Rhythm!</h2>
-      <section className="grid grid-cols-2 grid-rows-2 gap-x-20 gap-y-10">
-        {/* 각 블록을 클릭하면 해당 카테고리의 플레이리스트가 모여서 보이게 (이미지로 설정)*/}
-
-        <div className="flex flex-wrap items-center justify-end">
-          <Link href={'/user-rhythm/k-pop'}>
-            <p className="mb-1 w-full text-center">K-POP</p>
-            <div className="aspect-video w-[300px] transition-all overflow-hidden rounded-lg flex justify-center items-center">
+    <Page title="RHYTHM">
+      <section className="w-full h-[480px] grid grid-rows-2 grid-flow-col gap-6 auto-cols-fr">
+        <Link
+          href={`user-rhythm/k-pop?imgUrl=https://cf.asiaartistawards.com/news/21/2024/05/2024051011141860321_1.jpg`}
+        >
+          <div className="w-full h-full rounded-md overflow-hidden bg-[url('https://cf.asiaartistawards.com/news/21/2024/05/2024051011141860321_1.jpg')] group grayscale-[20%] relative">
+            <p className="opacity-0 group-hover:opacity-100 absolute z-20 text-8xl font-thin top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-200">
+              K-POP
+            </p>
+            <div className="object-contain backdrop-blur-sm backdrop-brightness-90 w-full h-full absolute group-hover:backdrop-grayscale-[100%] group-hover:backdrop-brightness-50 group-active:backdrop-brightness-[40%] transition-all duration-200"></div>
+            <div className="h-full aspect-[4/3] absolute left-1/2 -translate-x-1/2 overflow-hidden">
               <img
-                src="https://www.shutterstock.com/ko/blog/wp-content/uploads/sites/17/2023/08/shutterstock_1814570624.jpg?w=1200&h=1073&crop=1"
-                alt="kpop 이미지"
-                className="w-full h-full object-cover hover:scale-125 duration-500"
+                className="w-full h-full object-cover group-hover:grayscale-[100%] group-hover:brightness-50 transition-all duration-200"
+                src="https://cf.asiaartistawards.com/news/21/2024/05/2024051011141860321_1.jpg"
+                alt="https://cf.asiaartistawards.com/news/21/2024/05/2024051011141860321_1.jpg"
               />
             </div>
-          </Link>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-start">
-          <Link href={'/user-rhythm/j-pop'}>
-            <p className="mb-1 text-center">J-POP</p>
-            <div className="aspect-video w-[300px] transition-all overflow-hidden rounded-lg flex justify-center items-center">
+          </div>
+        </Link>
+        <Link href="user-rhythm/pop">
+          <div className="w-full h-full rounded-md overflow-hidden bg-[url('https://image.yes24.com/goods/110691746/XL')] group grayscale-[20%] relative">
+            <p className="opacity-0 group-hover:opacity-100 absolute z-20 text-8xl font-thin top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-200">
+              POP
+            </p>
+            <div className="object-contain backdrop-blur-sm backdrop-brightness-90 w-full h-full absolute group-hover:backdrop-grayscale-[100%] group-hover:backdrop-brightness-50 group-active:backdrop-brightness-[40%] transition-all duration-200"></div>
+            <div className="h-full aspect-[4/3] absolute left-1/2 -translate-x-1/2 overflow-hidden">
               <img
-                src="https://cnqnq6x1162u.objectstorage.ap-seoul-1.oci.customer-oci.com/p/4d_DJXYmI0ejd8avuhAILIIpyZqnmHvpQPxB3i9g9MKd65-abwpaD-tq-jraNd1k/n/cnqnq6x1162u/b/machugi-image/o/2362b569-1560-4c0a-9698-dc4840e8cd61?alt=media"
-                alt="jpop 이미지"
-                className="w-full h-full object-cover hover:scale-125 duration-500"
+                className="w-full h-full object-cover group-hover:grayscale-[100%] group-hover:brightness-50 transition-all duration-200"
+                src="https://image.yes24.com/goods/110691746/XL"
+                alt="https://image.yes24.com/goods/110691746/XL"
               />
             </div>
-          </Link>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-end">
-          <Link href={'/user-rhythm/hip-pop'}>
-            <p className="mb-1 text-center">HIP-HOP</p>
-            <div className="aspect-video w-[300px] transition-all overflow-hidden rounded-lg flex justify-center items-center">
+          </div>
+        </Link>
+        <Link href="user-rhythm/j-pop">
+          <div className="w-full h-full rounded-md overflow-hidden bg-[url('https://i.namu.wiki/i/Ql3pHzdIzbAQm50q4rEtjY8AYskA4BteBMo3ly63UMJTeUBxZZGxSBZ4VEaKcFGpuV3oCXmdUK55SgwVimMWVN8e1oZ5TpZzCqoQRXLBaOavSKMGOo5GFjXW_IiRmHUFeNf7RLrn2psiriosIplH8Q.webp')] group grayscale-[20%] relative">
+            <p className="opacity-0 group-hover:opacity-100 absolute z-20 text-8xl font-thin top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-200">
+              J-POP
+            </p>
+            <div className="object-contain backdrop-blur-sm backdrop-brightness-90 w-full h-full absolute group-hover:backdrop-grayscale-[100%] group-hover:backdrop-brightness-50 group-active:backdrop-brightness-[40%] transition-all duration-200"></div>
+            <div className="h-full aspect-[4/3] absolute left-1/2 -translate-x-1/2 overflow-hidden">
               <img
-                src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fpng.pngtree.com%2Fpng-clipart%2F20191128%2Fourlarge%2Fpngtree-hiphop-hip-hop-color-gradient-theme-effect-creative-font-png-image_86092.jpg&type=a340"
-                alt="hip-hop 이미지"
-                className="w-full h-full object-cover hover:scale-125 duration-500"
+                className="w-full h-full object-cover group-hover:grayscale-[100%] group-hover:brightness-50 transition-all duration-200"
+                src="https://i.namu.wiki/i/Ql3pHzdIzbAQm50q4rEtjY8AYskA4BteBMo3ly63UMJTeUBxZZGxSBZ4VEaKcFGpuV3oCXmdUK55SgwVimMWVN8e1oZ5TpZzCqoQRXLBaOavSKMGOo5GFjXW_IiRmHUFeNf7RLrn2psiriosIplH8Q.webp"
+                alt="https://i.namu.wiki/i/Ql3pHzdIzbAQm50q4rEtjY8AYskA4BteBMo3ly63UMJTeUBxZZGxSBZ4VEaKcFGpuV3oCXmdUK55SgwVimMWVN8e1oZ5TpZzCqoQRXLBaOavSKMGOo5GFjXW_IiRmHUFeNf7RLrn2psiriosIplH8Q.webp"
               />
             </div>
-          </Link>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-start">
-          <Link href={'/user-rhythm/band'}>
-            <p className="mb-1 text-center">BAND</p>
-            <div className="aspect-video w-[300px] transition-all overflow-hidden rounded-lg flex justify-center items-center">
+          </div>
+        </Link>
+        <Link href="user-rhythm/ballade">
+          <div className="w-full h-full rounded-md overflow-hidden bg-[url('https://img.vogue.co.kr/vogue/2021/06/style_60d57fc23f951-930x620.jpeg')] group grayscale-[20%] relative">
+            <p className="opacity-0 group-hover:opacity-100 absolute z-20 text-8xl font-thin top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-200">
+              BALLADE
+            </p>
+            <div className="object-contain backdrop-blur-sm backdrop-brightness-90 w-full h-full absolute group-hover:backdrop-grayscale-[100%] group-hover:backdrop-brightness-50 group-active:backdrop-brightness-[40%] transition-all duration-200"></div>
+            <div className="h-full aspect-[4/3] absolute left-1/2 -translate-x-1/2 overflow-hidden">
               <img
-                src="https://media.rainpos.com/7370/50227.jpg"
-                alt="band 이미지"
-                className="w-full h-full object-cover hover:scale-125 duration-500"
+                className="w-full h-full object-cover group-hover:grayscale-[100%] group-hover:brightness-50 transition-all duration-200"
+                src="https://img.vogue.co.kr/vogue/2021/06/style_60d57fc23f951-930x620.jpeg"
+                alt="https://img.vogue.co.kr/vogue/2021/06/style_60d57fc23f951-930x620.jpeg"
               />
             </div>
-          </Link>
-        </div>
+          </div>
+        </Link>
       </section>
     </Page>
   );
