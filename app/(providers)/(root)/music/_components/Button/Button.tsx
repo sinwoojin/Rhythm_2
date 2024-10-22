@@ -1,6 +1,12 @@
 'use client';
 
-import { pauseTrack, playTrack } from '@/api/spotifyPlayMusicAPI';
+import { api } from '@/api/spotifyApi';
+import {
+  fetchAccessToken,
+  pauseTrack,
+  playTrack,
+  spotifySDKSetting,
+} from '@/api/spotifyPlayMusicAPI';
 import { Track } from '@/schema/type';
 import { useCurrentTrackStore } from '@/zustand/useCurrentTrackStore';
 import { useEffect, useState } from 'react';
@@ -31,56 +37,20 @@ function PlayButton(props: PlayButtonProps) {
     playTrack(String(trackUri), String(accessToken), String(deviceId));
   };
 
-  // 현재 토큰 불러오기
+  // 장치 설정, 현재 토큰 불러오기
   useEffect(() => {
-    const fetchAccessToken = async () => {
-      try {
-        const storedToken = window.localStorage.getItem(
-          'spotify_provider_token',
-        ); //토큰을 localStorage에서 가져오는 함수
-        if (storedToken) setAccessToken(storedToken);
-      } catch (error) {
-        console.error('Access Token 가져오기 오류:', error);
-        alert(
-          'Access Token을 가져오는 중 오류가 발생했습니다. 다시 시도해 주세요.',
-        );
-      }
-    };
-    fetchAccessToken();
-  }, []);
+    (async () => {
+      const user = await api.getUser.getUser();
+      const currentProvider = user?.app_metadata.provider;
 
-  // 장치 설정
-  useEffect(() => {
+      if (currentProvider === 'spotify') {
+        fetchAccessToken(setAccessToken);
+      }
+    })();
+
     if (!accessToken) return;
 
-    const script = document.createElement('script');
-    script.src = 'https://sdk.scdn.co/spotify-player.js';
-    document.body.appendChild(script);
-
-    window.onSpotifyWebPlaybackSDKReady = () => {
-      const player = new window.Spotify.Player({
-        name: 'Web Playback SDK',
-        getOAuthToken: (cb) => {
-          cb(accessToken!);
-        },
-        volume: 0.5,
-      });
-
-      player.addListener('ready', ({ device_id }) => {
-        setDeviceId(device_id);
-      });
-
-      player.addListener('player_state_changed', (state) => {
-        if (!state) return;
-        setPaused(state.paused);
-      });
-
-      player.connect();
-    };
-
-    return () => {
-      document.body.removeChild(script);
-    };
+    spotifySDKSetting({ accessToken, setDeviceId, setPaused });
   }, [accessToken]);
 
   return (

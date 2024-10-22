@@ -8,6 +8,8 @@ type useCurrentTrackStoreState = {
   // 노래 url (30초 미리듣기) 저장
   previewURL: string;
   setPreviewURL: (previewURL: string) => void;
+
+  
 };
 
 /**
