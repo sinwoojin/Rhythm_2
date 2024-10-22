@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import { Track } from '@/schema/type';
 import Link from 'next/link';
 
