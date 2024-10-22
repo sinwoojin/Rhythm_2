@@ -65,7 +65,6 @@ const getSpotifyLyricsUrl = async (trackId: string) => {
       const trackName = trackInfo.title.split('-')[0].split(' (')[0];
       const featuring = trackInfo.title.match(/\(with (.+?)\)/)?.[1] || '';
       const trackArtist = trackInfo.artist + ' & ' + featuring;
-      console.log(trackArtist);
       const lyricsUrl = await fetchLyricsFromGenius(trackName, trackArtist);
 
       if (lyricsUrl) {

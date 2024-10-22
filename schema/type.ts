@@ -66,6 +66,24 @@ export type User = {
 };
 
 /**
+ * 카테고리 타입
+ */
+export type Category = {
+  href: string;
+  items: {
+    icons: {
+      url: string;
+    }[];
+    id: string;
+    name: string;
+  }[];
+  limit: string;
+  next: string;
+  offset: number;
+  total: number;
+};
+
+/**
  * 재생중인 노래 타입
  */
 export type PlayTrack = {

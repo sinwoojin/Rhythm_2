@@ -3,10 +3,11 @@ import getUserApi from './getUser';
 import { lyricsApi } from './lyricsApi';
 import { albumApi } from './spotifyAlbumApi';
 import { artistsApi } from './spotifyArtistsApi';
-import { userPlaylistApi } from './spotifyCreatePlaylistApi';
+import { categoriesApi } from './spotifyCategoriesApi';
 import { playlistApi } from './spotifyPlaylistApi';
 import { searchItemsApi } from './spotifySearch';
 import { tracksApi } from './spotifyTrackApi';
+import { userPlaylistApi } from './spotifyUserPlaylist';
 
 export const spotifyAPI = axios.create({
   baseURL: 'https://api.spotify.com/v1/',
@@ -20,4 +21,5 @@ export const api = {
   getUser: getUserApi,
   userPlay: userPlaylistApi,
   lyrics: lyricsApi,
+  category: categoriesApi,
 };

@@ -19,7 +19,6 @@ function CreatePlayListModal() {
 
   const closeModal = useModalStore((state) => state.closeModal);
   const currentUser = useAuthStore((state) => state.currentUser);
-  console.log(currentUser);
 
   useEffect(() => {
     const fetchAccessToken = async () => {
