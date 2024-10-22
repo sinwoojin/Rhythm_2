@@ -5,6 +5,7 @@ import { useModalStore } from '@/zustand/modalStore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ComponentProps, useState } from 'react';
+import { Bounce, toast } from 'react-toastify';
 import SpotifyLogInPage from '../(root)/(auth)/sign-up/_components/SpotifySignUpForm';
 
 function LogInModal() {
@@ -23,6 +24,22 @@ function LogInModal() {
     closeModal();
   };
 
+  const notify = () =>
+    toast(
+      '🦄  일반 계정으로 로그인 하셨습니다. 노래 재생 및 플레이 리스트 만들기 기능이 제한됩니다',
+      {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      },
+    );
+
   // 로그인 버튼
   const handleSubmitSignUpButton: ComponentProps<'form'>['onSubmit'] = async (
     e,
@@ -37,14 +54,12 @@ function LogInModal() {
     const result = await supabase.auth.signInWithPassword(data);
 
     if (!result.data.user) return alert('회원 정보가 없습니다!');
-    alert('환영합니다!');
 
-    // const authorizeUrl = getAuthorizeUrl();
-    // window.location.href = authorizeUrl;
+    notify();
 
     closeModal();
 
-    router.push('/');
+    router.push('/today');
   };
 
   return (

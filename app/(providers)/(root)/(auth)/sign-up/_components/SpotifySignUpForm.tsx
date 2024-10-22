@@ -3,6 +3,7 @@
 import Button from '@/components/Button';
 import { supabase } from '@/supabase/client';
 import { FaSpotify } from 'react-icons/fa';
+import { Bounce, toast } from 'react-toastify';
 
 function SpotifyLogInPage() {
   const handleClickSpotifyLogIn = async () => {
@@ -19,6 +20,17 @@ function SpotifyLogInPage() {
     if (error) {
       console.error('Error with Spotify login:', error.message);
     }
+    toast('🦄 프리미엄 계정으로 로그인 하셨습니다!', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+      transition: Bounce,
+    });
   };
 
   return (

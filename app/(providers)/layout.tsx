@@ -1,7 +1,8 @@
 'use client';
 import { PropsWithChildren } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AuthProvider from './_providers/AuthProvider';
-import LogInInfoProvider from './_providers/LogInInfoProvider';
 import ModalProvider from './_providers/ModalProvider';
 import TanstackQueryProvider from './_providers/TanStackQueryProvider';
 
@@ -10,7 +11,8 @@ function ProvidersLayout({ children }: PropsWithChildren) {
     <TanstackQueryProvider>
       <ModalProvider>
         <AuthProvider>
-          <LogInInfoProvider>{children}</LogInInfoProvider>
+          <ToastContainer />
+          {children}
         </AuthProvider>
       </ModalProvider>
     </TanstackQueryProvider>
