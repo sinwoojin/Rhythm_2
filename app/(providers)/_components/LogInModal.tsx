@@ -35,7 +35,7 @@ function LogInModal() {
   );
 
   const notify = () =>
-    toast.success(toastComment, {
+    toast.info(toastComment, {
       position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
