@@ -18,6 +18,7 @@ function EditModal({ id, userUpdate }: EditModalProps) {
   const [userName, setUserName] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState<File | null>(null);
+  const [previewProfile, setPreviewProfile] = useState<string | null>('');
 
   const closeModal = useModalStore((state) => state.closeModal);
 
@@ -25,12 +26,15 @@ function EditModal({ id, userUpdate }: EditModalProps) {
   const handleChangeFileInput: ComponentProps<'input'>['onChange'] = (e) => {
     const files = e.target.files;
 
-    if (!files) return;
-    if (files.length === 0) return setImage(null);
+    if (!files || files.length === 0) {
+      return setImage(null); // 파일이 없을 때 처리
+    }
 
-    const file = files[0];
-    console.log(file);
-    setImage(file);
+    const file = files[0]; // 첫 번째 파일 가져오기
+    const previewProfile = URL.createObjectURL(file); // 첫 번째 파일로 URL 생성
+
+    setImage(file); // 파일 상태 저장
+    setPreviewProfile(previewProfile); // 미리보기 URL 저장
   };
 
   // 글 수정하기
@@ -80,9 +84,11 @@ function EditModal({ id, userUpdate }: EditModalProps) {
     })();
   }, [id]);
 
+  console.log('previewProfile', previewProfile);
+
   return (
     <div
-      className="absolute top-[50%] left-[50%] w-[700px] h-[530px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white"
+      className="absolute top-[50%] left-[50%] w-[700px] h-[500px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white"
       onClick={(e) => e.stopPropagation()}
     >
       <h2 className="text-center mt-10 font-semibold text-3xl mb-4">
@@ -92,18 +98,17 @@ function EditModal({ id, userUpdate }: EditModalProps) {
         className="flex items-center justify-center  gap-y-3  flex-wrap"
         onSubmit={handleSubmitModifyDeal}
       >
-        <section className="flex w-2/3 gap-x-4">
-          <div className="relative flex w-2/3 text-center gap-y-3 group">
+        <section className="flex w-2/3 gap-x-6 items-center">
+          <div className="relative h-full flex w-2/3 text-center gap-y-3 group aspect-square">
             <input
               className="w-0 h-0 p-0 overflow-hidden border border-0 absolute"
               type="file"
               id="profileImg"
-              onChange={handleChangeFileInput}
+              onChange={(e) => handleChangeFileInput(e)}
             />
             <img
-              src={''}
-              alt={image?.name}
-              className="z-0 w-full absolute top-0 aspect-square rounded-full object-cover group:hover"
+              src={previewProfile!}
+              className="z-0 w-full h-full absolute top-0  rounded-full object-cover group-hover:brightness-75"
             />
             <label
               htmlFor="profileImg"
@@ -118,7 +123,7 @@ function EditModal({ id, userUpdate }: EditModalProps) {
           <div className="flex flex-col w-full">
             <label htmlFor="userName">유저 이름</label>
             <Input
-              className="mb-4"
+              className="mb-4 mt-2"
               size={'large'}
               padding={'md'}
               id="userName"
@@ -128,6 +133,7 @@ function EditModal({ id, userUpdate }: EditModalProps) {
 
             <label htmlFor="content">소개글</label>
             <Input
+              className="mt-2"
               size={'large'}
               padding={'md'}
               id="content"
