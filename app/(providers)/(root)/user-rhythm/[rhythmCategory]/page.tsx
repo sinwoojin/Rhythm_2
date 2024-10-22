@@ -1,18 +1,30 @@
-import Page from "../../_components/Page/Page";
-import PlayLists from "../_components/Lists/Lists";
+'use client';
+import { useSearchParams } from 'next/navigation';
+import Page from '../../_components/Page/Page';
 
 interface PlayListPageProps {
   params: {
-    category: string;
+    rhythmCategory: string;
   };
 }
 
-function playListPage({ params: { category } }: PlayListPageProps) {
+function PlayListPage({ params: { rhythmCategory } }: PlayListPageProps) {
+  const searchParams = useSearchParams();
+  const imgUrl = searchParams.get('imgUrl');
+
+  console.log('Image URL:', imgUrl); // URL 출력 확인
+
   return (
-    <Page title={category}>
-      <PlayLists />
+    <Page title={rhythmCategory}>
+      <div className="rounded-md overflow-hidden">
+        <div
+          className="max-h-[300px] overflow-hidden bg-fixed"
+          style={{ backgroundImage: `url(${imgUrl})` }} // 동적 URL 설정
+        ></div>
+        <div className="min-h-screen"></div>
+      </div>
     </Page>
   );
 }
 
-export default playListPage;
+export default PlayListPage;
