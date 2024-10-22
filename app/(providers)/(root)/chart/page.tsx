@@ -1,5 +1,6 @@
 import { api } from '@/api/spotifyApi';
-import ChartLayout from '../_components/layouts/ChartLayout/ChartLayout';
+
+import ChartLayout from '../_components/Layouts/ChartLayout/ChartLayout';
 import Page from '../_components/Page/Page';
 
 const TOP_100_KOREA = '6kbzPEHj3uMPRFsR3v6xzE';

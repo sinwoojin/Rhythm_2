@@ -4,11 +4,11 @@ import { api } from '@/api/spotifyApi';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import AlbumsLayout from '../_components/layouts/AlbumsLayout/AlbumsLayout';
-import AritistsLayout from '../_components/layouts/AritistsLayout/AritstsLayout';
-import MusicsLayout from '../_components/layouts/MusicsLayout/MusicsLayout';
+import AlbumsLayout from '../_components/Layouts/AlbumsLayout/AlbumsLayout';
+import ArtistsLayout from '../_components/Layouts/AritistsLayout/AritstsLayout';
+import PlaylistsLayout from '../_components/Layouts/PlaylistsLayout/PlaylistsLayout';
 import Page from '../_components/Page/Page';
-import PlaylistsLayout from '../_components/layouts/PlaylistsLayout/PlaylistsLayout';
+import MusicsLayout from '../_components/layouts/MusicsLayout/MusicsLayout';
 
 function SearchPage() {
   /* input에 검색한 내용을 받아오는 코드 */
@@ -89,7 +89,7 @@ function SearchPage() {
     <Page title="Search">
       <section className="flex flex-wrap gap-y-10">
         <MusicsLayout title="Musics" tracks={tracks} />
-        <AritistsLayout title="Artists" artists={artists} />
+        <ArtistsLayout title="Artists" artists={artists} />
         <AlbumsLayout title="Albums" albums={albums} />
         <PlaylistsLayout title="Playlists" playlists={playlists} />
       </section>
