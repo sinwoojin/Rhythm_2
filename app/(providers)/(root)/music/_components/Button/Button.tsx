@@ -1,6 +1,5 @@
 'use client';
 
-import { api } from '@/api/spotifyApi';
 import {
   fetchAccessToken,
   pauseTrack,
@@ -40,17 +39,16 @@ function PlayButton(props: PlayButtonProps) {
   // 장치 설정, 현재 토큰 불러오기
   useEffect(() => {
     (async () => {
-      const user = await api.getUser.getUser();
-      const currentProvider = user?.app_metadata.provider;
+      await fetchAccessToken(setAccessToken);
 
-      if (currentProvider === 'spotify') {
-        fetchAccessToken(setAccessToken);
-      }
+      if (!accessToken) return;
+
+      spotifySDKSetting({
+        accessToken,
+        setDeviceId,
+        setPaused,
+      });
     })();
-
-    if (!accessToken) return;
-
-    spotifySDKSetting({ accessToken, setDeviceId, setPaused });
   }, [accessToken]);
 
   return (

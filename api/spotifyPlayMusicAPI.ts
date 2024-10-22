@@ -8,14 +8,21 @@ import { api } from './spotifyApi';
 export const fetchAccessToken = async (
   setAccessToken: (storedToken: string) => void,
 ) => {
-  try {
-    const storedToken = window.localStorage.getItem('spotify_provider_token'); //토큰을 localStorage에서 가져오는 함수
-    if (storedToken) setAccessToken(storedToken);
-  } catch (error) {
-    console.error('Access Token 가져오기 오류:', error);
-    alert(
-      'Access Token을 가져오는 중 오류가 발생했습니다. 다시 시도해 주세요.',
-    );
+  const user = await api.getUser.getUser();
+  const currentProvider = user?.app_metadata.provider;
+
+  if (!currentProvider) return;
+
+  if (currentProvider === 'spotify') {
+    try {
+      const storedToken = window.localStorage.getItem('spotify_provider_token'); //토큰을 localStorage에서 가져오는 함수
+      if (storedToken) setAccessToken(storedToken);
+    } catch (error) {
+      console.error('Access Token 가져오기 오류:', error);
+      alert(
+        'Access Token을 가져오는 중 오류가 발생했습니다. 다시 시도해 주세요.',
+      );
+    }
   }
 };
 
