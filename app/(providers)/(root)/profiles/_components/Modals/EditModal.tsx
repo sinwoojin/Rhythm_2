@@ -6,6 +6,7 @@ import { supabase } from '@/supabase/client';
 import { useModalStore } from '@/zustand/modalStore';
 import { nanoid } from 'nanoid';
 import { ComponentProps, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 type EditModalProps = {
   id: string;
@@ -55,9 +56,9 @@ function EditModal({ id, userUpdate }: EditModalProps) {
     const response = await supabase.from('users').update(data).eq('id', id);
 
     if (response.error) {
-      return alert('프로필 수정에 실패했습니다!...');
+      return toast.warn('프로필 수정에 실패했습니다!...');
     } else {
-      alert('프로필 수정에 성공했습니다!');
+      toast.success('프로필 수정에 성공했습니다!');
       closeModal();
       userUpdate(id);
     }

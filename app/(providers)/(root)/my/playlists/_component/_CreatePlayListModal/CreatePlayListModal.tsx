@@ -7,6 +7,7 @@ import { useAuthStore } from '@/zustand/authStore';
 import { useModalStore } from '@/zustand/modalStore';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import PublicCheckButton from '../_PublicCheckButton/PublicCheckButton';
 
 function CreatePlayListModal() {
@@ -91,7 +92,7 @@ function CreatePlayListModal() {
       return createPlaylist;
     } catch (error) {
       console.error('플레이리스트 생성 중 오류 발생:', error);
-      alert('플레이리스트 생성에 실패했습니다.');
+      toast.error('플레이리스트 생성에 실패했습니다.');
     } finally {
       setIsLoading(false);
     }

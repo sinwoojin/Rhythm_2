@@ -86,8 +86,9 @@ function SIgnUpForm() {
     };
 
     await supabase.from('users').insert(data);
+    toast.success('회원가입에 성공 하셨습니다.');
 
-    if (!signUp.data.user) return toast.error('로그인에 실패 하였습니다');
+    if (!signUp.data.user) return toast.error('로그인에 실패 하였습니다.');
     router.push('/');
   };
 
