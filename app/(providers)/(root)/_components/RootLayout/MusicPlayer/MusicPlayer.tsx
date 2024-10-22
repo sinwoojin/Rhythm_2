@@ -11,7 +11,6 @@ import {
   spotifySDKSetting,
 } from '@/api/spotifyPlayMusicAPI';
 import { PlayTrack } from '@/schema/type';
-import { useAuthStore } from '@/zustand/authStore';
 import { useCurrentTrackStore } from '@/zustand/useCurrentTrackStore';
 import { useEffect, useState } from 'react';
 import { BsMusicNoteList, BsRepeat } from 'react-icons/bs';
@@ -40,9 +39,6 @@ function MusicPlayer() {
     (state) => state.currentTrackURI,
   );
 
-  // 로그인 정보
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-
   // 장치 설정, 현재 토큰 불러오기
   useEffect(() => {
     (async () => {
@@ -54,11 +50,10 @@ function MusicPlayer() {
       }
     })();
 
-    if (!isLoggedIn) return;
     if (!accessToken) return;
 
     spotifySDKSetting({ accessToken, setDeviceId, setCurrentTrack, setPaused });
-  }, [accessToken, isLoggedIn]);
+  }, [accessToken]);
 
   return (
     <div className="fixed bottom-0 w-full bg-[#121212] grid grid-cols-7 py-6 px-8 max-h-[116px]">
