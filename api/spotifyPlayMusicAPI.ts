@@ -1,4 +1,68 @@
+import { PlayTrack } from '@/schema/type';
 import { api } from './spotifyApi';
+
+/**
+ * spotify 로그인 토큰 설정
+ * @param setAccessToken
+ */
+export const fetchAccessToken = async (
+  setAccessToken: (storedToken: string) => void,
+) => {
+  try {
+    const storedToken = window.localStorage.getItem('spotify_provider_token'); //토큰을 localStorage에서 가져오는 함수
+    if (storedToken) setAccessToken(storedToken);
+  } catch (error) {
+    console.error('Access Token 가져오기 오류:', error);
+    alert(
+      'Access Token을 가져오는 중 오류가 발생했습니다. 다시 시도해 주세요.',
+    );
+  }
+};
+
+interface SpotifySDKProps {
+  accessToken: string;
+  setDeviceId: (deviceId: string) => void;
+  setCurrentTrack?: (track: PlayTrack | null) => void;
+  setPaused?: (paused: boolean) => void;
+}
+
+// spotifySDK 초기화 함수
+export const spotifySDKSetting = ({
+  accessToken,
+  setDeviceId,
+  setCurrentTrack = () => {},
+  setPaused = () => {},
+}: SpotifySDKProps) => {
+  const script = document.createElement('script');
+  script.src = 'https://sdk.scdn.co/spotify-player.js';
+  document.body.appendChild(script);
+
+  window.onSpotifyWebPlaybackSDKReady = () => {
+    const player = new window.Spotify.Player({
+      name: 'Web Playback SDK',
+      getOAuthToken: (cb) => {
+        cb(accessToken);
+      },
+      volume: 0.5,
+    });
+
+    player.addListener('ready', ({ device_id }) => {
+      setDeviceId(device_id);
+    });
+
+    player.addListener('player_state_changed', (state) => {
+      if (!state) return;
+      setCurrentTrack(state.track_window.current_track);
+      setPaused(state.paused);
+    });
+
+    player.connect();
+  };
+
+  return () => {
+    document.body.removeChild(script);
+  };
+};
 
 /**
  * 노래 재생

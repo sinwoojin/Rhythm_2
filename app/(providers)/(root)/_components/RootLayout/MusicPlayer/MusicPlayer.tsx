@@ -1,14 +1,16 @@
 'use client';
 
+import { api } from '@/api/spotifyApi';
 import {
+  fetchAccessToken,
   nextTrack,
   pauseTrack,
   playTrack,
   previousTrack,
   RandomPlayTrack,
+  spotifySDKSetting,
 } from '@/api/spotifyPlayMusicAPI';
 import { PlayTrack } from '@/schema/type';
-import { useAuthStore } from '@/zustand/authStore';
 import { useCurrentTrackStore } from '@/zustand/useCurrentTrackStore';
 import { useEffect, useState } from 'react';
 import { BsMusicNoteList, BsRepeat } from 'react-icons/bs';
@@ -33,66 +35,25 @@ function MusicPlayer() {
   const [deviceId, setDeviceId] = useState<string | null>(null);
 
   // 현재 가지고있는 트랙 uri
-  const setCurrentTrackURI = useCurrentTrackStore(
+  const currentTrackURI = useCurrentTrackStore(
     (state) => state.currentTrackURI,
   );
 
-  // 로그인 정보
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-
-  // 로그인한 유저의 토큰 가져오기
+  // 장치 설정, 현재 토큰 불러오기
   useEffect(() => {
-    const fetchAccessToken = async () => {
-      try {
-        const storedToken = window.localStorage.getItem(
-          'spotify_provider_token',
-        ); //토큰을 localStorage에서 가져오는 함수
-        if (storedToken) setAccessToken(storedToken);
-      } catch (error) {
-        console.error('Access Token 가져오기 오류:', error);
-        alert(
-          'Access Token을 가져오는 중 오류가 발생했습니다. 다시 시도해 주세요.',
-        );
+    (async () => {
+      const user = await api.getUser.getUser();
+      const currentProvider = user?.app_metadata.provider;
+
+      if (currentProvider === 'spotify') {
+        fetchAccessToken(setAccessToken);
       }
-    };
-    fetchAccessToken();
-  }, []);
+    })();
 
-  // 장치 설정
-  useEffect(() => {
-    if (!isLoggedIn) return;
     if (!accessToken) return;
 
-    const script = document.createElement('script');
-    script.src = 'https://sdk.scdn.co/spotify-player.js';
-    document.body.appendChild(script);
-
-    window.onSpotifyWebPlaybackSDKReady = () => {
-      const player = new window.Spotify.Player({
-        name: 'Web Playback SDK',
-        getOAuthToken: (cb) => {
-          cb(accessToken!);
-        },
-        volume: 0.5,
-      });
-
-      player.addListener('ready', ({ device_id }) => {
-        setDeviceId(device_id);
-      });
-
-      player.addListener('player_state_changed', (state) => {
-        if (!state) return;
-        setCurrentTrack(state.track_window.current_track);
-        setPaused(state.paused);
-      });
-
-      player.connect();
-    };
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, [accessToken, isLoggedIn]);
+    spotifySDKSetting({ accessToken, setDeviceId, setCurrentTrack, setPaused });
+  }, [accessToken]);
 
   return (
     <div className="fixed bottom-0 w-full bg-[#121212] grid grid-cols-7 py-6 px-8 max-h-[116px]">
@@ -158,7 +119,7 @@ function MusicPlayer() {
               className="text-4xl py-4 pl-5 pr-3 text-red-500"
               onClick={() =>
                 playTrack(
-                  setCurrentTrackURI,
+                  currentTrackURI,
                   String(accessToken),
                   String(deviceId),
                 )
