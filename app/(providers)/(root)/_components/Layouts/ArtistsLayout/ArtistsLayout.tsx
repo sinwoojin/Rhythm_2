@@ -3,6 +3,7 @@ import { Track } from '@/schema/type';
 import Link from 'next/link';
 import PrevNextButton from '../PrevNextButton/PrevNextButton';
 
+
 interface ChartListProps {
   artists: Track[];
   title: string;
@@ -29,7 +30,11 @@ function ArtistsLayout({ artists, title }: ChartListProps) {
                   <div className="rounded-full overflow-hidden w-full aspect-square"></div>
                 ) : (
                   <div className="rounded-full overflow-hidden w-full aspect-square bg-red-500">
-                    <img src={artist.images[1].url} className="object-cover" />
+                    <img
+                      src={artist.images[1].url}
+                      className="object-cover"
+                      alt="아티스트 이미지"
+                    />
                   </div>
                 )}
 

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Page from '../../Page/Page';
 import PrevNextButton from '../PrevNextButton/PrevNextButton';
 
+
 interface ChartListProps {
   albums: Track[];
   title: string;
@@ -30,7 +31,11 @@ function AlbumsLayout({ albums, title }: ChartListProps) {
                   {album.images.length === 0 ? (
                     <div className="w-full aspect-square bg-slate-600"></div>
                   ) : (
-                    <img className="object-cover" src={album.images[0].url} />
+                    <img
+                      className="object-cover"
+                      src={album.images[0].url}
+                      alt="앨범 이미지"
+                    />
                   )}
                   <p className="text-xl font-semibold line-clamp-1">
                     {album.name}
