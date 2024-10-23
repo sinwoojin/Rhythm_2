@@ -1,7 +1,9 @@
 import { api } from '@/api/spotifyApi';
 import dayjs from 'dayjs';
+import { toast } from 'react-toastify';
 import Page from '../../_components/Page/Page';
 import PlayButton from '../_components/Button/Button';
+import LikeButton from '../_components/ToggleLikeButton/LikeButton';
 
 interface MusicDetailPageProps {
   params: { musicId: string };
@@ -9,6 +11,7 @@ interface MusicDetailPageProps {
 
 async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
   const track = await api.track.getTracks(musicId);
+  if (!track) return toast.error('해당 트랙이 없습니다');
   const lyricUrl = await api.lyrics.getSpotifyLyricsUrl(musicId);
   const lyric = await api.lyrics.scrapeLyricsFromGenius(lyricUrl);
 
@@ -37,7 +40,10 @@ async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
             <span className="px-3">•</span>
             <span>{release_year}</span>
           </div>
-          <PlayButton track={track} />
+          <div className="flex gap-x-4 items-center">
+            <PlayButton track={track} />
+            <LikeButton trackId={track.id} />
+          </div>
         </div>
       </div>
       <div className="pb-9 ">
