@@ -34,20 +34,41 @@ export type Database = {
         Row: {
           created_at: string
           id: string
-          musicId: string
+          trackId: string
           userId: string
         }
         Insert: {
           created_at?: string
           id: string
-          musicId: string
+          trackId: string
           userId: string
         }
         Update: {
           created_at?: string
           id?: string
-          musicId?: string
+          trackId?: string
           userId?: string
+        }
+        Relationships: []
+      }
+      rhythmCategoryImages: {
+        Row: {
+          categoryImgURL: string
+          categoryName: string
+          created_at: string
+          id: number
+        }
+        Insert: {
+          categoryImgURL: string
+          categoryName: string
+          created_at?: string
+          id?: number
+        }
+        Update: {
+          categoryImgURL?: string
+          categoryName?: string
+          created_at?: string
+          id?: number
         }
         Relationships: []
       }
@@ -57,7 +78,7 @@ export type Database = {
           createdAt: string
           email: string
           id: string
-          imgUrl: string | null
+          imgUrl: string
           userName: string
         }
         Insert: {
@@ -65,7 +86,7 @@ export type Database = {
           createdAt?: string
           email: string
           id: string
-          imgUrl?: string | null
+          imgUrl?: string
           userName: string
         }
         Update: {
@@ -73,7 +94,7 @@ export type Database = {
           createdAt?: string
           email?: string
           id?: string
-          imgUrl?: string | null
+          imgUrl?: string
           userName?: string
         }
         Relationships: []

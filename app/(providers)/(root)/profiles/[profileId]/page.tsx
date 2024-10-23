@@ -135,24 +135,26 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
     onSuccess: () => {},
   });
 
-  // 팔로우 상태 갱신 후 표기
-  const checkFollowingUseEffect = async () => {
-    checkingFollow();
-  };
-
   // 유저 정보, 팔로워 ,팔로잉 수 가져오기, 팔로우 상태 확인 실행
   useEffect(() => {
     const fetchData = async () => {
-      if (!loginUserId) return;
+      if (!loginUserId && profileId) return;
 
       // 수정하기 버튼 띄우기
-      setIsButtonVisibility(loginUserId === profileId);
+      const editUser = loginUserId === profileId;
+      if (editUser === true) {
+        setIsButtonVisibility(true);
+      } else {
+        setIsButtonVisibility(false);
+      }
       await queryClient.invalidateQueries({ queryKey: ['user', profileId] });
-      await checkFollowingUseEffect();
+
+      // 팔로우 상태 갱신 후 표기
+      checkingFollow();
     };
 
     fetchData();
-  }, [profileId]);
+  }, [profileId, loginUserId]);
 
   return (
     <Page>
@@ -179,7 +181,9 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
             </Button>
           )}
 
-          {isButtonVisibility ? null : (
+          {isButtonVisibility ? (
+            false
+          ) : (
             <Button
               className="w-full text-center"
               onClick={handleClickToggleFollowButton}
