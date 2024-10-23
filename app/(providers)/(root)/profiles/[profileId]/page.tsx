@@ -174,7 +174,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
           <img
             src={baseURL + user?.imgUrl}
             alt="프로필 이미지"
-            className="z-50 aspect-square"
+            className="z-50 w-full h-full object-cover"
           />
         </div>
         <div className="flex flex-col gap-y-2 w-full h-full col-span-2 relative">

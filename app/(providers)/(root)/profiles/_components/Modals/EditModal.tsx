@@ -1,6 +1,7 @@
 'use client';
 
 import Input from '@/components/Input';
+import { baseURL } from '@/config/config';
 import { Database } from '@/database.types';
 import { supabase } from '@/supabase/client';
 import { useModalStore } from '@/zustand/modalStore';
@@ -80,11 +81,10 @@ function EditModal({ id, userUpdate }: EditModalProps) {
       if (response.data) {
         setUserName(response.data.userName);
         setContent(String(response.data.content));
+        setPreviewProfile(baseURL + response.data.imgUrl);
       }
     })();
   }, [id]);
-
-  console.log('previewProfile', previewProfile);
 
   return (
     <div
@@ -108,7 +108,7 @@ function EditModal({ id, userUpdate }: EditModalProps) {
             />
             <img
               src={previewProfile!}
-              className="z-0 w-full h-full absolute top-0  rounded-full object-cover group-hover:brightness-75"
+              className="z-0 w-full h-full absolute top-0  rounded-full object-cover group-hover:brightness-50"
             />
             <label
               htmlFor="profileImg"
