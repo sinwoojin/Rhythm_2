@@ -9,9 +9,7 @@ import { supabase } from '@/supabase/client';
 const likeTrack = async (
   data: Database['public']['Tables']['likeMusic']['Insert'],
 ) => {
-  const response = await supabase.from('likeMusic').insert(data);
-  const likeTrack = response.data;
-  return likeTrack;
+  await supabase.from('likeMusic').insert(data);
 };
 
 /**

@@ -19,14 +19,14 @@ export type Database = {
         Insert: {
           created_at?: string;
           id?: number;
-          Name?: string;
-          URL: string;
+          name?: string;
+          url: string;
         };
         Update: {
           created_at?: string;
           id?: number;
-          Name?: string;
-          URL?: string;
+          name?: string;
+          url?: string;
         };
         Relationships: [];
       };
@@ -60,7 +60,7 @@ export type Database = {
         };
         Insert: {
           created_at?: string;
-          id: string;
+          id?: string;
           trackId: string;
           userId: string;
         };
@@ -69,27 +69,6 @@ export type Database = {
           id?: string;
           trackId?: string;
           userId?: string;
-        };
-        Relationships: [];
-      };
-      rhythmCategoryImages: {
-        Row: {
-          categoryImgURL: string;
-          categoryName: string;
-          created_at: string;
-          id: number;
-        };
-        Insert: {
-          categoryImgURL: string;
-          categoryName: string;
-          created_at?: string;
-          id?: number;
-        };
-        Update: {
-          categoryImgURL?: string;
-          categoryName?: string;
-          created_at?: string;
-          id?: number;
         };
         Relationships: [];
       };
