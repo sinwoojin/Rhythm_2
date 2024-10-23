@@ -2,7 +2,7 @@ import { Playlist } from '@/schema/type';
 import { SlOptions } from 'react-icons/sl';
 
 interface PlaylistMusicsProps {
-  playlistMusics?: Playlist[] | null; // 하나짜리 플리
+  playlistMusics?: Playlist[] | null; // 하나짜리 플리 이거 타입 임시로 지정해준거라 제대로 다시 지정하고 ? <- 이 물음표 지워야함
 }
 
 function PlaylistDetailLayout({ playlistMusics }: PlaylistMusicsProps) {

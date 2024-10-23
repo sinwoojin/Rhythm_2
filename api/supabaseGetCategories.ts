@@ -7,10 +7,11 @@ export const getCategories = async () => {
 };
 
 export const getCategory = async (name: string) => {
-  const { data: categories } = await supabase
+  const { data: category } = await supabase
     .from('category')
     .select('*')
-    .eq('Name', name);
+    .eq('name', name)
+    .single();
 
-  return categories;
+  return category;
 };
