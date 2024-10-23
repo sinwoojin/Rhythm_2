@@ -10,6 +10,7 @@ import { useModalStore } from '@/zustand/modalStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { nanoid } from 'nanoid';
 import { ComponentProps, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 type EditModalProps = {
   id: string;
@@ -69,9 +70,9 @@ function EditModal({ id }: EditModalProps) {
         setCurrentUser(data);
 
         if (response.error) {
-          return alert('프로필 수정에 실패했습니다!...');
+          return toast.error('프로필 수정에 실패했습니다!...');
         } else {
-          alert('프로필 수정에 성공했습니다!');
+          toast.success('프로필 수정에 성공했습니다!');
           closeModal();
         }
       }

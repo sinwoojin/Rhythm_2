@@ -11,6 +11,7 @@ import { useFollowStore } from '@/zustand/followStore';
 import { useModalStore } from '@/zustand/modalStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import Page from '../../_components/Page/Page';
 import EditModal from '../_components/Modals/EditModal';
 import FollowModal from '../_components/Modals/FollowModal';
@@ -88,7 +89,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
 
       if (!isFollowing) {
         if (follower === following)
-          return alert('자기 자신을 팔로우 할 수 없습니다');
+          return toast.error('자기 자신을 팔로우 할 수 없습니다');
 
         const data: Database['public']['Tables']['follow']['Insert'] = {
           follower,
@@ -97,11 +98,11 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
 
         await supabaseProfile.insertFollowData(data);
         follow();
-        alert('사용자를 팔로우 하셨습니다.');
+        toast.info('사용자를 팔로우 하셨습니다.');
       } else {
         await supabaseProfile.deleteFollowData(follower, following);
         unFollow();
-        alert('사용자를 언팔로우 하셨습니다');
+        toast.info('사용자를 언팔로우 하셨습니다');
       }
     },
     onSuccess: () => {
