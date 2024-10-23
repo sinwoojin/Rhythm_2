@@ -125,6 +125,7 @@ export const updateProfile = async (
   return response;
 };
 
+
 export const supabaseProfile = {
   getProfile,
   getFollowers,

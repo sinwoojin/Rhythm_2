@@ -53,28 +53,30 @@ function EditModal({ id }: EditModalProps) {
     mutationFn: async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
+      let imageUrl = String(currentUser?.imgUrl);
+
       if (image) {
         const uploadImage = await supabase.storage
           .from('img')
           .upload(nanoid(), image, { upsert: true });
 
-        const imageUrl = uploadImage.data?.fullPath;
+        imageUrl = String(uploadImage.data?.fullPath);
+      }
 
-        const data: Database['public']['Tables']['users']['Update'] = {
-          userName,
-          content: String(content),
-          imgUrl: String(imageUrl),
-        };
+      const data: Database['public']['Tables']['users']['Update'] = {
+        userName,
+        content: String(content),
+        imgUrl: imageUrl,
+      };
 
-        const response = await supabaseProfile.updateProfile(data, id);
-        setCurrentUser(data);
+      const response = await supabaseProfile.updateProfile(data, id);
+      setCurrentUser(data);
 
-        if (response.error) {
-          return toast.error('프로필 수정에 실패했습니다!...');
-        } else {
-          toast.success('프로필 수정에 성공했습니다!');
-          closeModal();
-        }
+      if (response.error) {
+        return toast.error('프로필 수정에 실패했습니다!...');
+      } else {
+        toast.success('프로필 수정에 성공했습니다!');
+        closeModal();
       }
     },
     onSuccess: () => {
