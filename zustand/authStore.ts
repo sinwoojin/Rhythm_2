@@ -2,11 +2,11 @@ import { create } from 'zustand';
 
 // 유저 정보 타입
 type CurrentUser = {
-  id: string;
-  userName: string;
-  email: string;
-  content: string;
-  imgUrl: string;
+  id?: string;
+  userName?: string | undefined;
+  email?: string;
+  content?: string | null | undefined;
+  imgUrl?: string | null;
   spotifyId?: string;
 } | null;
 

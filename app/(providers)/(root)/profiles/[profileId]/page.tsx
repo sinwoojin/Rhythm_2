@@ -1,16 +1,16 @@
 'use client';
 
 import { api } from '@/api/spotifyApi';
+import { supabaseProfile } from '@/api/supabaseProfile';
 import Button from '@/components/Button';
 import { baseURL } from '@/config/config';
 import { Database } from '@/database.types';
 import { User } from '@/schema/type';
-import { supabase } from '@/supabase/client';
 import { useAuthStore } from '@/zustand/authStore';
 import { useFollowStore } from '@/zustand/followStore';
 import { useModalStore } from '@/zustand/modalStore';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import Page from '../../_components/Page/Page';
 import EditModal from '../_components/Modals/EditModal';
 import FollowModal from '../_components/Modals/FollowModal';
@@ -24,32 +24,27 @@ interface ProfileDetailPageProps {
 function ProfileDetailPage(props: ProfileDetailPageProps) {
   // 유저 정보
   const profileId = props.params.profileId;
-  const [user, setUser] = useState<User | null>(null);
-  const currentUser = useAuthStore((state) => state.currentUser);
 
+  const currentUser = useAuthStore((state) => state.currentUser);
   const openModal = useModalStore((state) => state.openModal);
+  const queryClient = useQueryClient();
 
   // 로그인 상태에 따라 보여주는 버튼의 State
   const [isButtonVisibility, setIsButtonVisibility] = useState(false);
-
-  // 팔로워, 팔로잉 수
-  const [followerCount, setFollowerCount] = useState(0);
-  const [followingCount, setFollowingCount] = useState(0);
 
   // 팔로우 상태관리 (zustand)
   const isFollowing = useFollowStore((state) => state.isFollowing);
   const follow = useFollowStore((state) => state.follow);
   const unFollow = useFollowStore((state) => state.unFollow);
 
-  const currentUserId = currentUser?.id;
+  const loginUserId = currentUser?.id;
 
   // 모달 관련 핸들러
   const handleClickToggleEditModal = () => {
     openModal({
-      element: <EditModal id={user!.id} userUpdate={userUpdate} />,
+      element: <EditModal id={user!.id} />,
       backdrop: true,
     });
-    userUpdate(String(currentUserId));
   };
 
   const handleClickToggleFollowModal = (type: 'followers' | 'following') => {
@@ -59,109 +54,100 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
     });
   };
 
-  // 팔로워, 팔로잉 수 가져오는 함수
-  const updateFollowCounts = async () => {
-    // 팔로워 수 가져오기
-    const { data: followers } = await supabase
-      .from('follow')
-      .select('*')
-      .eq('following', profileId);
-    setFollowerCount(followers ? followers.length : 0);
-
-    // 팔로잉 수 가져오기
-    const { data: following } = await supabase
-      .from('follow')
-      .select('*')
-      .eq('follower', profileId);
-    setFollowingCount(following ? following.length : 0);
-  };
-
   // 팔로우, 언팔로우 버튼 핸들러
   const handleClickToggleFollowButton = async () => {
-    const user = await api.getUser.getUser();
-    if (!user) return;
-
-    const follower = user.id;
-    const following = profileId;
-
-    if (!isFollowing) {
-      if (follower === following)
-        return toast.error('자기 자신을 팔로우 할 수 없습니다');
-
-      const data: Database['public']['Tables']['follow']['Insert'] = {
-        follower,
-        following,
-      };
-
-      await supabase.from('follow').insert(data);
-
-      follow();
-      toast.success('사용자를 팔로우 하셨습니다.');
-    } else {
-      await supabase
-        .from('follow')
-        .delete()
-        .eq('follower', follower)
-        .eq('following', following);
-
-      unFollow();
-      toast.success('사용자를 언팔로우 하셨습니다');
-    }
-
-    // 팔로우,언팔로우 이후 업데이트
-    updateFollowCounts();
+    followAction();
   };
 
-  // 유저 정보 리렌더링 (useEffect)
-  const userUpdate = async (loginUserId: string) => {
-    // 유저 정보 가져오기
-    const response = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', profileId)
-      .single();
-    setUser(response.data);
+  // 팔로워 수 가져오기
+  const { data: followers } = useQuery({
+    queryKey: ['followers', { userId: profileId }],
+    queryFn: () => supabaseProfile.getFollowers(profileId),
+  });
 
-    setIsButtonVisibility(loginUserId === profileId);
+  // 팔로잉 수 가져오기
+  const { data: followings } = useQuery({
+    queryKey: ['followings', { userId: profileId }],
+    queryFn: () => supabaseProfile.getFollowing(profileId),
+  });
 
-    // 팔로워, 팔로잉 수 업데이트
-    updateFollowCounts();
-  };
+  // 유저 정보 가져오기
+  const { data: user } = useQuery<User | null>({
+    queryKey: ['user', profileId],
+    queryFn: () => supabaseProfile.getProfile(profileId),
+  });
 
-  // 팔로우 상태 확인 (useEffect)
-  const checkIfFollowing = async (loginUserId: string) => {
-    if (!loginUserId) return;
+  // 팔로우, 언팔로우 기능
+  const { mutate: followAction } = useMutation({
+    mutationFn: async () => {
+      const user = await api.getUser.getUser();
+      if (!user) return;
 
-    // 현재 로그인한 사람의 id
-    const follower = loginUserId;
+      const follower = user.id;
+      const following = profileId;
 
-    // 현재 프로필 페이지의 id
-    const following = profileId;
+      if (!isFollowing) {
+        if (follower === following)
+          return alert('자기 자신을 팔로우 할 수 없습니다');
 
-    // 팔로우 상태 지정
-    const { data } = await supabase
-      .from('follow')
-      .select('*')
-      .eq('follower', follower)
-      .eq('following', following);
+        const data: Database['public']['Tables']['follow']['Insert'] = {
+          follower,
+          following,
+        };
 
-    if (data && data.length > 0) {
-      follow();
-    } else {
-      unFollow();
-    }
+        await supabaseProfile.insertFollowData(data);
+        follow();
+        alert('사용자를 팔로우 하셨습니다.');
+      } else {
+        await supabaseProfile.deleteFollowData(follower, following);
+        unFollow();
+        alert('사용자를 언팔로우 하셨습니다');
+      }
+    },
+    onSuccess: () => {
+      // 팔로워, 팔로잉 수 업데이트
+      queryClient.invalidateQueries({
+        queryKey: ['followers', { userId: profileId }],
+      });
+    },
+  });
+
+  // 팔로우 상태 확인
+  const { mutate: checkingFollow } = useMutation({
+    mutationFn: async () => {
+      if (!loginUserId) return;
+
+      // 현재 로그인한 사람의 id
+      const follower = loginUserId;
+
+      // 현재 프로필 페이지의 id
+      const following = profileId;
+
+      // 팔로우 상태 지정
+      const data = await supabaseProfile.myFollowState(follower, following);
+      if (data && data.length > 0) {
+        follow();
+      } else {
+        unFollow();
+      }
+    },
+    onSuccess: () => {},
+  });
+
+  // 팔로우 상태 갱신 후 표기
+  const checkFollowingUseEffect = async () => {
+    checkingFollow();
   };
 
   // 유저 정보, 팔로워 ,팔로잉 수 가져오기, 팔로우 상태 확인 실행
   useEffect(() => {
     const fetchData = async () => {
-      const user = await api.getUser.getUser();
-      const loginUserId = user?.id;
-
       if (!loginUserId) return;
 
-      await userUpdate(loginUserId);
-      await checkIfFollowing(loginUserId);
+      // 수정하기 버튼 띄우기
+      setIsButtonVisibility(loginUserId === profileId);
+      await queryClient.invalidateQueries({ queryKey: ['user', profileId] });
+      await checkFollowingUseEffect();
     };
 
     fetchData();
@@ -206,14 +192,14 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
               className="flex flex-col w-full items-center py-4"
               onClick={() => handleClickToggleFollowModal('followers')}
             >
-              <span>{followerCount}명</span>
+              <span>{followers?.length}명</span>
               <span>팔로워</span>
             </Button>
             <Button
               className="flex flex-col w-full items-center py-4"
               onClick={() => handleClickToggleFollowModal('following')}
             >
-              <span>{followingCount}명</span>
+              <span>{followings?.length}명</span>
               <span>팔로잉</span>
             </Button>
           </div>

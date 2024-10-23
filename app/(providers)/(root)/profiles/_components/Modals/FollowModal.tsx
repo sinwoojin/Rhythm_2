@@ -1,5 +1,7 @@
 import { api } from '@/api/spotifyApi';
+import { supabaseProfile } from '@/api/supabaseProfile';
 import Button from '@/components/Button';
+import { Database } from '@/database.types';
 import { User } from '@/schema/type';
 import { supabase } from '@/supabase/client';
 import { useFollowStore } from '@/zustand/followStore';
@@ -33,18 +35,12 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
 
     if (modalType === 'followers') {
       // 팔로워 목록 가져오기
-      const { data } = await supabase
-        .from('follow')
-        .select('follower')
-        .eq('following', userId);
-      followData = data?.map((follow) => follow.follower) || [];
+      const followers = await supabaseProfile.getFollowers(userId);
+      followData = followers?.map((follower) => follower.follower) || [];
     } else {
       // 팔로잉 목록 가져오기
-      const { data } = await supabase
-        .from('follow')
-        .select('following')
-        .eq('follower', userId);
-      followData = data?.map((follow) => follow.following) || [];
+      const followings = await supabaseProfile.getFollowing(userId);
+      followData = followings?.map((following) => following.following) || [];
     }
 
     // 팔로워, 팔로잉의 정보를 가져옴
@@ -69,19 +65,16 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
 
     if (isFollowing === false) {
       // 팔로우하지 않은 경우 -> 팔로우 처리
-      await supabase.from('follow').insert({
+      const data: Database['public']['Tables']['follow']['Insert'] = {
         follower: userId,
         following: followId,
-      });
+      };
+      await supabaseProfile.insertFollowData(data);
       follow();
       toast.success(`${targetUserId}를 팔로우 했습니다.`);
     } else {
       // 이미 팔로우한 경우 -> 언팔로우 처리
-      await supabase
-        .from('follow')
-        .delete()
-        .eq('follower', userId)
-        .eq('following', followId);
+      await supabaseProfile.deleteFollowData(userId, followId);
       unFollow();
       toast.success(`${targetUserId}를 언팔로우 했습니다.`);
     }
@@ -100,17 +93,20 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
 
       if (!currentUser) return;
 
-      // 현재 팔로우 여부 확인하고 상태 지정
-      const followUser = await supabase
-        .from('follow')
-        .select('*')
-        .eq('following', currentUser);
+      const followings = await supabaseProfile.getFollowers(currentUser);
+      const following = followings?.map((item) => item.following);
 
-      if (followUser.data!.length > 0) {
-        unFollow();
-      } else {
-        follow();
-      }
+      // 현재 팔로우 여부 확인하고 상태 지정 (미완성)
+      // const followUser = await supabaseProfile.myFollowState(
+      //   currentUser,
+      //   following,
+      // );
+      // if (!followUser) return;
+      // if (followUser.length > 0) {
+      //   unFollow();
+      // } else {
+      //   follow();
+      // }
     })();
   }, [userId, modalType]);
 

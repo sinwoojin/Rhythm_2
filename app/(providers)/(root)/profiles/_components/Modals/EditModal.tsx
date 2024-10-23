@@ -1,26 +1,35 @@
 'use client';
 
+import { supabaseProfile } from '@/api/supabaseProfile';
 import Input from '@/components/Input';
 import { baseURL } from '@/config/config';
 import { Database } from '@/database.types';
 import { supabase } from '@/supabase/client';
+import { useAuthStore } from '@/zustand/authStore';
 import { useModalStore } from '@/zustand/modalStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { nanoid } from 'nanoid';
 import { ComponentProps, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 
 type EditModalProps = {
   id: string;
-  userUpdate: (loginUserId: string) => void;
 };
 
-function EditModal({ id, userUpdate }: EditModalProps) {
+function EditModal({ id }: EditModalProps) {
   // table에 들어있는 정보 가져오기, 지정하기
   const [userName, setUserName] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [previewProfile, setPreviewProfile] = useState<string | null>('');
 
+  const queryClient = useQueryClient();
+
+  // 현재 유저 정보
+  const currentUser = useAuthStore((state) => state.currentUser);
+  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
+  const profileId = currentUser?.id;
+
+  // 모달 닫기
   const closeModal = useModalStore((state) => state.closeModal);
 
   // 이미지 정보 가져오기
@@ -31,57 +40,56 @@ function EditModal({ id, userUpdate }: EditModalProps) {
       return setImage(null); // 파일이 없을 때 처리
     }
 
-    const file = files[0]; // 첫 번째 파일 가져오기
-    const previewProfile = URL.createObjectURL(file); // 첫 번째 파일로 URL 생성
+    const file = files[0];
 
+    const previewProfile = URL.createObjectURL(file); // 첫 번째 파일로 URL 생성
     setImage(file); // 파일 상태 저장
     setPreviewProfile(previewProfile); // 미리보기 URL 저장
   };
 
   // 글 수정하기
-  const handleSubmitModifyDeal = async (
-    e: React.FormEvent<HTMLFormElement>,
-  ) => {
-    e.preventDefault();
-    if (!image) return alert('이미지를 업로드해주세요!');
-    if (!userName) return alert('유저 이름을 작성해주세요!');
-    if (!content) return alert('소개글 내용을 작성해주세요!');
+  const { mutate: handleSubmitModifyDeal } = useMutation({
+    mutationFn: async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
 
-    const uploadImage = await supabase.storage
-      .from('img')
-      .upload(nanoid(), image, { upsert: true });
+      if (image) {
+        const uploadImage = await supabase.storage
+          .from('img')
+          .upload(nanoid(), image, { upsert: true });
 
-    const imageUrl = uploadImage.data?.fullPath;
+        const imageUrl = uploadImage.data?.fullPath;
 
-    const data: Database['public']['Tables']['users']['Update'] = {
-      userName,
-      content,
-      imgUrl: imageUrl,
-    };
+        const data: Database['public']['Tables']['users']['Update'] = {
+          userName,
+          content: String(content),
+          imgUrl: String(imageUrl),
+        };
 
-    const response = await supabase.from('users').update(data).eq('id', id);
+        const response = await supabaseProfile.updateProfile(data, id);
+        setCurrentUser(data);
 
-    if (response.error) {
-      return toast.warn('프로필 수정에 실패했습니다!...');
-    } else {
-      toast.success('프로필 수정에 성공했습니다!');
-      closeModal();
-      userUpdate(id);
-    }
-  };
+        if (response.error) {
+          return alert('프로필 수정에 실패했습니다!...');
+        } else {
+          alert('프로필 수정에 성공했습니다!');
+          closeModal();
+        }
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user', profileId] });
+    },
+  });
 
+  // 현재 프로필의 정보 가져오기
   useEffect(() => {
     (async () => {
-      const response = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', id)
-        .single();
+      const response = await supabaseProfile.getProfile(id);
 
-      if (response.data) {
-        setUserName(response.data.userName);
-        setContent(String(response.data.content));
-        setPreviewProfile(baseURL + response.data.imgUrl);
+      if (response) {
+        setUserName(response.userName);
+        setContent(String(response.content));
+        setPreviewProfile(baseURL + response.imgUrl);
       }
     })();
   }, [id]);
@@ -107,6 +115,7 @@ function EditModal({ id, userUpdate }: EditModalProps) {
               onChange={(e) => handleChangeFileInput(e)}
             />
             <img
+              alt="프리뷰 이미지"
               src={previewProfile!}
               className="z-0 w-full h-full absolute top-0  rounded-full object-cover group-hover:brightness-50"
             />

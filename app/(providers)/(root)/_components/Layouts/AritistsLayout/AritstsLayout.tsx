@@ -3,7 +3,6 @@ import { Track } from '@/schema/type';
 import Link from 'next/link';
 import PrevNextButton from '../PrevNextButton/PrevNextButton';
 
-
 interface ChartListProps {
   artists: Track[];
   title: string;
