@@ -1,8 +1,8 @@
-import React from "react";
-import Page from "../../../_components/Page/Page";
-import { FaPlay } from "react-icons/fa";
-import { IoIosAddCircleOutline } from "react-icons/io";
-import PlaylistMusics from "./_PlaylistMusics/PlaylistMusics";
+import React from 'react';
+import Page from '../../../_components/Page/Page';
+import { FaPlay } from 'react-icons/fa';
+import { IoIosAddCircleOutline } from 'react-icons/io';
+import PlaylistDetailLayout from '../../../_components/Layouts/PlaylistDetailLayout/PlaylistDetailLayout';
 
 function PlayListDetail() {
   return (
@@ -33,7 +33,7 @@ function PlayListDetail() {
         </div>
       </article>
       <article>
-        <PlaylistMusics />
+        <PlaylistDetailLayout />
       </article>
     </Page>
   );

@@ -1,11 +1,11 @@
-import { Playlist } from "@/schema/type";
-import { SlOptions } from "react-icons/sl";
+import { Playlist } from '@/schema/type';
+import { SlOptions } from 'react-icons/sl';
 
 interface PlaylistMusicsProps {
   playlistMusics?: Playlist[] | null; // 하나짜리 플리
 }
 
-function PlaylistMusics({ playlistMusics }: PlaylistMusicsProps) {
+function PlaylistDetailLayout({ playlistMusics }: PlaylistMusicsProps) {
   return playlistMusics ? (
     <ul className="flex flex-col">
       {playlistMusics.map((playlistMusic) => (
@@ -30,4 +30,4 @@ function PlaylistMusics({ playlistMusics }: PlaylistMusicsProps) {
   ) : null;
 }
 
-export default PlaylistMusics;
+export default PlaylistDetailLayout;
