@@ -4,7 +4,6 @@ import Link from 'next/link';
 import Page from '../../Page/Page';
 import PrevNextButton from '../PrevNextButton/PrevNextButton';
 
-
 interface ChartListProps {
   albums: Track[];
   title: string;
@@ -23,11 +22,7 @@ function AlbumsLayout({ albums, title }: ChartListProps) {
                 key={album.id}
                 className="flex flex-col w-[200px] min-w-[200px]"
               >
-                <Link
-                  href={
-                    '/' /*여기에 디테일 페이지로 넘어갈 동적 url 적기 지금은 비워둠*/
-                  }
-                >
+                <Link href={`/album/${album.id}`}>
                   {album.images.length === 0 ? (
                     <div className="w-full aspect-square bg-slate-600"></div>
                   ) : (
