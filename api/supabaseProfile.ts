@@ -115,7 +115,7 @@ export const updateProfile = async (
     createdAt?: string;
     email?: string;
     id?: string;
-    imgUrl?: string | null;
+    imgUrl?: string;
     userName?: string;
   },
   id: string,
