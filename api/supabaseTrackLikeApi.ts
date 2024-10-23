@@ -9,11 +9,23 @@ import { supabase } from '@/supabase/client';
 const likeTrack = async (
   data: Database['public']['Tables']['likeMusic']['Insert'],
 ) => {
-  await supabase.from('likeMusic').insert(data);
+  const response = await supabase.from('likeMusic').insert(data);
+  const likeTrack = response.data;
+  return likeTrack;
 };
 
+/**
+ *
+ * @param trackId
+ * @returns 수파베이스에서 좋아요 삭제
+ */
 const unLikeTrack = async (trackId: string) => {
-  await supabase.from('likeMusic').delete().eq('trackId', trackId);
+  const response = await supabase
+    .from('likeMusic')
+    .delete()
+    .eq('trackId', trackId);
+  const data = response.data;
+  return data;
 };
 
 export const supabaseToggleLike = {
