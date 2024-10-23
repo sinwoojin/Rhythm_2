@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 type FollowStoreState = {
   isFollowing: boolean; // 팔로우 상태
