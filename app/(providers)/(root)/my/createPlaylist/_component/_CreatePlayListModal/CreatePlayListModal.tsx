@@ -32,7 +32,7 @@ function CreatePlayListModal() {
         }
       } catch (error) {
         console.error('Access Token 가져오기 오류:', error);
-        alert(
+        toast.warn(
           'Access Token을 가져오는 중 오류가 발생했습니다. 다시 시도해 주세요.',
         );
       }
@@ -57,7 +57,7 @@ function CreatePlayListModal() {
           return newAccessToken; // 새 액세스 토큰 반환
         }
 
-        alert('Access token이 없습니다. 다시 로그인해 주세요.');
+        toast.warn('Access token이 없습니다. 다시 로그인해 주세요.');
         return null;
       } catch (error) {
         console.error('토큰 갱신 중 오류:', error);
@@ -69,7 +69,7 @@ function CreatePlayListModal() {
 
   const handleClickCreatePlayList = async () => {
     if (!title || !description) {
-      alert('제목과 설명을 모두 입력해 주세요.');
+      toast.warn('제목과 설명을 모두 입력해 주세요.');
 
       return;
     }

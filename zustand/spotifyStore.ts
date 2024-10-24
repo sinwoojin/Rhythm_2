@@ -6,6 +6,7 @@ import {
   playRandomTrack as shuffleTracks,
 } from '@/api/spotifyPlayMusicAPI';
 import { PlayTrack } from '@/schema/type';
+import { toast } from 'react-toastify';
 import { create } from 'zustand';
 
 interface SpotifyStoreState {
@@ -49,11 +50,11 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
     set((prevState) => {
       const { accessToken, deviceId } = prevState;
       if (!accessToken) {
-        alert('No spotify accessToken');
+        toast.warn('Spotify 프리미엄 계정으로 로그인 해주세요');
         return prevState;
       }
       if (!deviceId) {
-        alert('No spotify deviceId');
+        toast.error('재생할 수 있는 기기가 없습니다');
         return prevState;
       }
 
@@ -67,7 +68,6 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
       const { accessToken } = prevState;
 
       if (!accessToken) {
-        alert('No spotify accessToken');
         return prevState;
       }
 
@@ -77,20 +77,22 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
 
   shuffle: () => {
     const { accessToken, deviceId } = get();
-    if (!accessToken) return alert('No spotify accessToken');
-    if (!deviceId) return alert('No spotify deviceId');
+    if (!accessToken) return toast.warn('프리미엄 로그인이 필요한 기능입니다.');
+    if (!deviceId) return toast.warn('현재 플레이 할 수 있는 기기가 없습니다.');
 
     shuffleTracks(accessToken, deviceId);
   },
   playPrevTrack: () => {
     const { accessToken } = get();
-    if (!accessToken) return alert('No spotify accessToken');
+    if (!accessToken)
+      return toast.error('프리미엄 게정 로그인이 필요한 기능입니다.');
 
     playPreviousTrack(accessToken);
   },
   playNextTrack: () => {
     const { accessToken } = get();
-    if (!accessToken) return alert('No spotify accessToken');
+    if (!accessToken)
+      return toast.error('프리미엄 게정 로그인이 필요한 기능입니다');
 
     playNextTrack(accessToken);
   },
