@@ -13,12 +13,14 @@ function PlayButton(props: PlayButtonProps) {
   const play = useSpotifyStore((state) => state.play);
   const pause = useSpotifyStore((state) => state.pause);
   const isPaused = useSpotifyStore((state) => state.isPaused);
+  const accessToken = useSpotifyStore((state) => state.accessToken);
+  const deviceId = useSpotifyStore((state) => state.deviceId);
 
   const handleClickPlayButton = () => {
-    const trackURI = props.track?.uri;
+    const trackURI = props.track!.uri;
+    console.log(props.track);
     if (!trackURI) return toast.error('해당 음악이 존재하지 않습니다.');
-
-    play(trackURI);
+    play([trackURI], String(accessToken), String(deviceId));
   };
 
   return (

@@ -2,6 +2,7 @@
 'use client';
 import { api } from '@/api/spotifyApi';
 import { Playlist } from '@/schema/type';
+import useSpotifyStore from '@/zustand/spotifyStore';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaPlay } from 'react-icons/fa';
@@ -12,10 +13,15 @@ import Page from '../../_components/Page/Page';
 function PlayListDetail() {
   const { playlistId } = useParams();
   const [playlist, setPlaylist] = useState<Playlist | undefined>(undefined);
+
+  const accessToken = useSpotifyStore((state) => state.accessToken);
+  const deviceId = useSpotifyStore((state) => state.deviceId);
+  const play = useSpotifyStore((state) => state.play);
+
   useEffect(() => {
     (async () => {
-      const response = await api.playlist.getPlaylists(String(playlistId));
-      setPlaylist(response);
+      const playlist = await api.playlist.getPlaylist(String(playlistId));
+      setPlaylist(playlist);
     })();
   }, [playlistId]);
 
@@ -34,10 +40,20 @@ function PlayListDetail() {
             </h2>
             <div className="line-clamp-1">{playlist?.description}</div>
             <div className="flex gap-x-4">
-              <button className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl">
+              <button
+                onClick={() =>
+                  play(
+                    String(playlist!.uri),
+                    String(accessToken),
+                    String(deviceId),
+                  )
+                }
+                aria-label="재생"
+                className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl"
+              >
                 <FaPlay />
               </button>
-              <button className="text-5xl">
+              <button aria-label="추가" className="text-5xl">
                 <IoIosAddCircleOutline />
               </button>
             </div>

@@ -5,28 +5,34 @@ import {
   playTrack,
   playRandomTrack as shuffleTracks,
 } from '@/api/spotifyPlayMusicAPI';
-import { PlayTrack } from '@/schema/type';
 import { toast } from 'react-toastify';
 import { create } from 'zustand';
 
 interface SpotifyStoreState {
+  player: Spotify.Player | null;
+  setPlayer: (player: Spotify.Player) => void;
+
   accessToken: string | null;
   setAccessToken: (accessToken: SpotifyStoreState['accessToken']) => void;
 
   deviceId: string | null;
   setDeviceId: (deviceId: SpotifyStoreState['deviceId']) => void;
 
-  currentTrack: PlayTrack | null;
+  currentTrack: Spotify.Track | null;
   setCurrentTrack: (currentTrack: SpotifyStoreState['currentTrack']) => void;
 
   isPaused: boolean;
   setIsPaused: (isPaused: SpotifyStoreState['isPaused']) => void;
 
-  play: (trackURI: string) => void;
+  play: (
+    trackURI: string | string[],
+    accessToken: string,
+    device_id: string,
+  ) => void;
 
   pause: () => void;
 
-  shuffle: () => void;
+  shuffle: (playlistId: string) => void;
 
   playPrevTrack: () => void;
 
@@ -34,6 +40,9 @@ interface SpotifyStoreState {
 }
 
 const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
+  player: null,
+  setPlayer: (player) => set({ player }),
+
   accessToken: null,
   setAccessToken: (accessToken) => set({ accessToken }),
 
@@ -46,7 +55,7 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
   isPaused: true,
   setIsPaused: (isPaused) => set({ isPaused }),
 
-  play: (trackURI) =>
+  play: (contextUriOrTrackURIs: string | string[]) =>
     set((prevState) => {
       const { accessToken, deviceId } = prevState;
       if (!accessToken) {
@@ -58,7 +67,7 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
         return prevState;
       }
 
-      playTrack(trackURI, accessToken, deviceId);
+      playTrack(contextUriOrTrackURIs, accessToken, deviceId);
 
       return prevState;
     }),
@@ -75,12 +84,12 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
       return prevState;
     }),
 
-  shuffle: () => {
+  shuffle: (playlistId: string) => {
     const { accessToken, deviceId } = get();
     if (!accessToken) return toast.warn('프리미엄 로그인이 필요한 기능입니다.');
     if (!deviceId) return toast.warn('현재 플레이 할 수 있는 기기가 없습니다.');
 
-    shuffleTracks(accessToken, deviceId);
+    shuffleTracks(accessToken, deviceId, playlistId);
   },
   playPrevTrack: () => {
     const { accessToken } = get();
@@ -90,11 +99,11 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
     playPreviousTrack(accessToken);
   },
   playNextTrack: () => {
-    const { accessToken } = get();
+    const { accessToken, deviceId } = get();
     if (!accessToken)
       return toast.error('프리미엄 게정 로그인이 필요한 기능입니다');
 
-    playNextTrack(accessToken);
+    playNextTrack(accessToken, String(deviceId));
   },
 }));
 

@@ -6,7 +6,7 @@ const TOP_100_MUSIC_ID = '5ABHKGoOzxkaa28ttQV9sE';
 
 async function TodayPage() {
   /*spotify Top 100 음악 가져오는 api */
-  const response = await api.playlist.getPlaylists(TOP_100_MUSIC_ID);
+  const response = await api.playlist.getPlaylist(TOP_100_MUSIC_ID);
   const tracks = response?.tracks.items.map((item) => item.track);
 
   return (
