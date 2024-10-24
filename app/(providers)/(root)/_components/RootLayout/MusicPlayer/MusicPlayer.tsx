@@ -85,7 +85,7 @@ function MusicPlayer() {
               className="text-4xl py-4 pl-5 pr-3 text-red-500"
               onClick={() =>
                 play(
-                  String(currentTrack),
+                  String(currentTrack?.uri),
                   String(accessToken),
                   String(deviceId),
                 )
