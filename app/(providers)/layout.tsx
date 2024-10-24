@@ -11,7 +11,7 @@ function ProvidersLayout({ children }: PropsWithChildren) {
     <TanstackQueryProvider>
       <ModalProvider>
         <AuthProvider>
-          <ToastContainer limit={2} />
+          <ToastContainer limit={4} />
           {children}
         </AuthProvider>
       </ModalProvider>

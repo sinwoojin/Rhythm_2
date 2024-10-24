@@ -3,8 +3,7 @@
 import { supabaseToggleLike } from '@/api/supabaseTrackLikeApi';
 import { supabase } from '@/supabase/client';
 import { useAuthStore } from '@/zustand/authStore';
-import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PiHeartStraightDuotone, PiHeartStraightFill } from 'react-icons/pi';
 import { Bounce, toast } from 'react-toastify';
 
@@ -13,67 +12,72 @@ interface ToggleLikeButtonProps {
 }
 
 function LikeButton({ trackId }: ToggleLikeButtonProps) {
-  const [isLike, setIsLike] = useState(false);
   const currentUser = useAuthStore((state) => state.currentUser);
   const userId = currentUser?.id;
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (!userId) return;
-    (async () => {
-      const isLike = supabase
+  const { data: myLikeOnTrack } = useQuery({
+    queryKey: ['isLike', { trackId }],
+    queryFn: async () =>
+      await supabase
         .from('likeMusic')
         .select('*')
         .eq('trackId', trackId)
-        .eq('userId', userId);
-      if (isLike) setIsLike(true);
-    })();
-  }, []);
+        .eq('userId', userId!)
+        .single(),
+    enabled: !!userId,
+    select: (response) => response.data,
+  });
 
-  useMutation({ mutationKey: ['likeTrack', isLike], mutationFn: () => {} }, qu);
+  const isLike = !!myLikeOnTrack;
 
-  const handleClickTrackLike = async (trackId: string) => {
-    if (!currentUser) return toast.error('로그인이 필요한 서비스 입니다');
+  const { mutate: toggleLikeTracks } = useMutation({
+    mutationFn: async (trackId: string) => {
+      if (!currentUser) return toast.error('로그인이 필요한 서비스 입니다');
 
-    if (!isLike) {
-      const data = {
-        userId: String(userId),
-        trackId: String(trackId),
-      };
-      await supabaseToggleLike.likeTrack(data);
-      toast.success('트랙을 좋아요 하셨습니다', {
-        position: 'top-right',
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-        transition: Bounce,
-      });
-    } else {
-      supabaseToggleLike.unLikeTrack(trackId);
-      toast.info('트랙 좋아요를 취소 하셨습니다', {
-        position: 'top-right',
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-        transition: Bounce,
-      });
-    }
-  };
+      if (!isLike) {
+        const data = {
+          userId: String(userId),
+          trackId: String(trackId),
+        };
+        await supabaseToggleLike.likeTrack(data);
+        toast.success('트랙을 좋아요 하셨습니다', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+          transition: Bounce,
+        });
+      } else {
+        await supabaseToggleLike.unLikeTrack(trackId);
+        toast.info('트랙 좋아요를 취소 하셨습니다', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+          transition: Bounce,
+        });
+      }
+    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ['isLike', { trackId }] }),
+  });
 
   return (
     <div className="w-14 h-14 text-center justify-center">
       <button
         className="pl-2.5 bg-red-500 w-full h-full rounded-full text-white transition-all duration-300 hover:scale-110 text-4xl"
-        onClick={() => handleClickTrackLike(trackId)}
+        onClick={() => toggleLikeTracks(trackId)}
       >
-        {isLike ? <PiHeartStraightDuotone /> : <PiHeartStraightFill />}
+        {!isLike ? <PiHeartStraightDuotone /> : <PiHeartStraightFill />}
       </button>
     </div>
   );

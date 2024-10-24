@@ -18,12 +18,7 @@ const likeTrack = async (
  * @returns 수파베이스에서 좋아요 삭제
  */
 const unLikeTrack = async (trackId: string) => {
-  const response = await supabase
-    .from('likeMusic')
-    .delete()
-    .eq('trackId', trackId);
-  const data = response.data;
-  return data;
+  await supabase.from('likeMusic').delete().eq('trackId', trackId);
 };
 
 export const supabaseToggleLike = {
