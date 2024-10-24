@@ -1,93 +1,60 @@
+'use client';
 import { api } from '@/api/spotifyApi';
-import { artistAlbum, artistTopMusic, SpotifyArtist } from '@/schema/type';
-import { SlOptions } from 'react-icons/sl';
+import { Artist } from '@/schema/type';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { FaPlay } from 'react-icons/fa';
+import { IoIosAddCircleOutline } from 'react-icons/io';
+import ArtistDetailLayout from '../../_components/Layouts/ArtistDetailLayout.tsx/ArtistDetailLayout';
 import Page from '../../_components/Page/Page';
 
-interface ArtistDetailPageProps {
-  params: { artistId: string };
-}
+function ArtistDetailPage() {
+  const { artistId } = useParams();
 
-async function ArtistDetailPage(props: ArtistDetailPageProps) {
-  // 현재 페이지의 아티스트 id
-  const artistId = props.params.artistId;
-
-  // 가수 정보 가져오기
-  const artist = (await api.artist.getArtist(artistId)) as SpotifyArtist;
-
-  // 가수 인기곡 가져오기
-  const topArtistMusic = (await api.artist.getTopArtistMusic(
-    artistId,
-  )) as artistTopMusic;
-
-  // 아티스트 앨범 가져오기
-  const artistAlbum = (await api.artist.getArtistAlbum(
-    artistId,
-  )) as artistAlbum;
-
-  console.log(artistAlbum);
+  const [artist, setArtist] = useState<Artist | undefined>(undefined);
+  useEffect(() => {
+    (async () => {
+      const response = await api.artist.getArtist(String(artistId));
+      setArtist(response);
+    })();
+  }, [artistId]);
   return (
     <Page>
-      <article className="py-4 mb-4 h-full">
-        {/* 아티스트 정보 */}
-        <div className="w-full bg-slate-400 h-[270px] relative mb-10 overflow-hidden">
-          <img
-            src={artist.images[0].url}
-            alt="가수 얼굴"
-            className="aspect-square h-[270px] w-full brightness-50 object-cover object-top blur-lg"
-          />
-          <h2 className="absolute bottom-10 left-10 font-bold text-2xl">
-            {artist.name}
-          </h2>
-        </div>
-
-        {/* 아티스트 인기곡 */}
-        <div>
-          <h3 className="mb-5 text-2xl font-semibold">노래</h3>
-          <ul className="w-full flex flex-col overflow-auto scrollbar-hide">
-            {topArtistMusic.tracks.slice(0, 5).map((track, idx) => (
-              <li
-                className="flex h-20 px-4 py-[10px] w-full gap-4 items-center rounded-sm transition-all hover:bg-white/10"
-                key={track.id}
-              >
-                <div className="">{idx + 1}</div>
-                <div className="h-full aspect-square rounded-sm bg-white/20">
-                  <img src={track.album.images[0].url} alt="" />
-                </div>
-                <div className="w-full">{track.name}</div>
-                <div className="w-full text-white/50">
-                  {track.artists[0].name}
-                </div>
-                <button
-                  aria-label="옵션 버튼"
-                  className="text-xl text-white/50"
-                >
-                  <SlOptions />
+      <article className="py-4 border-b mb-4 border-white">
+        <div className="flex gap-x-6 mb-6 h-[300px] relative">
+          <div className="absolute top-0 left-0 right-0 h-full w-full overflow-hidden">
+            <img
+              src={artist?.images[0].url}
+              alt="가수 얼굴"
+              className="w-full h-full object-cover brightness-50 object-top blur-lg"
+            />
+          </div>
+          <div className="absolute z-10 top-0 left-0 right-0 h-full flex gap-x-4 p-10">
+            <div className="h-full aspect-square bg-white/20 rounded-full overflow-hidden">
+              <img
+                src={artist?.images[0].url}
+                alt="image"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="flex flex-col gap-y-4">
+              <h2 className="text-7xl font-bold line-clamp-1">
+                {artist?.name}
+              </h2>
+              <div className="flex gap-x-4">
+                <button className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl">
+                  <FaPlay />
                 </button>
-              </li>
-            ))}
-          </ul>
+                <button className="text-5xl">
+                  <IoIosAddCircleOutline />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-
-        {/* 아티스트 앨범 */}
-        <div className="mt-10">
-          <h3 className="mb-5 text-2xl font-semibold">앨범</h3>
-          <ul className="w-full flex overflow-auto scrollbar-hide">
-            {artistAlbum.items.map((album) => (
-              <li
-                className="flex flex-col px-4 py-[10px] gap-7 w-[150px] h-[150px]"
-                key={album.artists.id}
-              >
-                <img
-                  className="rounded-sm bg-white/20  aspect-[1/2] "
-                  alt="앨범 이미지"
-                  src={album.images[0].url}
-                />
-
-                <span className="w-full text-white/50">{album.name}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+      </article>
+      <article>
+        <ArtistDetailLayout artistId={artistId} />
       </article>
     </Page>
   );

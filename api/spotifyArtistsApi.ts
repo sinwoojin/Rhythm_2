@@ -1,3 +1,4 @@
+import { Artist, artistAlbum, artistTopMusic } from '@/schema/type';
 import { getAccessToken } from './getToken';
 import { spotifyAPI } from './spotifyApi';
 
@@ -5,7 +6,7 @@ import { spotifyAPI } from './spotifyApi';
  * 아티스트 가져오기
  * @param getArtists
  */
-const getArtist = async (artistsId: string) => {
+const getArtist = async (artistsId: string): Promise<Artist | undefined> => {
   try {
     const accessToken = await getAccessToken(); // 액세스 토큰을 비동기로 가져옴
     if (!accessToken) {
@@ -28,7 +29,9 @@ const getArtist = async (artistsId: string) => {
  * 아티스트 인기곡 가져오기
  * @param getArtists
  */
-const getTopArtistMusic = async (artistsId: string) => {
+const getTopArtistMusic = async (
+  artistsId: string,
+): Promise<artistTopMusic | undefined> => {
   try {
     const accessToken = await getAccessToken(); // 액세스 토큰을 비동기로 가져옴
     if (!accessToken) {
@@ -52,7 +55,9 @@ const getTopArtistMusic = async (artistsId: string) => {
  * @param artistsId
  * @returns
  */
-const getArtistAlbum = async (artistsId: string) => {
+const getArtistAlbum = async (
+  artistsId: string,
+): Promise<artistAlbum | undefined> => {
   try {
     const accessToken = await getAccessToken(); // 액세스 토큰을 비동기로 가져옴
     if (!accessToken) {

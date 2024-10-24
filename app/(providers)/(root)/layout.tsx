@@ -1,4 +1,5 @@
 import { PropsWithChildren, Suspense } from 'react';
+import 'swiper/css';
 import Header from './_components/RootLayout/Header/Header';
 import MusicPlayer from './_components/RootLayout/MusicPlayer/MusicPlayer';
 
