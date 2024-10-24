@@ -75,12 +75,13 @@ function LikeButton({ trackId }: ToggleLikeButtonProps) {
   });
 
   useEffect(() => {
-    if (!myLikeOnTrack || !isLoggedIn) {
+    if (!myLikeOnTrack && !isLoggedIn) {
       setIsLike(false);
     } else {
       setIsLike(true);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, myLikeOnTrack]);
+
   return (
     <div className="w-14 h-14 text-center justify-center">
       <button
