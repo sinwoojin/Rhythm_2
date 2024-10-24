@@ -78,8 +78,8 @@ export const getRefreshToken = async (): Promise<string | null> => {
 
   if (!refreshToken) {
     console.error('Refresh token이 없습니다. 다시 로그인해 주세요.');
-    alert('로그인이 필요합니다.');
-    return null; // 로그인 유도
+    alert('로그인이 필요합니다.'); // 로그인 유도
+    return null;
   }
 
   try {
@@ -96,19 +96,20 @@ export const getRefreshToken = async (): Promise<string | null> => {
       },
     );
 
-    const { access_token, refresh_token: newRefreshToken } = response.data;
+    const { access_token: newAccessToken, refresh_token: newRefreshToken } =
+      response.data;
 
     // 새로운 access_token과 refresh_token 저장
-    localStorage.setItem('spotify_provider_token', access_token);
+    localStorage.setItem('spotify_provider_token', newAccessToken);
     if (newRefreshToken) {
       localStorage.setItem('refresh_token', newRefreshToken);
     }
 
-    return access_token;
+    return newAccessToken;
   } catch (error: any) {
     console.error('Refresh token을 가져오는 중 오류 발생:', error);
 
-    // 401 또는 403일 경우 다시 로그인 하도록 alert 띄어주기
+    // 401에러나 403에러일때 경고문 띄어주기
     if (error.response && [401, 403].includes(error.response.status)) {
       alert('세션이 만료되었습니다. 다시 로그인해 주세요.');
     }

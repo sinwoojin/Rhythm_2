@@ -1,8 +1,8 @@
-"use client";
-import Button from "@/components/Button";
-import { useModalStore } from "@/zustand/modalStore";
-import { IoMdAddCircle } from "react-icons/io";
-import CreatePlayListModal from "../_CreatePlayListModal/CreatePlayListModal";
+'use client';
+import Button from '@/components/Button';
+import { useModalStore } from '@/zustand/modalStore';
+import { IoMdAddCircle } from 'react-icons/io';
+import CreatePlayListModal from '../_CreatePlayListModal/CreatePlayListModal';
 
 function CreatePlaylistToggle() {
   const openModal = useModalStore((state) => state.openModal);
