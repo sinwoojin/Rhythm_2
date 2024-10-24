@@ -15,10 +15,6 @@ function MyLikeTracks() {
     queryFn: () => supabaseProfile.getMyLikeTracks(userId),
   });
 
-  const tracksId = tracks?.map((track) => track.trackId);
-
-  console.log('tracksId', tracksId);
-
   useEffect(() => {
     (async () => {
       queryClient.invalidateQueries({
@@ -29,8 +25,8 @@ function MyLikeTracks() {
 
   return (
     <div>
-      <ul>
-        {tracks?.map((track) => (
+      <ul className="flex gap-x-5">
+        {tracks?.map(async (track) => (
           <li key={track.trackId}>
             <Link href={`/music/${track.trackId}`}>
               <p>{track.trackId}</p>
