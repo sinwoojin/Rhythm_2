@@ -2,7 +2,6 @@
 import { Track } from '@/schema/type';
 import Link from 'next/link';
 
-
 interface ChartListProps {
   artists: Track[];
   title: string;
