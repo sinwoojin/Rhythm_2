@@ -136,7 +136,7 @@ function EditModal({ id }: EditModalProps) {
             <label htmlFor="userName">유저 이름</label>
             <Input
               className="mb-4 mt-2"
-              size={'large'}
+              size={'lg'}
               padding={'md'}
               id="userName"
               value={userName}
@@ -146,7 +146,7 @@ function EditModal({ id }: EditModalProps) {
             <label htmlFor="content">소개글</label>
             <Input
               className="mt-2"
-              size={'large'}
+              size={'lg'}
               padding={'md'}
               id="content"
               value={content}
