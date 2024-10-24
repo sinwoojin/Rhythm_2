@@ -3,7 +3,6 @@ import PlayButton from '@/components/PlayButton';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import Page from '../../_components/Page/Page';
-import PlayButton from '../_components/Button/Button';
 import LikeButton from '../_components/ToggleLikeButton/LikeButton';
 
 interface MusicDetailPageProps {

@@ -3,6 +3,7 @@
 import { Track } from '@/schema/type';
 import useSpotifyStore from '@/zustand/spotifyStore';
 import { FaPause, FaPlay } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 interface PlayButtonProps {
   track: Track | undefined;
@@ -15,7 +16,7 @@ function PlayButton(props: PlayButtonProps) {
 
   const handleClickPlayButton = () => {
     const trackURI = props.track?.uri;
-    if (!trackURI) return alert('No trackURI');
+    if (!trackURI) return toast.error('해당 음악이 존재하지 않습니다.');
 
     play(trackURI);
   };
