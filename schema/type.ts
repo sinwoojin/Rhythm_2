@@ -115,6 +115,7 @@ export type artistAlbum = {
   href: string;
   next: string;
   items: {
+    id: string;
     href: string;
     images: {
       url: string;
@@ -147,6 +148,8 @@ export type artistTopMusic = {
     release_date: string;
     total_tracks: number;
     album: {
+      id: string;
+      name: string;
       images: {
         url: string;
       }[];
@@ -158,7 +161,7 @@ export type artistTopMusic = {
 };
 
 // 아티스트 정보 타입
-export type SpotifyArtist = {
+export type Artist = {
   external_urls: {
     spotify: string;
   };
