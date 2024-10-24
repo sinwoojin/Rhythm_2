@@ -19,7 +19,7 @@ function MusicPlayer() {
   const playNextTrack = useSpotifyStore((state) => state.playNextTrack);
 
   return (
-    <div className="fixed bottom-0 w-full bg-[#121212] grid grid-cols-7 py-6 px-8 max-h-[116px]">
+    <div className="fixed bottom-0 w-full bg-[#121212] grid grid-cols-7 py-6 px-8 max-h-[116px] z-50">
       <div
         id="music-player-left"
         className="col-span-2 flex items-center gap-x-4"
