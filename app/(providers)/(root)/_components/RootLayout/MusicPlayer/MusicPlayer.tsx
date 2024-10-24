@@ -11,12 +11,15 @@ import OptionButton from '../OptionButton/OptionButton';
 
 function MusicPlayer() {
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
+  const accessToken = useSpotifyStore((state) => state.accessToken);
+  const deviceId = useSpotifyStore((state) => state.deviceId);
   const isPaused = useSpotifyStore((state) => state.isPaused);
   const play = useSpotifyStore((state) => state.play);
   const pause = useSpotifyStore((state) => state.pause);
   const shuffle = useSpotifyStore((state) => state.shuffle);
   const playPrevTrack = useSpotifyStore((state) => state.playPrevTrack);
   const playNextTrack = useSpotifyStore((state) => state.playNextTrack);
+  // const player = useSpotifyStore((state) => state.player);
 
   return (
     <div className="fixed bottom-0 w-full bg-[#121212] grid grid-cols-7 py-6 px-8 max-h-[116px] z-50">
@@ -59,7 +62,7 @@ function MusicPlayer() {
         {/* 셔플 버튼 */}
         <button
           aria-label="셔플 버튼"
-          onClick={shuffle}
+          onClick={() => shuffle('')}
           className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110"
         >
           <RxShuffle />
@@ -80,7 +83,13 @@ function MusicPlayer() {
             <button
               aria-label="플레이 버튼"
               className="text-4xl py-4 pl-5 pr-3 text-red-500"
-              onClick={() => play(currentTrack?.uri)}
+              onClick={() =>
+                play(
+                  String(currentTrack?.uri),
+                  String(accessToken),
+                  String(deviceId),
+                )
+              }
             >
               <FaPlay />
             </button>

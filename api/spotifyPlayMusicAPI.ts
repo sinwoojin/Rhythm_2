@@ -78,7 +78,7 @@ export const fetchAccessToken = async (
  * @param deviceId
  */
 export const playTrack = async (
-  uri: string,
+  uri: string | string[],
   accessToken: string,
   deviceId: string,
 ) => {
@@ -87,7 +87,7 @@ export const playTrack = async (
     // 현재 트랙 재생
     await spotifyAPI.put(
       `me/player/play`,
-      { uris: [uri] },
+      typeof uri === 'string' ? { context_uri: uri } : { uris: uri },
       {
         headers: {
           'Content-Type': 'application/json',
@@ -134,13 +134,20 @@ export const pauseTrack = async (accessToken: string) => {
  * 다음 노래 재생
  * @param accessToken
  */
-export const nextTrack = async (accessToken: string) => {
+/**
+ * 다음 노래 재생
+ * @param accessToken
+ */
+export const nextTrack = async (accessToken: string, deviceId: string) => {
   if (!accessToken) return;
   try {
-    await spotifyAPI.post(`me/player/next`, {
+    await spotifyAPI.post(`me/player/next`, undefined, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        device_id: deviceId,
       },
     });
   } catch (error) {
@@ -174,10 +181,11 @@ export const previousTrack = async (accessToken: string) => {
 export const playRandomTrack = async (
   accessToken: string,
   deviceId: string,
+  playlistURI: string,
 ) => {
   if (!accessToken && !deviceId) return;
 
-  const playlists = await api.playlist.getPlaylists('4cRo44TavIHN54w46OqRVc');
+  const playlists = await api.playlist.getPlaylist(playlistURI);
 
   const tracks = playlists?.tracks.items.map((item) => item.track);
   const currentTrackUri = tracks?.map((item) => item.uri);
@@ -192,4 +200,20 @@ export const playRandomTrack = async (
   const randomUri = getRandomTrack(currentTrackUri);
 
   await playTrack(randomUri, accessToken, deviceId);
+};
+
+export const getUsersQueue = async (accessToken: string) => {
+  if (!accessToken) return;
+  try {
+    const response = await spotifyAPI.get(`me/player/queue`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error skipping to next track:', error);
+  }
 };

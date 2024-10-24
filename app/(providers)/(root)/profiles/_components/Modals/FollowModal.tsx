@@ -12,6 +12,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { Swiper } from 'swiper/react';
 
 interface FollowModalProps {
   userId: string; // 현재 프로필의 유저 ID
@@ -140,24 +141,26 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
               : '팔로잉이 없습니다.'}
           </p>
         ) : (
-          <ul>
-            {followers.map((follower) => (
-              <li
-                key={follower.id}
-                className="flex justify-between items-center py-2"
-              >
-                <Link href={`/profiles/${follower.id}`}>
-                  <span onClick={handleClickModalClose}>
-                    {follower.userName}
-                  </span>
-                </Link>
+          <Swiper spaceBetween={15} slidesPerView={7} loop={false}>
+            <ul>
+              {followers.map((follower) => (
+                <li
+                  key={follower.id}
+                  className="flex justify-between items-center py-2"
+                >
+                  <Link href={`/profiles/${follower.id}`}>
+                    <span onClick={handleClickModalClose}>
+                      {follower.userName}
+                    </span>
+                  </Link>
 
-                <Button onClick={() => handleToggleFollow(follower.id)}>
-                  {checkIsFollowing(follower.id) ? '언팔로우' : '팔로우'}
-                </Button>
-              </li>
-            ))}
-          </ul>
+                  <Button onClick={() => handleToggleFollow(follower.id)}>
+                    {checkIsFollowing(follower.id) ? '언팔로우' : '팔로우'}
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </Swiper>
         )}
         <Button className="mt-4 absolute bottom-10" onClick={closeModal}>
           닫기

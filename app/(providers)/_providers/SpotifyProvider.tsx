@@ -8,6 +8,7 @@ function SpotifyProvider({ children }: PropsWithChildren) {
   const setDeviceId = useSpotifyStore((state) => state.setDeviceId);
   const setCurrentTrack = useSpotifyStore((state) => state.setCurrentTrack);
   const setIsPaused = useSpotifyStore((state) => state.setIsPaused);
+  const setPlayer = useSpotifyStore((state) => state.setPlayer);
 
   const loadSpotifyScript = () => {
     const script = document.createElement('script');
@@ -32,6 +33,7 @@ function SpotifyProvider({ children }: PropsWithChildren) {
     });
 
     player.connect();
+    setPlayer(player);
   };
 
   useEffect(() => {

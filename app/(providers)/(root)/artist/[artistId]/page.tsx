@@ -42,10 +42,13 @@ function ArtistDetailPage() {
                 {artist?.name}
               </h2>
               <div className="flex gap-x-4">
-                <button className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl">
+                <button
+                  aria-label="재생 버튼"
+                  className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl"
+                >
                   <FaPlay />
                 </button>
-                <button className="text-5xl">
+                <button aria-label="추가 버튼" className="text-5xl">
                   <IoIosAddCircleOutline />
                 </button>
               </div>
