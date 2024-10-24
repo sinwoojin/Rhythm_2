@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 type ModalStoreState = {
   modal: { element: React.ReactElement; backdrop: boolean } | null;
