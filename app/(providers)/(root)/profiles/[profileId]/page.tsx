@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import Page from '../../_components/Page/Page';
 import EditModal from '../_components/Modals/EditModal';
 import FollowModal from '../_components/Modals/FollowModal';
+import MyLikeTracks from './_components/MyLikeTracks/MyLikeTracks';
 
 interface ProfileDetailPageProps {
   params: {
@@ -214,8 +215,10 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
       <div className="flex flex-col gap-y-4">
         <span>나의 플레이리스트</span>
         <div>{/* <PlayLists playListsId={playListsId} /> */}</div>
-        <span>좋아요 한 플레이리스트</span>
-        <div>{/* <PlayLists likedPlayListsId={likedPlayListsId} /> */}</div>
+        <span>좋아요 표시한 노래</span>
+        <div>
+          <MyLikeTracks />
+        </div>
       </div>
     </Page>
   );

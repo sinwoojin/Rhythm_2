@@ -125,6 +125,19 @@ export const updateProfile = async (
   return response;
 };
 
+/**
+ *
+ * @param userId, 현재 유저 id
+ * @returns 좋아요 한 노래 목록
+ */
+const getMyLikeTracks = async (userId: string) => {
+  const response = await supabase
+    .from('likeMusic')
+    .select('*')
+    .eq('userId', userId);
+  const data = response.data;
+  return data;
+};
 
 export const supabaseProfile = {
   getProfile,
@@ -134,4 +147,5 @@ export const supabaseProfile = {
   deleteFollowData,
   myFollowState,
   updateProfile,
+  getMyLikeTracks,
 };
