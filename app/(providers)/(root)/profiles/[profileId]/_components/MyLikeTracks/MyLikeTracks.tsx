@@ -15,6 +15,10 @@ function MyLikeTracks() {
     queryFn: () => supabaseProfile.getMyLikeTracks(userId),
   });
 
+  const tracksId = tracks?.map((track) => track.trackId);
+
+  console.log('tracksId', tracksId);
+
   useEffect(() => {
     (async () => {
       queryClient.invalidateQueries({
@@ -22,8 +26,6 @@ function MyLikeTracks() {
       });
     })();
   }, [currentUser]);
-
-  console.log(tracks);
 
   return (
     <div>

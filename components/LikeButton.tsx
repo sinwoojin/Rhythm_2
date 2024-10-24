@@ -75,7 +75,7 @@ function LikeButton({ trackId }: ToggleLikeButtonProps) {
   });
 
   useEffect(() => {
-    if (!myLikeOnTrack && !isLoggedIn) {
+    if (!myLikeOnTrack) {
       setIsLike(false);
     } else {
       setIsLike(true);
