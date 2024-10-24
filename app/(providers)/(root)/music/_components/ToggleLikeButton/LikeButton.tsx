@@ -3,8 +3,8 @@
 import { supabaseToggleLike } from '@/api/supabaseTrackLikeApi';
 import { supabase } from '@/supabase/client';
 import { useAuthStore } from '@/zustand/authStore';
-import { useLikeStore } from '@/zustand/likeStore';
-import { useEffect } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { PiHeartStraightDuotone, PiHeartStraightFill } from 'react-icons/pi';
 import { Bounce, toast } from 'react-toastify';
 
@@ -13,17 +13,23 @@ interface ToggleLikeButtonProps {
 }
 
 function LikeButton({ trackId }: ToggleLikeButtonProps) {
+  const [isLike, setIsLike] = useState(false);
   const currentUser = useAuthStore((state) => state.currentUser);
   const userId = currentUser?.id;
-  const isLike = useLikeStore((state) => state.isLike);
 
   useEffect(() => {
-    supabase
-      .from('likeMusic')
-      .select('*')
-      .eq('trackId', trackId)
-      .eq('userId', currentUser?.id);
+    if (!userId) return;
+    (async () => {
+      const isLike = supabase
+        .from('likeMusic')
+        .select('*')
+        .eq('trackId', trackId)
+        .eq('userId', userId);
+      if (isLike) setIsLike(true);
+    })();
   }, []);
+
+  useMutation({ mutationKey: ['likeTrack', isLike], mutationFn: () => {} }, qu);
 
   const handleClickTrackLike = async (trackId: string) => {
     if (!currentUser) return toast.error('로그인이 필요한 서비스 입니다');
@@ -63,21 +69,12 @@ function LikeButton({ trackId }: ToggleLikeButtonProps) {
 
   return (
     <div className="w-14 h-14 text-center justify-center">
-      {!isLike ? (
-        <button
-          className="pl-2.5 bg-red-500 w-full h-full rounded-full text-white transition-all duration-300 hover:scale-110 text-4xl"
-          onClick={() => handleClickTrackLike(trackId)}
-        >
-          <PiHeartStraightDuotone />
-        </button>
-      ) : (
-        <button
-          className="bg-red-500 py-4 pl-4 pr-4 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl"
-          onClick={() => handleClickTrackLike(trackId)}
-        >
-          <PiHeartStraightFill />
-        </button>
-      )}
+      <button
+        className="pl-2.5 bg-red-500 w-full h-full rounded-full text-white transition-all duration-300 hover:scale-110 text-4xl"
+        onClick={() => handleClickTrackLike(trackId)}
+      >
+        {isLike ? <PiHeartStraightDuotone /> : <PiHeartStraightFill />}
+      </button>
     </div>
   );
 }
