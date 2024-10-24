@@ -1,7 +1,7 @@
 import { api } from '@/api/spotifyApi';
+import PlayButton from '@/components/PlayButton';
 import dayjs from 'dayjs';
 import Page from '../../_components/Page/Page';
-import PlayButton from '../_components/Button/Button';
 
 interface MusicDetailPageProps {
   params: { musicId: string };

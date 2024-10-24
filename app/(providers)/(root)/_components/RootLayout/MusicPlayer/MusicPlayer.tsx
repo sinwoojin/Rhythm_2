@@ -1,17 +1,6 @@
 'use client';
 
-import {
-  fetchAccessToken,
-  nextTrack,
-  pauseTrack,
-  playTrack,
-  previousTrack,
-  RandomPlayTrack,
-  spotifySDKSetting,
-} from '@/api/spotifyPlayMusicAPI';
-import { PlayTrack } from '@/schema/type';
-import { useCurrentTrackStore } from '@/zustand/useCurrentTrackStore';
-import { useEffect, useState } from 'react';
+import useSpotifyStore from '@/zustand/spotifyStore';
 import { BsMusicNoteList, BsRepeat } from 'react-icons/bs';
 import { CiHeart } from 'react-icons/ci';
 import { FaPause, FaPlay } from 'react-icons/fa';
@@ -21,38 +10,13 @@ import LyricsButton from '../LyricsButton/LyricsButton';
 import OptionButton from '../OptionButton/OptionButton';
 
 function MusicPlayer() {
-  // 현재 엑세스 토큰
-  const [accessToken, setAccessToken] = useState<string | null>('null');
-
-  // 재생 상태
-  const [isPaused, setPaused] = useState(true);
-
-  // 현재 재생하고있는 트랙 정보
-  const [currentTrack, setCurrentTrack] = useState<PlayTrack | null>(null);
-
-  // 현재 사용하고 있는 디바이스 id (웹 페이지, 앱)
-  const [deviceId, setDeviceId] = useState<string | null>(null);
-
-  // 현재 가지고있는 트랙 uri
-  const currentTrackURI = useCurrentTrackStore(
-    (state) => state.currentTrackURI,
-  );
-
-  // 장치 설정, 현재 토큰 불러오기
-  useEffect(() => {
-    (async () => {
-      await fetchAccessToken(setAccessToken);
-
-      if (!accessToken) return;
-
-      spotifySDKSetting({
-        accessToken,
-        setDeviceId,
-        setCurrentTrack,
-        setPaused,
-      });
-    })();
-  }, [accessToken]);
+  const currentTrack = useSpotifyStore((state) => state.currentTrack);
+  const isPaused = useSpotifyStore((state) => state.isPaused);
+  const play = useSpotifyStore((state) => state.play);
+  const pause = useSpotifyStore((state) => state.pause);
+  const shuffle = useSpotifyStore((state) => state.shuffle);
+  const playPrevTrack = useSpotifyStore((state) => state.playPrevTrack);
+  const playNextTrack = useSpotifyStore((state) => state.playNextTrack);
 
   return (
     <div className="fixed bottom-0 w-full bg-[#121212] grid grid-cols-7 py-6 px-8 max-h-[116px]">
@@ -95,7 +59,7 @@ function MusicPlayer() {
         {/* 셔플 버튼 */}
         <button
           aria-label="셔플 버튼"
-          onClick={() => RandomPlayTrack(String(accessToken), String(deviceId))}
+          onClick={shuffle}
           className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110"
         >
           <RxShuffle />
@@ -104,7 +68,7 @@ function MusicPlayer() {
         {/* 이전 곡 버튼 */}
         <button
           aria-label="이전 곡 버튼"
-          onClick={() => previousTrack(String(accessToken))}
+          onClick={playPrevTrack}
           className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110"
         >
           <IoMdSkipBackward />
@@ -116,13 +80,7 @@ function MusicPlayer() {
             <button
               aria-label="플레이 버튼"
               className="text-4xl py-4 pl-5 pr-3 text-red-500"
-              onClick={() =>
-                playTrack(
-                  currentTrackURI,
-                  String(accessToken),
-                  String(deviceId),
-                )
-              }
+              onClick={() => play(currentTrack?.uri)}
             >
               <FaPlay />
             </button>
@@ -130,7 +88,7 @@ function MusicPlayer() {
             <button
               aria-label="멈춤 버튼"
               className="text-4xl py-4 pl-4 pr-4 text-red-500"
-              onClick={() => pauseTrack(String(accessToken))}
+              onClick={() => pause()}
             >
               <FaPause />
             </button>
@@ -141,7 +99,7 @@ function MusicPlayer() {
         <button
           aria-label="다음 곡 버튼"
           className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110"
-          onClick={() => nextTrack(String(accessToken))}
+          onClick={playNextTrack}
         >
           <IoMdSkipForward />
         </button>

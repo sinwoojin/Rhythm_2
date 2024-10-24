@@ -1,5 +1,4 @@
 import { api } from '@/api/spotifyApi';
-
 import MusicsLayout from '../_components/Layouts/MusicsLayout/MusicsLayout';
 import Page from '../_components/Page/Page';
 
