@@ -11,7 +11,6 @@ function MusicPostAddButton() {
   const handleClickMusicPostAddButton = () => {
     // 여기에 노래 추천글 작성하는 버튼 클릭하면 모달 띄워주는 함수 적어주면 됨
     openModal({ element: <MusicPostAddModal />, backdrop: true });
-    alert('노래 추천글 작성하기 버튼 누름');
   };
   return (
     <button

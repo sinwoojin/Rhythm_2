@@ -9,7 +9,7 @@ function MusicPostAddModal() {
       onClick={(e) => e.stopPropagation()}
     >
       <h2 className="text-center mt-10 font-semibold text-3xl mb-4">
-        프로필 수정
+        노래 추천글
       </h2>
       <form
         className="flex items-center justify-center  gap-y-3  flex-wrap"
@@ -25,6 +25,7 @@ function MusicPostAddModal() {
               id="userName"
             />
 
+            <label htmlFor="content">글</label>
             <label htmlFor="content"></label>
             <Input
               className="mt-2"
