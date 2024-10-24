@@ -5,13 +5,17 @@ export interface Album {
   id: string;
   name: string;
   release_date: string;
+  description: string;
   artists: { id: string; name: string }[];
   tracks: {
-    items: { id: string; name: string; artists: { name: string }[] }[];
+    href: string;
+    total: number;
+    items: Track[];
   };
   images: {
     url: string;
   }[];
+  uri: string;
 }
 
 /**
@@ -51,6 +55,7 @@ export type Playlist = {
   images: {
     url: string;
   }[];
+  uri: string;
 };
 
 /**

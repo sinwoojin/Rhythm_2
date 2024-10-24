@@ -1,6 +1,7 @@
-import { PlayTrack } from '@/schema/type';
 import { toast } from 'react-toastify';
-import { api } from './spotifyApi';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { getRefreshToken } from './getToken';
+import { api, spotifyAPI } from './spotifyApi';
 
 /**
  * spotify 로그인 토큰 설정
@@ -16,8 +17,51 @@ export const fetchAccessToken = async (
 
   if (currentProvider === 'spotify') {
     try {
-      const storedToken = window.localStorage.getItem('spotify_provider_token'); //토큰을 localStorage에서 가져오는 함수
-      if (storedToken) setAccessToken(storedToken);
+      const storedToken = localStorage.getItem('spotify_provider_token');
+      const refreshToken = localStorage.getItem('spotify_refresh_token');
+
+      if (storedToken) {
+        try {
+          if (storedToken) {
+            await spotifyAPI.get(`me`, {
+              headers: { Authorization: `Bearer ${storedToken}` },
+            });
+            setAccessToken(storedToken);
+            return;
+          }
+        } catch (error: any) {
+          if (error.response?.status === 401) {
+            console.warn('Access Token이 만료되었습니다. 갱신 중...');
+          }
+        }
+      }
+      if (refreshToken) {
+        try {
+          const refresh_token = await getRefreshToken();
+          if (refresh_token) {
+            await spotifyAPI.get(`me`, {
+              headers: { Authorization: `Bearer ${refresh_token}` },
+            });
+            setAccessToken(refresh_token);
+            return;
+          }
+        } catch (error: any) {
+          if (error.response?.status === 401) {
+            console.warn('Access Token이 만료되었습니다. 갱신 중...');
+          }
+        }
+      }
+
+      // Access Token이 없거나 만료된 경우 Refresh Token으로 갱신
+      if (refreshToken) {
+        const newAccessToken = await getRefreshToken();
+        if (newAccessToken) {
+          setAccessToken(newAccessToken); // 새 토큰 설정
+        }
+      } else {
+        console.error('Refresh Token이 없습니다. 재로그인이 필요합니다.');
+        alert('로그인이 필요합니다.');
+      }
     } catch (error) {
       console.error('Access Token 가져오기 오류:', error);
       toast.error(
@@ -25,51 +69,6 @@ export const fetchAccessToken = async (
       );
     }
   }
-};
-
-interface SpotifySDKProps {
-  accessToken: string;
-  setDeviceId: (deviceId: string) => void;
-  setCurrentTrack?: (track: PlayTrack | null) => void;
-  setPaused?: (paused: boolean) => void;
-}
-
-// spotifySDK 초기화 함수
-export const spotifySDKSetting = ({
-  accessToken,
-  setDeviceId,
-  setCurrentTrack = () => {},
-  setPaused = () => {},
-}: SpotifySDKProps) => {
-  const script = document.createElement('script');
-  script.src = 'https://sdk.scdn.co/spotify-player.js';
-  document.body.appendChild(script);
-
-  window.onSpotifyWebPlaybackSDKReady = () => {
-    const player = new window.Spotify.Player({
-      name: 'Web Playback SDK',
-      getOAuthToken: (cb) => {
-        cb(accessToken);
-      },
-      volume: 0.5,
-    });
-
-    player.addListener('ready', ({ device_id }) => {
-      setDeviceId(device_id);
-    });
-
-    player.addListener('player_state_changed', (state) => {
-      if (!state) return;
-      setCurrentTrack(state.track_window.current_track);
-      setPaused(state.paused);
-    });
-
-    player.connect();
-  };
-
-  return () => {
-    document.body.removeChild(script);
-  };
 };
 
 /**
@@ -83,29 +82,34 @@ export const playTrack = async (
   accessToken: string,
   deviceId: string,
 ) => {
-  if (!accessToken && !deviceId) return;
-  // 플레이할 디바이스 설정
-  await fetch(`https://api.spotify.com/v1/me/player`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      device_ids: [deviceId],
-      play: true,
-    }),
-  });
-
-  // 현재 트랙 재생
-  fetch(`https://api.spotify.com/v1/me/player/play`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({ uris: [uri] }),
-  });
+  if (!accessToken || !deviceId) return;
+  try {
+    // 현재 트랙 재생
+    await spotifyAPI.put(
+      `me/player/play`,
+      { uris: [uri] },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          device_id: deviceId,
+        },
+      },
+    );
+  } catch (error: any) {
+    if (error.response) {
+      console.error('API 호출 중 오류 발생:', error.response.data);
+      if (error.response.status === 401) {
+        console.error(
+          'Unauthorized: Access Token이 만료되었거나 잘못되었습니다.',
+        );
+      }
+    } else {
+      console.error('API 호출 중 네트워크 오류 발생:', error);
+    }
+  }
 };
 
 /**
@@ -115,8 +119,7 @@ export const playTrack = async (
 export const pauseTrack = async (accessToken: string) => {
   if (!accessToken) return;
   try {
-    await fetch(`https://api.spotify.com/v1/me/player/pause`, {
-      method: 'PUT',
+    await spotifyAPI.put(`me/player/pause`, undefined, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
@@ -134,8 +137,7 @@ export const pauseTrack = async (accessToken: string) => {
 export const nextTrack = async (accessToken: string) => {
   if (!accessToken) return;
   try {
-    await fetch(`https://api.spotify.com/v1/me/player/next`, {
-      method: 'POST',
+    await spotifyAPI.post(`me/player/next`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
@@ -153,8 +155,7 @@ export const nextTrack = async (accessToken: string) => {
 export const previousTrack = async (accessToken: string) => {
   if (!accessToken) return;
   try {
-    await fetch(`https://api.spotify.com/v1/me/player/previous`, {
-      method: 'POST',
+    await spotifyAPI.post(`me/player/previous`, undefined, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
@@ -170,7 +171,7 @@ export const previousTrack = async (accessToken: string) => {
  * @param accessToken
  * @param deviceId
  */
-export const RandomPlayTrack = async (
+export const playRandomTrack = async (
   accessToken: string,
   deviceId: string,
 ) => {
