@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Page from '../../Page/Page';
 
+
 interface ChartListProps {
   albums: Album[];
   title: string;
@@ -15,6 +16,7 @@ function AlbumsLayout({ albums, title }: ChartListProps) {
       <div className="[&+&]:mb-10 relative max-w-full">
         <h3 className="text-2xl font-bold mb-6">{title}</h3>
         {albums.length > 0 ? (
+
           <Swiper
             spaceBetween={10}
             slidesPerView={7}

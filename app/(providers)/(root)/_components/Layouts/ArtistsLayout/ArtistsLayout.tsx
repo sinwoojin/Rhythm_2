@@ -18,11 +18,7 @@ function ArtistsLayout({ artists, title }: ChartListProps) {
               key={artist.id}
               className="flex flex-col w-[200px] min-w-[200px]"
             >
-              <Link
-                href={
-                  '/' /*여기에 디테일 페이지로 넘어갈 동적 url 적기 지금은 비워둠*/
-                }
-              >
+              <Link href={`/artist/${artist.id}`}>
                 {artist.images.length === 0 ? (
                   <div className="rounded-full overflow-hidden w-full aspect-square"></div>
                 ) : (

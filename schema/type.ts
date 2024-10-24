@@ -109,3 +109,73 @@ export type PlayTrack = {
   uid: string;
   uri: string;
 };
+
+// 아티스트 앨범 타입
+export type artistAlbum = {
+  href: string;
+  next: string;
+  items: {
+    href: string;
+    images: {
+      url: string;
+    }[];
+    name: string;
+    artists: {
+      external_urls: {
+        spotify: string;
+      };
+      href: string;
+      id: string;
+      name: string;
+      uri: string;
+    };
+  }[];
+};
+
+// 아티스트 인기곡 타입
+export type artistTopMusic = {
+  tracks: {
+    id: string;
+    name: string;
+    artists: {
+      id: string;
+      name: string;
+      external_urls: {
+        spotify: string;
+      };
+    }[];
+    release_date: string;
+    total_tracks: number;
+    album: {
+      images: {
+        url: string;
+      }[];
+    };
+    external_urls: {
+      spotify: string;
+    };
+  }[];
+};
+
+// 아티스트 정보 타입
+export type SpotifyArtist = {
+  external_urls: {
+    spotify: string;
+  };
+  followers: {
+    href: string | null;
+    total: number;
+  };
+  genres: string[];
+  href: string;
+  id: string;
+  images: {
+    url: string;
+    height: number;
+    width: number;
+  }[];
+  name: string;
+  popularity: number;
+  type: string;
+  uri: string;
+};
