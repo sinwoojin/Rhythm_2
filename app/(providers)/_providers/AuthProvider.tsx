@@ -3,6 +3,7 @@
 import { Database } from '@/database.types';
 import { supabase } from '@/supabase/client';
 import { useAuthStore } from '@/zustand/authStore';
+import useSpotifyStore from '@/zustand/spotifyStore';
 
 import { PropsWithChildren, useEffect } from 'react';
 
@@ -10,20 +11,19 @@ function AuthProvider({ children }: PropsWithChildren) {
   const logIn = useAuthStore((state) => state.LogIn);
   const logOut = useAuthStore((state) => state.LogOut);
   const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
-
   const setAuthInitialized = useAuthStore((state) => state.setAuthInitialized);
+  const setSpotifyAccessToken = useSpotifyStore(
+    (state) => state.setAccessToken,
+  );
 
   // 로그인 상태 확인, 로그인 정보 supabase에 넣기
   useEffect(() => {
     (async () => {
-      await supabase.auth.refreshSession();
       supabase.auth.onAuthStateChange((_event, session) => {
         if (session && session.provider_token) {
-          window.localStorage.setItem(
-            'spotify_provider_token',
-            session.provider_token,
-          );
+          setSpotifyAccessToken(session.provider_token);
         }
+
         if (session?.user) {
           logIn();
 

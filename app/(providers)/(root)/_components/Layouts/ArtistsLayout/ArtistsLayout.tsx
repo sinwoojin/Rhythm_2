@@ -1,7 +1,6 @@
 'use client';
 import { Track } from '@/schema/type';
 import Link from 'next/link';
-import PrevNextButton from '../PrevNextButton/PrevNextButton';
 
 interface ChartListProps {
   artists: Track[];
@@ -11,7 +10,6 @@ interface ChartListProps {
 function ArtistsLayout({ artists, title }: ChartListProps) {
   return (
     <div className="[&+&]:mt-10 relative max-w-full">
-      <PrevNextButton />
       <h3 className="text-2xl font-bold mb-6">{title}</h3>
       {artists.length > 0 ? (
         <ul className="flex gap-x-4 overflow-auto scrollbar-hide max-w-full">

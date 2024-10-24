@@ -1,5 +1,5 @@
-import Page from "../../_components/Page/Page";
-import CreatePlaylistToggle from "./_component/_CreatePlaylistToggle/CreatePlaylistToggle";
+import Page from '../../_components/Page/Page';
+import CreatePlaylistToggle from './_component/_CreatePlaylistToggle/CreatePlaylistToggle';
 
 function Playlist() {
   // 여기서 내가 만든 플리 전부 불러오기
