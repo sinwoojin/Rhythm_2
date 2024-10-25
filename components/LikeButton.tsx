@@ -5,9 +5,10 @@ import { supabase } from '@/supabase/client';
 import { useAuthStore } from '@/zustand/authStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { cx } from 'class-variance-authority';
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { PiHeartStraightDuotone, PiHeartStraightFill } from 'react-icons/pi';
-import { Bounce, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 interface ToggleLikeButtonProps {
   trackId: string;
@@ -45,31 +46,9 @@ function LikeButton({ trackId, hasBorder }: ToggleLikeButtonProps) {
         };
         await supabaseToggleLike.likeTrack(data);
         setIsLike(true);
-        toast.success('트랙을 좋아요 하셨습니다', {
-          position: 'top-right',
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-          transition: Bounce,
-        });
       } else {
         await supabaseToggleLike.unLikeTrack(trackId);
         setIsLike(false);
-        toast.info('트랙 좋아요를 취소 하셨습니다', {
-          position: 'top-right',
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-          transition: Bounce,
-        });
       }
     },
     onSuccess: () =>
@@ -85,17 +64,20 @@ function LikeButton({ trackId, hasBorder }: ToggleLikeButtonProps) {
   }, [isLoggedIn, myLikeOnTrack]);
 
   return (
-    <div className="w-14 h-14 text-center justify-center">
-      <button
-        className={cx(
-          'pl-2.5  w-full h-full rounded-full text-white transition-all duration-300 hover:scale-110  text-4xl',
-          { 'border border-white': hasBorder === true },
-        )}
-        onClick={() => toggleLikeTracks(trackId)}
+    <button
+      className={cx('w-14 h-14 rounded-full text-white transition-all', {
+        'border border-white': hasBorder === true,
+      })}
+      onClick={() => toggleLikeTracks(trackId)}
+    >
+      <motion.div
+        className="w-full h-full text-center text-4xl flex items-center justify-center"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.8 }}
       >
         {!isLike ? <PiHeartStraightDuotone /> : <PiHeartStraightFill />}
-      </button>
-    </div>
+      </motion.div>
+    </button>
   );
 }
 
