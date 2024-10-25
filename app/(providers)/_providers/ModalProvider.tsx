@@ -16,7 +16,7 @@ function ModalProvider({ children }: PropsWithChildren) {
     <>
       {modal?.backdrop ? (
         <div
-          className="bg-white/10 flex items-center justify-center fixed top-0 left-0 right-0 bottom-0 z-20"
+          className="bg-white/10 flex items-center justify-center fixed top-0 left-0 right-0 bottom-0 z-50"
           onClick={handleToggleModal}
         >
           {modal?.element}
