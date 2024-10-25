@@ -5,13 +5,12 @@ import Input from '@/components/Input';
 import { useAuthStore } from '@/zustand/authStore';
 import { useModalStore } from '@/zustand/modalStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
-import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import PublicCheckButton from '../_PublicCheckButton/PublicCheckButton';
 
 function CreatePlayListModal() {
-  const router = useRouter();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +19,31 @@ function CreatePlayListModal() {
   const closeModal = useModalStore((state) => state.closeModal);
   const currentUser = useAuthStore((state) => state.currentUser);
   const accessToken = useSpotifyStore((state) => state.accessToken);
+
+  const { mutate: createPlaylist } = useMutation({
+    mutationFn: async () => {
+      if (!accessToken)
+        return toast.error('accessToken이 만료되었거나 없습니다.');
+
+      const createPlaylist = await api.userPlay.createPlaylists(
+        title,
+        description,
+        isPublic,
+        String(currentUser!.spotifyId),
+        accessToken!,
+      );
+
+      return createPlaylist;
+    },
+    onSuccess: () => {
+      toast.success('플레이리스트가 성공적으로 생성되었습니다!');
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError: (error: any) => {
+      console.error(error);
+      toast.error(error || '플레이 리스트 생성중 에러가 남');
+    },
+  });
 
   const handleClickCreatePlayList = async () => {
     if (!title || !description) {
@@ -31,24 +55,7 @@ function CreatePlayListModal() {
     setIsLoading(true);
     closeModal();
 
-    try {
-      if (!accessToken)
-        return toast.error('accessToken이 만료되었거나 없습니다.');
-      const createPlaylist = await api.userPlay.createPlaylists(
-        title,
-        description,
-        isPublic,
-        String(currentUser!.spotifyId),
-        accessToken!,
-      );
-      router.push('/');
-      return createPlaylist;
-    } catch (error) {
-      console.error('플레이리스트 생성 중 오류 발생:', error);
-      toast.error('플레이리스트 생성에 실패했습니다.');
-    } finally {
-      setIsLoading(false);
-    }
+    createPlaylist();
   };
 
   const handleToggleCheck = () => setIsPublic((prev) => !prev);
