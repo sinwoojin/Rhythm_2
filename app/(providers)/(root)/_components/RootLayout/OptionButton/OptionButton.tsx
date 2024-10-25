@@ -13,7 +13,7 @@ function OptionButton() {
     <button
       aria-label="옵션 버튼"
       onClick={handleClickOption}
-      className="text-gray-400 py-2 text-4xl transition-all duration-75 hover:text-white"
+      className="text-gray-400 py-2 text-3xl transition-all duration-75 hover:text-white"
     >
       <SlOptions />
     </button>
