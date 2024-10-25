@@ -39,6 +39,8 @@ interface SpotifyStoreState {
 
   playNextTrack: () => void;
 
+  volume: number;
+
   setVolume: (percent: number) => void;
 }
 
@@ -111,12 +113,15 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
     playNextTrack(accessToken, String(deviceId));
   },
 
+  volume: 50,
+
   setVolume: (percent) => {
     const { accessToken, deviceId } = get();
     if (!accessToken)
       return toast.error('프리미엄 게정 로그인이 필요한 기능입니다');
     if (!deviceId) return toast.warn('현재 플레이 할 수 있는 기기가 없습니다.');
 
+    set({ volume: percent });
     setSpotifyVolume(accessToken, deviceId, String(percent));
   },
 }));
