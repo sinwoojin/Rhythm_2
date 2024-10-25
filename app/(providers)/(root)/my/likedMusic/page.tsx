@@ -1,7 +1,7 @@
-import Button from "@/components/Button";
-import { FaPlay } from "react-icons/fa";
-import { RxShuffle } from "react-icons/rx";
-import Page from "../../_components/Page/Page";
+import Button from '@/components/Button';
+import { FaPlay } from 'react-icons/fa';
+import { RxShuffle } from 'react-icons/rx';
+import Page from '../../_components/Page/Page';
 
 function LikedMusics() {
   // 여기서 좋아요 누른 노래들 불러와주기

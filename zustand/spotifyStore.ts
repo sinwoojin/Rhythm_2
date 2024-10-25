@@ -1,3 +1,4 @@
+import { setSpotifyVolume } from '@/api/spotifyMusicVolume';
 import {
   pauseTrack,
   nextTrack as playNextTrack,
@@ -24,12 +25,7 @@ interface SpotifyStoreState {
   isPaused: boolean;
   setIsPaused: (isPaused: SpotifyStoreState['isPaused']) => void;
 
-  play: (
-    trackURI: string | string[],
-    accessToken: string,
-    device_id: string,
-    index?: number,
-  ) => void;
+  play: (trackURI: string | string[], index?: number,) => void;
 
   pause: () => void;
 
@@ -38,6 +34,10 @@ interface SpotifyStoreState {
   playPrevTrack: () => void;
 
   playNextTrack: () => void;
+
+  volume: number;
+
+  setVolume: (percent: number) => void;
 }
 
 const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
@@ -92,6 +92,7 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
 
     shuffleTracks(accessToken, deviceId, playlistId);
   },
+
   playPrevTrack: () => {
     const { accessToken } = get();
     if (!accessToken)
@@ -99,12 +100,25 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
 
     playPreviousTrack(accessToken);
   },
+
   playNextTrack: () => {
     const { accessToken, deviceId } = get();
     if (!accessToken)
       return toast.error('프리미엄 게정 로그인이 필요한 기능입니다');
 
     playNextTrack(accessToken, String(deviceId));
+  },
+
+  volume: 50,
+
+  setVolume: (percent) => {
+    const { accessToken, deviceId } = get();
+    if (!accessToken)
+      return toast.error('프리미엄 게정 로그인이 필요한 기능입니다');
+    if (!deviceId) return toast.warn('현재 플레이 할 수 있는 기기가 없습니다.');
+
+    set({ volume: percent });
+    setSpotifyVolume(accessToken, deviceId, String(percent));
   },
 }));
 
