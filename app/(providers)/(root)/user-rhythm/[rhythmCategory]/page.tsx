@@ -1,9 +1,9 @@
 import { getCategory } from '@/api/supabaseGetCategories';
 import Page from '../../_components/Page/Page';
 import { redirect } from 'next/navigation';
-import { IoIosAddCircleOutline } from 'react-icons/io';
 import { FaPlay } from 'react-icons/fa';
 import PlaylistDetailLayout from '../../_components/Layouts/PlaylistDetailLayout/PlaylistDetailLayout';
+import MusicPostAddButton from './_components/MusicPostAddButton/MusicPostAddButton';
 
 interface PlayListPageProps {
   params: {
@@ -44,9 +44,7 @@ async function PlayListPage({ params: { rhythmCategory } }: PlayListPageProps) {
               <button className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl">
                 <FaPlay />
               </button>
-              <button className="text-gray-50 rounded-full transition-all duration-300 text-7xl scale-110 hover:scale-125">
-                <IoIosAddCircleOutline />
-              </button>
+              <MusicPostAddButton />
             </div>
           </div>
         </div>

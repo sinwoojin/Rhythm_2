@@ -1,19 +1,19 @@
 import { api } from '@/api/spotifyApi';
-import Page from '../_components/Page/Page';
 import ChartLayout from '../_components/Layouts/ChartLayout/ChartLayout';
+import Page from '../_components/Page/Page';
 
 const TOP_100_KOREA = '6kbzPEHj3uMPRFsR3v6xzE';
 const TOP_100_JAPAN = '7kZ9P3CU9DRN4F7t1YPcn4';
 const TOP_100_BILLBOARD = '6UeSakyzhiEt4NB3UAd6NQ';
 
 async function ChartPage() {
-  const response = await api.playlist.getPlaylists(TOP_100_KOREA);
+  const response = await api.playlist.getPlaylist(TOP_100_KOREA);
   const top100Korea = response?.tracks.items.map((item) => item.track);
 
-  const response1 = await api.playlist.getPlaylists(TOP_100_JAPAN);
+  const response1 = await api.playlist.getPlaylist(TOP_100_JAPAN);
   const top100JAPAN = response1?.tracks.items.map((item) => item.track);
 
-  const response2 = await api.playlist.getPlaylists(TOP_100_BILLBOARD);
+  const response2 = await api.playlist.getPlaylist(TOP_100_BILLBOARD);
   const top100Billboard = response2?.tracks.items.map((item) => item.track);
 
   return (

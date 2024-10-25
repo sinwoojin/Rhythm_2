@@ -10,7 +10,7 @@ const inputVariants = cva(
       size: {
         sm: 'text-xs px-1.5 py-0.5 font-medium',
         md: 'text-base w-full',
-        large: 'text-[17px] px-3.5 py-2 font-bold',
+        lg: 'text-[17px] px-3.5 py-2 font-bold',
       },
       padding: {
         md: 'px-4 py-4',

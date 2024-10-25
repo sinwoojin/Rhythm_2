@@ -6,7 +6,7 @@ import { spotifyAPI } from './spotifyApi';
  * 플레이 리스트 받아오기(playlistId 필요)
  * @param playlistId
  */
-const getPlaylists = async (
+const getPlaylist = async (
   playlistId: string,
 ): Promise<Playlist | undefined> => {
   try {
@@ -30,5 +30,5 @@ const getPlaylists = async (
 };
 
 export const playlistApi = {
-  getPlaylists,
+  getPlaylist,
 };
