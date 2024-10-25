@@ -32,10 +32,13 @@ function AlbumDetail() {
             <h2 className="text-7xl font-bold line-clamp-1">{album?.name}</h2>
             <span className="line-clamp-1">{album?.description}</span>
             <div className="flex gap-x-4">
-              <button className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl">
+              <button
+                aria-label="재생"
+                className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl"
+              >
                 <FaPlay />
               </button>
-              <button className="text-5xl">
+              <button aria-label="플레이리스트 추가" className="text-5xl">
                 <IoIosAddCircleOutline />
               </button>
             </div>

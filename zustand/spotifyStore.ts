@@ -25,7 +25,7 @@ interface SpotifyStoreState {
   isPaused: boolean;
   setIsPaused: (isPaused: SpotifyStoreState['isPaused']) => void;
 
-  play: (trackURI: string | string[]) => void;
+  play: (trackURI: string | string[], index?: number,) => void;
 
   pause: () => void;
 

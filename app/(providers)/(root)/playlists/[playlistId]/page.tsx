@@ -14,8 +14,6 @@ function PlayListDetail() {
   const { playlistId } = useParams();
   const [playlist, setPlaylist] = useState<Playlist | undefined>(undefined);
 
-  const accessToken = useSpotifyStore((state) => state.accessToken);
-  const deviceId = useSpotifyStore((state) => state.deviceId);
   const play = useSpotifyStore((state) => state.play);
 
   useEffect(() => {
@@ -41,13 +39,7 @@ function PlayListDetail() {
             <div className="line-clamp-1">{playlist?.description}</div>
             <div className="flex gap-x-4">
               <button
-                onClick={() =>
-                  play(
-                    String(playlist!.uri),
-                    String(accessToken),
-                    String(deviceId),
-                  )
-                }
+                onClick={() => play(String(playlist!.uri))}
                 aria-label="재생"
                 className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl"
               >
@@ -61,7 +53,10 @@ function PlayListDetail() {
         </div>
       </article>
       <article>
-        <PlaylistDetailLayout playlistTracks={track} />
+        <PlaylistDetailLayout
+          playlistTracks={track}
+          playlistId={playlist?.uri!}
+        />
       </article>
     </Page>
   );

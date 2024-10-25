@@ -1,6 +1,7 @@
 import { Track } from '@/schema/type';
 import Link from 'next/link';
 import { SlOptions } from 'react-icons/sl';
+import PlayButton from '../_components/PlayButton/PlayButton';
 
 interface AlbumDetailLayoutProps {
   albumTracks?: Track[];
@@ -12,10 +13,11 @@ function AlbumDetailLayout({ albumTracks }: AlbumDetailLayoutProps) {
       {albumTracks?.map((track, index) => (
         <li
           key={track.id}
-          className="flex h-20 px-4 py-[10px] w-full gap-4 items-center rounded-sm transition-all hover:bg-white/10"
+          className="flex h-20 px-4 py-[10px] w-full gap-4 items-center rounded-sm transition-all hover:bg-white/10 group"
         >
-          <span className="flex flex-row-reverse max-w-4 items-center">
-            {order(index)}
+          <span className="flex flex-row-reverse min-w-[24px] items-center relative">
+            <span className="group-hover:hidden">{order(index)}</span>
+            <PlayButton track={track} index={index} albumTracks={albumTracks} />
           </span>
           <div className="grid grid-cols-2 gap-4 w-full">
             <div className="flex gap-4 items-center">
