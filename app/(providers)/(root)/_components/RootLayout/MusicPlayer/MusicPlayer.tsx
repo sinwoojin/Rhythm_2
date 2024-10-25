@@ -14,6 +14,7 @@ function MusicPlayer() {
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
   const isPaused = useSpotifyStore((state) => state.isPaused);
   const pause = useSpotifyStore((state) => state.pause);
+  const play = useSpotifyStore((state) => state.play);
   const playPrevTrack = useSpotifyStore((state) => state.playPrevTrack);
   const playNextTrack = useSpotifyStore((state) => state.playNextTrack);
   const trackId = currentTrack?.id;
@@ -83,7 +84,7 @@ function MusicPlayer() {
             <button
               aria-label="플레이 버튼"
               className="text-4xl py-4 pl-5 pr-3 text-red-500"
-              onClick={() => [currentTrack!.uri]}
+              onClick={() => play([currentTrack!.uri])}
             >
               <FaPlay />
             </button>
