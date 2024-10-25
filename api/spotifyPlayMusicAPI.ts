@@ -76,22 +76,32 @@ export const fetchAccessToken = async (
  * @param uri
  * @param accessToken
  * @param deviceId
+ * @param index
  */
 export const playTrack = async (
   uri: string | string[],
   accessToken: string,
   deviceId: string,
+  index?: number,
 ) => {
   if (!accessToken || !deviceId) return;
   try {
     // 현재 트랙 재생
     await spotifyAPI.put(
       `me/player/play`,
-      typeof uri === 'string' ? { context_uri: uri } : { uris: uri },
+      typeof uri === 'string'
+        ? {
+            context_uri: uri,
+            offset: index !== undefined ? { position: index } : undefined,
+          }
+        : {
+            uris: uri,
+          },
       {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
+          Accept: 'application/json',
         },
         params: {
           device_id: deviceId,
@@ -130,10 +140,6 @@ export const pauseTrack = async (accessToken: string) => {
   }
 };
 
-/**
- * 다음 노래 재생
- * @param accessToken
- */
 /**
  * 다음 노래 재생
  * @param accessToken
@@ -181,11 +187,11 @@ export const previousTrack = async (accessToken: string) => {
 export const playRandomTrack = async (
   accessToken: string,
   deviceId: string,
-  playlistURI: string,
+  playlistId: string,
 ) => {
   if (!accessToken && !deviceId) return;
 
-  const playlists = await api.playlist.getPlaylist(playlistURI);
+  const playlists = await api.playlist.getPlaylist(playlistId);
 
   const tracks = playlists?.tracks.items.map((item) => item.track);
   const currentTrackUri = tracks?.map((item) => item.uri);
@@ -202,6 +208,11 @@ export const playRandomTrack = async (
   await playTrack(randomUri, accessToken, deviceId);
 };
 
+/**
+ * Queue 불러오기
+ * @param accessToken
+ * @returns
+ */
 export const getUsersQueue = async (accessToken: string) => {
   if (!accessToken) return;
   try {

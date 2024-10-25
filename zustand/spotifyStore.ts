@@ -28,6 +28,7 @@ interface SpotifyStoreState {
     trackURI: string | string[],
     accessToken: string,
     device_id: string,
+    index?: number,
   ) => void;
 
   pause: () => void;
