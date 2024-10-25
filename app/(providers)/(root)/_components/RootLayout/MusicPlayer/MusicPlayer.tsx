@@ -51,7 +51,7 @@ function MusicPlayer() {
             {!trackId ? (
               <PiHeartStraightDuotone />
             ) : (
-              <LikeButton hasBorder={false} trackId={trackId} />
+              <LikeButton hasBorder={true} trackId={trackId} />
             )}
           </button>
           <LyricsButton />
