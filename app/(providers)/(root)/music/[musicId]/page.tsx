@@ -41,7 +41,7 @@ async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
           </div>
           <div className="flex gap-x-4 items-center">
             <PlayButton track={track} />
-            <LikeButton trackId={track.id} hasBorder={false} />
+            <LikeButton trackId={track.id} hasBorder={true} />
           </div>
         </div>
       </div>
