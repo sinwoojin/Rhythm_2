@@ -10,7 +10,7 @@ function Header() {
   return (
     <header className="fixed left-0 w-[245px] h-screen bg-[#121212] text-white">
       <h1 className="my-5 ml-6">
-        <Link href="/" className="flex items-center gap-x-1">
+        <Link href="/today" className="flex items-center gap-x-1">
           <span className="font-black text-sm">SKN</span>
           <span className="text-2xl font-bold tracking-wide">RHYTHM</span>
         </Link>

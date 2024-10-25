@@ -23,12 +23,10 @@ function MyLikeTracks() {
     })();
   }, [currentUser]);
 
-  console.log(tracks);
-
   return (
     <div>
-      <ul>
-        {tracks?.map((track) => (
+      <ul className="flex gap-x-5">
+        {tracks?.map(async (track) => (
           <li key={track.trackId}>
             <Link href={`/music/${track.trackId}`}>
               <p>{track.trackId}</p>

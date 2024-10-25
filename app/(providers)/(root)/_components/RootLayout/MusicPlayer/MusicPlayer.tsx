@@ -1,10 +1,11 @@
 'use client';
 
+import LikeButton from '@/components/LikeButton';
 import useSpotifyStore from '@/zustand/spotifyStore';
 import { BsMusicNoteList, BsRepeat } from 'react-icons/bs';
-import { CiHeart } from 'react-icons/ci';
 import { FaPause, FaPlay } from 'react-icons/fa';
 import { IoMdSkipBackward, IoMdSkipForward } from 'react-icons/io';
+import { PiHeartStraightDuotone } from 'react-icons/pi';
 import { RxShuffle } from 'react-icons/rx';
 import LyricsButton from '../LyricsButton/LyricsButton';
 import OptionButton from '../OptionButton/OptionButton';
@@ -19,7 +20,8 @@ function MusicPlayer() {
   const shuffle = useSpotifyStore((state) => state.shuffle);
   const playPrevTrack = useSpotifyStore((state) => state.playPrevTrack);
   const playNextTrack = useSpotifyStore((state) => state.playNextTrack);
-  // const player = useSpotifyStore((state) => state.player);
+  const trackId = currentTrack?.id;
+
 
   return (
     <div className="fixed bottom-0 w-full bg-[#121212] grid grid-cols-7 py-6 px-8 max-h-[116px] z-50">
@@ -49,7 +51,11 @@ function MusicPlayer() {
             aria-label="좋아요 버튼"
             className="text-gray-400 py-2 text-5xl transition-all duration-75 hover:text-white"
           >
-            <CiHeart />
+            {!trackId ? (
+              <PiHeartStraightDuotone />
+            ) : (
+              <LikeButton hasBorder={false} trackId={trackId} />
+            )}
           </button>
           <LyricsButton />
           <OptionButton />
