@@ -4,15 +4,17 @@ import { supabaseToggleLike } from '@/api/supabaseTrackLikeApi';
 import { supabase } from '@/supabase/client';
 import { useAuthStore } from '@/zustand/authStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { cx } from 'class-variance-authority';
 import { useEffect, useState } from 'react';
 import { PiHeartStraightDuotone, PiHeartStraightFill } from 'react-icons/pi';
 import { Bounce, toast } from 'react-toastify';
 
 interface ToggleLikeButtonProps {
   trackId: string;
+  hasBorder: boolean;
 }
 
-function LikeButton({ trackId }: ToggleLikeButtonProps) {
+function LikeButton({ trackId, hasBorder }: ToggleLikeButtonProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [isLike, setIsLike] = useState(false);
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -85,7 +87,10 @@ function LikeButton({ trackId }: ToggleLikeButtonProps) {
   return (
     <div className="w-14 h-14 text-center justify-center">
       <button
-        className="pl-2.5 border border-white w-full h-full rounded-full text-white transition-all duration-300 hover:scale-110  text-4xl"
+        className={cx(
+          'pl-2.5  w-full h-full rounded-full text-white transition-all duration-300 hover:scale-110  text-4xl',
+          { 'border border-white': hasBorder === true },
+        )}
         onClick={() => toggleLikeTracks(trackId)}
       >
         {!isLike ? <PiHeartStraightDuotone /> : <PiHeartStraightFill />}
