@@ -73,6 +73,14 @@ export const fetchAccessToken = async (
 
 /**
  * 노래 재생
+ *
+ * 조건별 id
+ *
+ * playlist play = playlistId
+ *
+ * album play = albumId
+ *
+ * track play = [trackId]
  * @param uri
  * @param accessToken
  * @param deviceId
@@ -83,19 +91,22 @@ export const playTrack = async (
   accessToken: string,
   deviceId: string,
   index?: number,
+  position_ms: number = 0,
 ) => {
   if (!accessToken || !deviceId) return;
   try {
-    // 현재 트랙 재생
+    // 트랙 재생
     await spotifyAPI.put(
       `me/player/play`,
       typeof uri === 'string'
         ? {
             context_uri: uri,
             offset: index !== undefined ? { position: index } : undefined,
+            position_ms,
           }
         : {
             uris: uri,
+            position_ms,
           },
       {
         headers: {
@@ -110,34 +121,61 @@ export const playTrack = async (
     );
   } catch (error: any) {
     if (error.response) {
-      console.error('API 호출 중 오류 발생:', error.response.data);
+      toast.error('API 호출 중 오류 발생:', error.response.data);
       if (error.response.status === 401) {
-        console.error(
+        toast.error(
           'Unauthorized: Access Token이 만료되었거나 잘못되었습니다.',
         );
       }
     } else {
-      console.error('API 호출 중 네트워크 오류 발생:', error);
+      toast.error('API 호출 중 네트워크 오류 발생:', error);
     }
   }
 };
 
 /**
- * 노래 멈추기
+ * 노래정지, 현재 재생위치 가져오기
  * @param accessToken
+ * @returns {number}
  */
 export const pauseTrack = async (accessToken: string) => {
-  if (!accessToken) return;
+  if (!accessToken) return 0;
   try {
+    const response = await spotifyAPI.get('me/player', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    const progress_ms = response.data.progress_ms || 0;
+
     await spotifyAPI.put(`me/player/pause`, undefined, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
     });
-  } catch (error) {
-    console.error('Error pausing track:', error);
+
+    return progress_ms;
+  } catch (error: any) {
+    toast.error('Error pausing track:', error);
+    return 0;
   }
+};
+
+/**
+ * 멈춘곳부터 다시 재생
+ * @param trackURI
+ * @param accessToken
+ * @param deviceId
+ * @param index
+ */
+export const resumeTrackFromLastPosition = async (
+  trackURI: string | string[],
+  accessToken: string,
+  deviceId: string,
+  index?: number,
+) => {
+  const position_ms = await pauseTrack(accessToken);
+
+  await playTrack(trackURI, accessToken, deviceId, index, position_ms);
 };
 
 /**
@@ -156,8 +194,8 @@ export const nextTrack = async (accessToken: string, deviceId: string) => {
         device_id: deviceId,
       },
     });
-  } catch (error) {
-    console.error('Error skipping to next track:', error);
+  } catch (error: any) {
+    toast.error('하나의 곡만을 재생할 때에는 스킵이 불가능합니다.', error);
   }
 };
 
@@ -224,6 +262,30 @@ export const getUsersQueue = async (accessToken: string) => {
     });
 
     return response.data;
+  } catch (error) {
+    console.error('Error skipping to next track:', error);
+  }
+};
+
+/**
+ * 최근 재생목록 가져오기
+ * @param accessToken
+ * @returns
+ */
+export const getRecentPlayedTracks = async (accessToken: string) => {
+  if (!accessToken) return [];
+  try {
+    const response = await spotifyAPI.get(`me/player/recently-played`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        limit: 10,
+      },
+    });
+
+    return response.data.items;
   } catch (error) {
     console.error('Error skipping to next track:', error);
   }

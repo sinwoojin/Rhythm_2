@@ -1,8 +1,7 @@
-"use client";
+'use client';
 
-import { useModalStore } from "@/zustand/modalStore";
-import React from "react";
-import { IoCloseOutline } from "react-icons/io5";
+import { useModalStore } from '@/zustand/modalStore';
+import { IoCloseOutline } from 'react-icons/io5';
 
 function LyricsModal() {
   const closeModal = useModalStore((state) => state.closeModal);
@@ -16,6 +15,7 @@ function LyricsModal() {
         onClick={(e) => e.stopPropagation()}
       >
         <button
+          aria-label="닫기 버튼"
           className="text-white text-4xl absolute top-4 right-4"
           onClick={handleClickCancel}
         >

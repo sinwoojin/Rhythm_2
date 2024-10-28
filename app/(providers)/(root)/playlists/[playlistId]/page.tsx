@@ -53,10 +53,7 @@ function PlayListDetail() {
         </div>
       </article>
       <article>
-        <PlaylistDetailLayout
-          playlistTracks={track}
-          playlistId={playlist?.uri!}
-        />
+        <PlaylistDetailLayout playlistTracks={track} />
       </article>
     </Page>
   );
