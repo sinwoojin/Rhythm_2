@@ -46,9 +46,6 @@ function RecentPlaylistModal() {
       return await getRecentPlayedTracks(String(accessToken)); // 유효한 결과 반환
     },
   });
-
-  console.log(recentPlaylists);
-
   return (
     <div className="p-5 fixed right-0 bottom-[116px] z-10 bg-blue-100 w-[400px] h-[300px] overflow-scroll">
       <div className="flex items-center justify-between mb-7">
