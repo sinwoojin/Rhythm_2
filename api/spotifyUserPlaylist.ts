@@ -51,17 +51,16 @@ const createPlaylists = async (
  * @returns
  */
 const addTrackToPlaylists = async (
-  uri: string,
   accessToken: string,
   playlistId: string,
+  uri: string,
 ) => {
   try {
     // Spotify API에 플레이리스트 생성 요청
     const response = await spotifyAPI.post(
       `playlists/${playlistId}/tracks`,
       {
-        uris: uri,
-        position: 0,
+        uris: [uri],
       },
       {
         headers: {
@@ -70,12 +69,11 @@ const addTrackToPlaylists = async (
         },
       },
     );
-
     return response.data;
   } catch (error: any) {
     // 에러 메시지를 명확히 출력
     console.error(
-      `플레이리스트 생성 중 오류 발생: ${
+      `플레이 리스트에 노래 추가 중 에러 발생: ${
         error.response?.data?.error?.message || error.message
       }`,
     );

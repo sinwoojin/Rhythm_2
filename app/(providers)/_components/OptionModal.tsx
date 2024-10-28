@@ -8,6 +8,8 @@ import { IoMdAddCircle, IoMdShare } from 'react-icons/io';
 import { MdOutlineLyrics } from 'react-icons/md';
 import { toast } from 'react-toastify';
 
+const MY_PLAYLIST_ID = '32v2pHqcrHlAmYs42NEHtO';
+
 function OptionModal() {
   const closeModal = useModalStore((state) => state.closeModal);
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
@@ -31,7 +33,7 @@ function OptionModal() {
       return toast.warn(
         '플레이 리스트가 존재하지 않습니다. 먼저 플레이 리스트를 만들어 주세요',
       );
-    addTrackToPlaylist(String(trackUri), myPlaylistsId[0]);
+    addTrackToPlaylist(MY_PLAYLIST_ID, String(trackUri));
   };
 
   return (

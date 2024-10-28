@@ -183,6 +183,7 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
       return;
     }
     await api.userPlay.addTrackToPlaylists(accessToken, uri, playlistId);
+    return;
   },
 }));
 
