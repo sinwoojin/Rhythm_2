@@ -1,3 +1,4 @@
+import { api } from '@/api/spotifyApi';
 import { setSpotifyVolume } from '@/api/spotifyMusicVolume';
 import {
   pauseTrack,
@@ -7,6 +8,7 @@ import {
   resumeTrackFromLastPosition,
   playRandomTrack as shuffleTracks,
 } from '@/api/spotifyPlayMusicAPI';
+import { UserPlaylist } from '@/schema/type';
 import { toast } from 'react-toastify';
 import { create } from 'zustand';
 
@@ -39,8 +41,11 @@ interface SpotifyStoreState {
   playNextTrack: () => void;
 
   volume: number;
-
   setVolume: (percent: number) => void;
+
+  deletePlaylist: (playlistId: string) => Promise<void>;
+
+  getMyPlaylists: () => Promise<UserPlaylist | undefined>;
 }
 
 const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
@@ -147,6 +152,26 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
 
     set({ volume: percent });
     setSpotifyVolume(accessToken, deviceId, String(percent));
+  },
+
+  deletePlaylist: async (playlistId) => {
+    const { accessToken } = get();
+    if (!accessToken) {
+      toast.warn('프리미엄 로그인이 필요한 기능입니다.');
+      return;
+    }
+
+    await api.playlist.deleteMyPlaylists(accessToken, playlistId);
+  },
+
+  getMyPlaylists: async (): Promise<UserPlaylist | undefined> => {
+    const { accessToken } = get();
+    if (!accessToken) {
+      toast.warn('프리미엄 로그인이 필요한 기능입니다.');
+      return;
+    }
+    const myPlaylists = await api.playlist.getMyPlaylists(accessToken);
+    return myPlaylists;
   },
 }));
 
