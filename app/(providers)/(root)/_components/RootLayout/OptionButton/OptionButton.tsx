@@ -1,5 +1,4 @@
 'use client';
-
 import OptionModal from '@/app/(providers)/_components/OptionModal';
 import { useModalStore } from '@/zustand/modalStore';
 import { SlOptions } from 'react-icons/sl';

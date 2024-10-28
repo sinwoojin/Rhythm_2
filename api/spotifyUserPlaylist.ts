@@ -61,6 +61,7 @@ const addTrackToPlaylists = async (
       `playlists/${playlistId}/tracks`,
       {
         uris: uri,
+        position: 0,
       },
       {
         headers: {

@@ -1,10 +1,10 @@
 'use client';
 
-import LyricsModal from '@/app/(providers)/_components/LyricsModal';
+import LyricsModal from '@/app/(providers)/_components/LyricsModal/LyricsModal';
 import { useModalStore } from '@/zustand/modalStore';
 import { MdOutlineLyrics } from 'react-icons/md';
 
-function Lyrics() {
+function LyricsButton() {
   const openModal = useModalStore((state) => state.openModal);
   const handleClickLyrics = () => {
     openModal({ element: <LyricsModal />, backdrop: true });
@@ -20,4 +20,4 @@ function Lyrics() {
   );
 }
 
-export default Lyrics;
+export default LyricsButton;
