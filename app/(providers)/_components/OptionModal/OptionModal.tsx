@@ -3,15 +3,19 @@ import { useModalStore } from '@/zustand/modalStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import { ComponentProps } from 'react';
 import { CiHeart } from 'react-icons/ci';
 import { IoMdAddCircle, IoMdShare } from 'react-icons/io';
 import { MdOutlineLyrics } from 'react-icons/md';
 import { toast } from 'react-toastify';
+import AddMusicOnMyPlaylistModal from '../AddMusicOnMyPlaylistModal/AddMusicOnMyPlaylistModal';
+import LyricsModal from '../LyricsModal/LyricsModal';
 
 const MY_PLAYLIST_ID = '32v2pHqcrHlAmYs42NEHtO';
 
 function OptionModal() {
   const closeModal = useModalStore((state) => state.closeModal);
+  const openModal = useModalStore((state) => state.openModal);
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
   const addTrackToPlaylist = useSpotifyStore(
     (state) => state.addTrackToPlaylist,
@@ -24,8 +28,18 @@ function OptionModal() {
   });
   const myPlaylistsId = playlists?.items.map((item) => item.id);
   const trackUri = currentTrack?.uri;
-  const handleClickCancel = () => {
+  const handleClickModalClose: ComponentProps<'div'>['onClick'] = (e) => {
     closeModal();
+    if (e.target.id === 'addMusicToMyPlaylistButton')
+      openModal({
+        element: <AddMusicOnMyPlaylistModal />,
+        backdrop: true,
+      });
+    else if (e.target.id === 'showMusicLyricsButton')
+      openModal({
+        element: <LyricsModal />,
+        backdrop: true,
+      });
   };
 
   const handleClickAddTrack = () => {
@@ -37,8 +51,8 @@ function OptionModal() {
   };
 
   return (
-    <div className="fixed w-full h-screen z-20" onClick={handleClickCancel}>
-      <div className="fixed bottom-[116px] left-80 w-60 bg-black z-30 rounded-md">
+    <div className="fixed w-full h-screen z-50" onClick={handleClickModalClose}>
+      <div className="fixed bottom-[116px] left-80 w-60 bg-[#121212] rounded-md">
         <ul className="bg-white bg-opacity-20 w-full text-white pb-4 rounded-md">
           <li className="flex gap-x-4 items-center py-4 px-4 hover:bg-white/[0.05]">
             <Link
@@ -64,18 +78,34 @@ function OptionModal() {
               좋아요
             </button>
           </li>
-          <li className="py-[12px] px-4 hover:bg-white/[0.05] text-base">
-            <button className="flex gap-x-4 items-center">
+          <li
+            className="py-[12px] px-4 hover:bg-white/[0.05] text-base"
+            id="addMusicToMyPlaylistButton"
+          >
+            <button
+              className="flex gap-x-4 items-center"
+              id="addMusicToMyPlaylistButton"
+            >
               <IoMdAddCircle
                 className="text-2xl"
+                id="addMusicToMyPlaylistButton"
                 onClick={handleClickAddTrack}
               />
               내 플레이리스트 추가
             </button>
           </li>
-          <li className="py-[12px] px-4 hover:bg-white/[0.05] text-base">
-            <button className="flex gap-x-4 items-center">
-              <MdOutlineLyrics className="text-2xl" />
+          <li
+            className="py-[12px] px-4 hover:bg-white/[0.05] text-base"
+            id="showMusicLyricsButton"
+          >
+            <button
+              className="flex gap-x-4 items-center"
+              id="showMusicLyricsButton"
+            >
+              <MdOutlineLyrics
+                className="text-2xl"
+                id="showMusicLyricsButton"
+              />
               가사 보기
             </button>
           </li>

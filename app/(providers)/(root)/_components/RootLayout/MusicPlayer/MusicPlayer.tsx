@@ -64,7 +64,7 @@ function MusicPlayer() {
           </button>
           {/* 가사 보기 버튼 */}
           <LyricsButton />
-          {/* 곡 정보 버튼 */}
+          {/* 옵션 버튼 */}
           <OptionButton />
         </div>
       </div>

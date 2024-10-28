@@ -1,6 +1,6 @@
 'use client';
 
-import LogInModal from '@/app/(providers)/_components/LogInModal';
+import LogInModal from '@/app/(providers)/_components/LogInModal/LogInModal';
 import { baseURL } from '@/config/config';
 
 import { supabase } from '@/supabase/client';
