@@ -30,16 +30,19 @@ function OptionModal() {
   const trackUri = currentTrack?.uri;
   const handleClickModalClose: ComponentProps<'div'>['onClick'] = (e) => {
     closeModal();
-    if (e.target.id === 'addMusicToMyPlaylistButton')
+    if (e.target.id === 'addMusicToMyPlaylistButton') {
+      if (!currentTrack) return toast.warn('재생중인 음악이 없습니다.');
       openModal({
         element: <AddMusicOnMyPlaylistModal />,
         backdrop: true,
       });
-    else if (e.target.id === 'showMusicLyricsButton')
+    } else if (e.target.id === 'showMusicLyricsButton') {
+      if (!currentTrack) return toast.warn('재생중인 음악이 없습니다.');
       openModal({
         element: <LyricsModal />,
         backdrop: true,
       });
+    }
   };
 
   const handleClickAddTrack = () => {
