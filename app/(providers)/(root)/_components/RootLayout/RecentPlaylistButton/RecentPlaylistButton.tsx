@@ -1,6 +1,6 @@
 'use client';
 
-import RecentPlaylistModal from '@/app/(providers)/_components/RecentPlaylistModal';
+import RecentPlaylistModal from '@/app/(providers)/_components/RecentPlaylistModal/RecentPlaylistModal';
 import { useAuthStore } from '@/zustand/authStore';
 import { useModalStore } from '@/zustand/modalStore';
 import { useQueryClient } from '@tanstack/react-query';
