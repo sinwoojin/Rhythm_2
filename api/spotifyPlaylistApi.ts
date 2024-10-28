@@ -1,4 +1,4 @@
-import { Playlist } from '@/schema/type';
+import { Playlist, UserPlaylist } from '@/schema/type';
 import { getAccessToken } from './getToken';
 import { spotifyAPI } from './spotifyApi';
 
@@ -29,6 +29,61 @@ const getPlaylist = async (
   }
 };
 
+/**
+ * 유저 플레이 리스트 받아오기(accessToken 필요)
+ * @param playlistId
+ */
+const getMyPlaylists = async (
+  accessToken: string,
+): Promise<UserPlaylist | undefined> => {
+  try {
+    if (!accessToken) {
+      throw new Error('Access token is required');
+    }
+
+    const response = await spotifyAPI.get<UserPlaylist>(`me/playlists`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    // 응답 데이터 출력
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching album information:', error);
+  }
+};
+
+/**
+ * 플레이 리스트 받아오기(playlistId 필요)
+ * @param playlistId
+ */
+const deleteMyPlaylists = async (accessToken: string, playlistId: string) => {
+  try {
+    if (!accessToken) {
+      throw new Error('Access token is required');
+    }
+
+    const response = await spotifyAPI.delete(
+      `playlists/${playlistId}/followers`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    // 응답 데이터 출력
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching album information:', error);
+  }
+};
+
 export const playlistApi = {
   getPlaylist,
+  getMyPlaylists,
+  deleteMyPlaylists,
 };

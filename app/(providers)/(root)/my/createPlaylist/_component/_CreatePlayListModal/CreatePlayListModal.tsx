@@ -1,12 +1,12 @@
 'use client';
-import { getRefreshToken } from '@/api/getToken';
 import { api } from '@/api/spotifyApi';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { useAuthStore } from '@/zustand/authStore';
 import { useModalStore } from '@/zustand/modalStore';
+import useSpotifyStore from '@/zustand/spotifyStore';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import PublicCheckButton from '../_PublicCheckButton/PublicCheckButton';
 
@@ -14,58 +14,12 @@ function CreatePlayListModal() {
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
 
   const closeModal = useModalStore((state) => state.closeModal);
   const currentUser = useAuthStore((state) => state.currentUser);
-
-  useEffect(() => {
-    const fetchAccessToken = async () => {
-      try {
-        {
-          const storedToken = window.localStorage.getItem(
-            'spotify_provider_token',
-          ); //토큰을 localStorage에서 가져오는 함수
-          if (storedToken) setAccessToken(storedToken);
-        }
-      } catch (error) {
-        console.error('Access Token 가져오기 오류:', error);
-        toast.warn(
-          'Access Token을 가져오는 중 오류가 발생했습니다. 다시 시도해 주세요.',
-        );
-      }
-    };
-
-    fetchAccessToken();
-  }, []);
-
-  const ensureAccessToken = async () => {
-    if (!accessToken) {
-      try {
-        // LocalStorage에 저장된 토큰 가져오기
-        const token = window.localStorage.getItem('spotify_provider_token');
-        const refreshToken = window.localStorage.getItem('refresh_token');
-
-        if (token) return token;
-
-        if (refreshToken) {
-          // Refresh Token으로 새 Access Token 발급
-          const newAccessToken = await getRefreshToken();
-          setAccessToken(newAccessToken); // 상태 업데이트
-          return newAccessToken; // 새 액세스 토큰 반환
-        }
-
-        toast.warn('Access token이 없습니다. 다시 로그인해 주세요.');
-        return null;
-      } catch (error) {
-        console.error('토큰 갱신 중 오류:', error);
-        return null;
-      }
-    }
-    return accessToken; // 이미 유효한 토큰이 있는 경우 반환
-  };
+  const accessToken = useSpotifyStore((state) => state.accessToken);
 
   const handleClickCreatePlayList = async () => {
     if (!title || !description) {
@@ -78,15 +32,14 @@ function CreatePlayListModal() {
     closeModal();
 
     try {
-      const token = await ensureAccessToken();
-      if (!token) return; // 토큰 없으면 종료
-
+      if (!accessToken)
+        return toast.error('accessToken이 만료되었거나 없습니다.');
       const createPlaylist = await api.userPlay.createPlaylists(
         title,
         description,
         isPublic,
         String(currentUser!.spotifyId),
-        token,
+        accessToken!,
       );
       router.push('/');
       return createPlaylist;

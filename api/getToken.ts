@@ -40,37 +40,6 @@ export const getAccessToken = async () => {
   return access_token;
 };
 
-/**
- * spotify로 로그인한 유저의 accessToken을 가져오는 것 (이걸 해줘야 노래를 재생하거나 플레이 리스트를 만들 수 있음, code에 id를 넣어줘야함)
- * @param code
- * @returns
- */
-export const getAuthAccessToken = async (code: string) => {
-  try {
-    const response = await axios.post(
-      SPOTIFY_TOKEN_URL,
-      new URLSearchParams({
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri: redirectUri,
-        client_id: clientId,
-        client_secret: clientSecret,
-      }).toString(),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      },
-    );
-
-    const { access_token } = response.data;
-    return access_token;
-  } catch (error) {
-    console.error('Access Token 요청 중 오류 발생:', error);
-    throw new Error('Access Token을 가져오는 데 실패했습니다.');
-  }
-};
-
 // accessToken이 만료되었을때 다시 accessToken을 불러오는 것
 
 export const getRefreshToken = async (): Promise<string | null> => {
