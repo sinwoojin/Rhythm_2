@@ -121,14 +121,14 @@ export const playTrack = async (
     );
   } catch (error: any) {
     if (error.response) {
-      toast.error('API 호출 중 오류 발생:', error.response.data);
+      console.error('API 호출 중 오류 발생:', error.response.data);
       if (error.response.status === 401) {
-        toast.error(
+        console.error(
           'Unauthorized: Access Token이 만료되었거나 잘못되었습니다.',
         );
       }
     } else {
-      toast.error('API 호출 중 네트워크 오류 발생:', error);
+      console.error('API 호출 중 네트워크 오류 발생:', error);
     }
   }
 };
@@ -155,7 +155,7 @@ export const pauseTrack = async (accessToken: string) => {
 
     return progress_ms;
   } catch (error: any) {
-    toast.error('Error pausing track:', error);
+    console.error('Error pausing track:', error);
     return 0;
   }
 };
