@@ -1,6 +1,6 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 function MusicPostAddModal() {
   const [isSongListOpen, setIsSongListOpen] = useState(false);
@@ -10,7 +10,6 @@ function MusicPostAddModal() {
   // 버튼 클릭 시 창 표시 상태 토글
   const handleToggleSongList = () => {
     setIsSongListOpen((prev) => !prev);
-    console.log('isSongListOpen', isSongListOpen);
   };
   return (
     <div

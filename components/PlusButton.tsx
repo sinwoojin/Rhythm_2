@@ -12,7 +12,6 @@ function PlusButton({ trackUri }: PlusButtonProps) {
   );
   const handleClickAddTrack = () => {
     addTrackToPlaylist(MY_PLAYLIST_ID, String(trackUri));
-    console.log(trackUri);
   };
 
   return <button onClick={handleClickAddTrack}>추가하기</button>;
