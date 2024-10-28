@@ -4,6 +4,7 @@ import {
   nextTrack as playNextTrack,
   previousTrack as playPreviousTrack,
   playTrack,
+  resumeTrackFromLastPosition,
   playRandomTrack as shuffleTracks,
 } from '@/api/spotifyPlayMusicAPI';
 import { toast } from 'react-toastify';
@@ -25,7 +26,9 @@ interface SpotifyStoreState {
   isPaused: boolean;
   setIsPaused: (isPaused: SpotifyStoreState['isPaused']) => void;
 
-  play: (trackURI: string | string[], index?: number,) => void;
+  play: (trackURI: string | string[], index?: number) => void;
+
+  pauseAndResumeTrack: (trackURI: string | string[], index?: number) => void;
 
   pause: () => void;
 
@@ -56,7 +59,7 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
   isPaused: true,
   setIsPaused: (isPaused) => set({ isPaused }),
 
-  play: (contextUriOrTrackURIs: string | string[]) =>
+  play: (contextUriOrTrackURIs: string | string[], index?: number) =>
     set((prevState) => {
       const { accessToken, deviceId } = prevState;
       if (!accessToken) {
@@ -68,7 +71,32 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
         return prevState;
       }
 
-      playTrack(contextUriOrTrackURIs, accessToken, deviceId);
+      playTrack(contextUriOrTrackURIs, accessToken, deviceId, index);
+
+      return prevState;
+    }),
+
+  pauseAndResumeTrack: (
+    contextUriOrTrackURIs: string | string[],
+    index?: number,
+  ) =>
+    set((prevState) => {
+      const { accessToken, deviceId } = prevState;
+      if (!accessToken) {
+        toast.warn('Spotify 프리미엄 계정으로 로그인 해주세요');
+        return prevState;
+      }
+      if (!deviceId) {
+        toast.error('재생할 수 있는 기기가 없습니다');
+        return prevState;
+      }
+
+      resumeTrackFromLastPosition(
+        contextUriOrTrackURIs,
+        accessToken,
+        deviceId,
+        index,
+      );
 
       return prevState;
     }),

@@ -30,18 +30,19 @@ function PlayButton({
       ? playlistTracks[index]?.track.uri
       : null;
     const albumTrackUri = albumTracks ? albumTracks[index].uri : null;
+    const isCurrentTrackPlaying = currentTrack?.uri === track.uri;
 
     if (playlistTracks && playlistTrackUri) {
-      if (playlistTrackUri) {
+      if (isCurrentTrackPlaying) {
         pause();
       } else {
-        play([playlistTrackUri]);
+        play('spotify:album:2up3OPMp9Tb4dAKM2erWXQ', index + 1);
       }
     } else if (albumTracks && albumTrackUri) {
-      if (albumTrackUri[index]) {
+      if (isCurrentTrackPlaying) {
         pause();
       } else {
-        play([albumTrackUri[index]]);
+        play([albumTrackUri], index);
       }
     }
   };

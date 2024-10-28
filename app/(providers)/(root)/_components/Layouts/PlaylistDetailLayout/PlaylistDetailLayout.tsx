@@ -6,13 +6,9 @@ import PlayButton from '../_components/PlayButton/PlayButton';
 
 interface PlaylistDetailLayoutProps {
   playlistTracks?: { track: Track }[];
-  playlistId: string;
 }
 
-function PlaylistDetailLayout({
-  playlistTracks,
-  playlistId,
-}: PlaylistDetailLayoutProps) {
+function PlaylistDetailLayout({ playlistTracks }: PlaylistDetailLayoutProps) {
   return playlistTracks ? (
     <ul className="flex flex-col">
       {playlistTracks.map(({ track }, index) => (

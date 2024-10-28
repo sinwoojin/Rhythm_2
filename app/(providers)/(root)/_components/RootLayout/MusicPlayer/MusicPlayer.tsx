@@ -2,19 +2,22 @@
 
 import LikeButton from '@/components/LikeButton';
 import useSpotifyStore from '@/zustand/spotifyStore';
-import { BsMusicNoteList } from 'react-icons/bs';
 import { FaPause, FaPlay } from 'react-icons/fa';
 import { IoMdSkipBackward, IoMdSkipForward } from 'react-icons/io';
 import { PiHeartStraightDuotone } from 'react-icons/pi';
 import LyricsButton from '../LyricsButton/LyricsButton';
 import OptionButton from '../OptionButton/OptionButton';
+import RecentPlaylistButton from '../RecentPlaylistButton/RecentPlaylistButton';
 import VolumeBar from './VolumeBar';
 
 function MusicPlayer() {
+  // spotify store
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
   const isPaused = useSpotifyStore((state) => state.isPaused);
   const pause = useSpotifyStore((state) => state.pause);
-  const play = useSpotifyStore((state) => state.play);
+  const pauseAndResumeTrack = useSpotifyStore(
+    (state) => state.pauseAndResumeTrack,
+  );
   const playPrevTrack = useSpotifyStore((state) => state.playPrevTrack);
   const playNextTrack = useSpotifyStore((state) => state.playNextTrack);
   const trackId = currentTrack?.id;
@@ -84,7 +87,7 @@ function MusicPlayer() {
             <button
               aria-label="플레이 버튼"
               className="text-4xl py-4 pl-5 pr-3 text-red-500"
-              onClick={() => play([currentTrack!.uri])}
+              onClick={() => pauseAndResumeTrack([currentTrack!.uri])}
             >
               <FaPlay />
             </button>
@@ -111,12 +114,7 @@ function MusicPlayer() {
       <div className="col-span-2 flex items-center ml-auto">
         <VolumeBar />
         {/* 현재 재생한 곡들의 목록 */}
-        <button
-          aria-label="재생한 곡 목록 버튼"
-          className="text-3xl text-gray-400 p-2 transition-all duration-75 hover:text-white hover:scale-110"
-        >
-          <BsMusicNoteList />
-        </button>
+        <RecentPlaylistButton />
       </div>
     </div>
   );
