@@ -2,11 +2,14 @@
 
 import { Track } from '@/schema/type';
 import useSpotifyStore from '@/zustand/spotifyStore';
+import { useState } from 'react';
 import { BsFillPauseFill, BsFillPlayFill } from 'react-icons/bs';
 
 interface PlayButtonProps {
   playlistTracks?: { track: Track }[];
   albumTracks?: Track[];
+  playlistUri?: string;
+  albumUri?: string;
   track: Track;
   index: number;
 }
@@ -14,6 +17,8 @@ interface PlayButtonProps {
 function PlayButton({
   playlistTracks,
   albumTracks,
+  playlistUri,
+  albumUri,
   track,
   index,
 }: PlayButtonProps) {
@@ -22,38 +27,34 @@ function PlayButton({
   const pause = useSpotifyStore((state) => state.pause);
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
 
+  const [currentTrackId, setCurrentTrackId] = useState<string | null>(null);
+
+  console.log('index', index);
+
   // 재생 버튼
   const handleTogglePlayButton = (index: number) => {
     if (!playlistTracks && !albumTracks) return;
 
-    const playlistTrackUri = playlistTracks
-      ? playlistTracks[index]?.track.uri
-      : null;
-    const albumTrackUri = albumTracks ? albumTracks[index].uri : null;
-    const isCurrentTrackPlaying = currentTrack?.uri === track.uri;
+    const trackId = playlistTracks![index].track.id || albumTracks![index]?.id;
 
-    if (playlistTracks && playlistTrackUri) {
-      if (isCurrentTrackPlaying) {
-        pause();
-      } else {
-        play('spotify:album:2up3OPMp9Tb4dAKM2erWXQ', index + 1);
-      }
-    } else if (albumTracks && albumTrackUri) {
-      if (isCurrentTrackPlaying) {
-        pause();
-      } else {
-        play([albumTrackUri], index);
-      }
+    if (!trackId) return;
+    setCurrentTrackId((prev) => trackId);
+
+    if (trackId === currentTrack?.id) {
+      pause();
+    } else {
+      const uri = playlistUri || albumUri;
+      if (uri) play(uri, index);
     }
   };
 
   return (
     <button
       onClick={() => handleTogglePlayButton(index)}
-      aria-label={currentTrack?.uri === track?.uri ? '멈추기' : '재생'}
+      aria-label={currentTrack?.id === currentTrackId ? '멈추기' : '재생'}
       className="hidden group-hover:block text-xl hover:scale-110 transition-transform"
     >
-      {currentTrack?.uri === track?.uri ? (
+      {currentTrack?.id === currentTrackId ? (
         <BsFillPauseFill />
       ) : (
         <BsFillPlayFill />

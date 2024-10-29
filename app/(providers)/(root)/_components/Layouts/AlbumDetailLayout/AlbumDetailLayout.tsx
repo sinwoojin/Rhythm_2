@@ -5,8 +5,9 @@ import PlayButton from '../_components/PlayButton/PlayButton';
 
 interface AlbumDetailLayoutProps {
   albumTracks?: Track[];
+  albumUri: string;
 }
-function AlbumDetailLayout({ albumTracks }: AlbumDetailLayoutProps) {
+function AlbumDetailLayout({ albumTracks, albumUri }: AlbumDetailLayoutProps) {
   const order = (index: number) => index + 1;
   return albumTracks ? (
     <ul className="flex flex-col">
@@ -17,7 +18,12 @@ function AlbumDetailLayout({ albumTracks }: AlbumDetailLayoutProps) {
         >
           <span className="flex flex-row-reverse min-w-[24px] items-center relative">
             <span className="group-hover:hidden">{order(index)}</span>
-            <PlayButton track={track} index={index} albumTracks={albumTracks} />
+            <PlayButton
+              track={track}
+              index={index}
+              albumTracks={albumTracks}
+              albumUri={albumUri}
+            />
           </span>
           <div className="grid grid-cols-2 gap-4 w-full">
             <div className="flex gap-4 items-center">

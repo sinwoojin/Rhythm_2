@@ -20,6 +20,7 @@ function AlbumDetail() {
   }, [albumId]);
 
   const track = album?.tracks.items;
+  const albumUri = String(album?.uri);
 
   return (
     <Page>
@@ -46,7 +47,7 @@ function AlbumDetail() {
         </div>
       </article>
       <article>
-        <AlbumDetailLayout albumTracks={track} />
+        <AlbumDetailLayout albumTracks={track} albumUri={albumUri}/>
       </article>
     </Page>
   );

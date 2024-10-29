@@ -1,4 +1,5 @@
 'use client';
+import { api } from '@/api/spotifyApi';
 import { supabaseProfile } from '@/api/supabaseProfile';
 import { useAuthStore } from '@/zustand/authStore';
 import {
@@ -18,15 +19,25 @@ function MyLikeTracks({ profileId }: MyLikeTracksProps) {
   const currentUser = useAuthStore((state) => state.currentUser);
   const userId = String(currentUser?.id);
 
-  const { data: tracks } = useQuery({
+  const { data: myLikeTracks } = useQuery({
     queryKey: ['userLikeTracks', userId],
     queryFn: () => supabaseProfile.getMyLikeTracks(userId),
     placeholderData: keepPreviousData,
   });
 
+  // 좋아요 표시한 트랙 뿌리기
+  const { data: tracks } = useQuery({
+    queryKey: ['tracks', userId],
+    queryFn: async () => {
+      const trackIds = myLikeTracks?.map((item) => item.trackId)!;
+      const ids = trackIds.map((item) => item);
+      return api.track.getTracks(ids);
+    },
+  });
+
   useEffect(() => {
     queryClient.invalidateQueries({
-      queryKey: ['userLikeTracks', userId],
+      queryKey: ['tracks', userId],
     });
   }, [currentUser]);
 
@@ -34,9 +45,14 @@ function MyLikeTracks({ profileId }: MyLikeTracksProps) {
     <div>
       <ul className="flex gap-x-5">
         {tracks?.map(async (track) => (
-          <li key={track.trackId}>
-            <Link href={`/music/${track.trackId}`}>
-              <p>{track.trackId}</p>
+          <li key={track.id}>
+            <Link href={`/music/${track.id}`}>
+              <img
+                src={track.album.images[0].url}
+                alt=""
+                className="w-[165px] h-[165px]"
+              />
+              <p className="w-[160px] truncate">{track.name}</p>
             </Link>
           </li>
         ))}
