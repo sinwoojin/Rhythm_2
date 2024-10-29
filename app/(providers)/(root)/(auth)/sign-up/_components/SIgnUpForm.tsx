@@ -93,10 +93,10 @@ function SIgnUpForm() {
   };
 
   return (
-    <div className="bg-rhythm bg-opacity-95  w-[calc(100%-245px)] ml-[245px] grid place-content-center min-h-[calc(100vh-87px)]">
+    <div className="bg-rhythm bg-opacity-95  w-[calc(100%-245px)] ml-[245px] grid place-content-center min-h-[calc(100vh-87px)]">
       <form
         onSubmit={handleSubmitSignUp}
-        className="px-10 py-10 rounded-md items-center  bg-rhythm w-[800px]"
+        className="px-10 py-10 rounded-md items-center  bg-rhythm w-[800px]"
       >
         <h2 className="font-bold text-white text-3xl mb-5 text-center">
           회원가입

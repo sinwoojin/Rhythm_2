@@ -22,7 +22,7 @@ function AddMusicOnMyPlaylistModal() {
   }
   return (
     <div
-      className="fixed top-[35%] left-1/2 -translate-x-1/2 bg-rhythm text-white w-[340px] rounded-md max-h-52 overflow-auto scrollbar-hide"
+      className="fixed top-[35%] left-1/2 -translate-x-1/2 bg-rhythm text-white w-[340px] rounded-md max-h-52 overflow-auto scrollbar-hide"
       onClick={(e) => e.stopPropagation()}
     >
       <IoCloseOutline

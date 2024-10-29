@@ -75,7 +75,7 @@ function PlayListPage({ params: { rhythmCategory } }: PlayListPageProps) {
                   </div>
                 </div>
               </div>
-              <ul className="mt-[310px] bg-rhythm">
+              <ul className="mt-[310px] bg-rhythm">
                 {userRhythm?.map((rhythm) => (
                   <li key={rhythm.id}>
                     <Link href={`/profiles/${rhythm.userId}`}>
@@ -88,7 +88,7 @@ function PlayListPage({ params: { rhythmCategory } }: PlayListPageProps) {
               </ul>
             </div>
           </div>
-          <div className="mt-[310px] bg-rhythm">
+          <div className="mt-[310px] bg-rhythm">
             <RhythmDetailLayout />
           </div>
         </>

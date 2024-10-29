@@ -35,6 +35,7 @@ function OptionModal({ position }: OptionModalProps) {
     }
   };
 
+
   if (position === 'player')
     return (
       <div
