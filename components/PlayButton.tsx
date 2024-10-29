@@ -2,6 +2,7 @@
 
 import { Track } from '@/schema/type';
 import useSpotifyStore from '@/zustand/spotifyStore';
+import { useEffect, useState } from 'react';
 import { FaPause, FaPlay } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
@@ -13,14 +14,24 @@ function PlayButton(props: PlayButtonProps) {
   const play = useSpotifyStore((state) => state.play);
   const pause = useSpotifyStore((state) => state.pause);
   const isPaused = useSpotifyStore((state) => state.isPaused);
-  const accessToken = useSpotifyStore((state) => state.accessToken);
-  const deviceId = useSpotifyStore((state) => state.deviceId);
+  const [equalTrack, setEqualTrack] = useState(false);
 
   const handleClickPlayButton = () => {
     const trackURI = props.track!.uri;
     if (!trackURI) return toast.error('해당 음악이 존재하지 않습니다.');
-    play([trackURI], String(accessToken), String(deviceId));
+    play([trackURI]);
   };
+
+  const prevTrackId = useSpotifyStore((state) => state.currentTrack?.id);
+  const currentTrackId = props.track?.id;
+
+  useEffect(() => {
+    if (prevTrackId === currentTrackId) {
+      setEqualTrack(true);
+    } else {
+      setEqualTrack(false);
+    }
+  }, [prevTrackId, currentTrackId]); // prevTrackId 또는 currentTrackId가 변경될 때만 실행
 
   return (
     <div>
