@@ -2,7 +2,7 @@
 import { useModalStore } from '@/zustand/modalStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
 import Link from 'next/link';
-import { ComponentProps } from 'react';
+import { BaseSyntheticEvent, MouseEvent } from 'react';
 import { CiHeart } from 'react-icons/ci';
 import { IoMdAddCircle, IoMdShare } from 'react-icons/io';
 import { MdOutlineLyrics } from 'react-icons/md';
@@ -18,8 +18,11 @@ function OptionModal({ position }: OptionModalProps) {
   const openModal = useModalStore((state) => state.openModal);
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
 
-  const handleClickModalClose: ComponentProps<'div'>['onClick'] = (e) => {
+  const handleClickModalClose = (
+    e: BaseSyntheticEvent<MouseEvent, HTMLDivElement, HTMLButtonElement>,
+  ) => {
     closeModal();
+    console.log('e.currentTarget', e.currentTarget, e.target);
     if (e.target.id === 'addMusicToMyPlaylistButton') {
       if (!currentTrack) return toast.warn('재생중인 음악이 없습니다.');
       openModal({
@@ -34,7 +37,6 @@ function OptionModal({ position }: OptionModalProps) {
       });
     }
   };
-
 
   if (position === 'player')
     return (

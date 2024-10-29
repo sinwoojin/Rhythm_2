@@ -16,9 +16,9 @@ function RhythmDetailLayout({ userRhythms }: RhythmDetailLayout) {
 
   return userRhythms ? (
     <ul className="mt-[310px] bg-[#121212] flex flex-wrap gap-2 w-full pr-32">
-      {userRhythms?.map((userRhythm) => (
+      {userRhythms?.map((userRhythm?) => (
         <li
-          key={userRhythm.id}
+          key={userRhythm?.id}
           className="flex flex-col gap-x-4 gap-y-2 w-[calc((100%-24px)/4)] p-5 duration-300 transition-all hover:bg-white/20"
         >
           <div className="relative h-full aspect-square rounded-md bg-white/20 overflow-hidden group">
@@ -29,13 +29,13 @@ function RhythmDetailLayout({ userRhythms }: RhythmDetailLayout) {
                   className="w-10 h-10 bg-white/20 rounded-full overflow-hidden"
                 >
                   <img
-                    src={baseURL + userRhythm.author?.imgUrl}
-                    alt={userRhythm.author?.userName}
+                    src={baseURL + userRhythm?.author?.imgUrl}
+                    alt={userRhythm?.author?.userName}
                     className="w-full h-full object-cover"
                   />
                 </Link>
                 <p className="text-white font-semibold line-clamp-1">
-                  {userRhythm.userName}
+                  {userRhythm?.userName}
                 </p>
               </div>
             </div>
@@ -44,17 +44,17 @@ function RhythmDetailLayout({ userRhythms }: RhythmDetailLayout) {
               <FaPlay />
             </button>
             <img
-              src={userRhythm.trackImgURL}
-              alt={userRhythm.title}
+              src={userRhythm?.trackImgURL}
+              alt={userRhythm?.title}
               className="w-full h-full object-cover"
             />
           </div>
           <div className="flex flex-col gap-y-1">
             <p className="font-bold text-white/80 line-clamp-1">
-              {userRhythm.title}
+              {userRhythm?.title}
             </p>
             <p className="line-clamp-2 text-white/40 text-sm">
-              {userRhythm.content}
+              {userRhythm?.content}
             </p>
           </div>
         </li>
