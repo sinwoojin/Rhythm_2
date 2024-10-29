@@ -99,7 +99,7 @@ function EditModal({ id }: EditModalProps) {
 
   return (
     <div
-      className="absolute top-[50%] left-[50%] w-[700px] h-[500px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white"
+      className="absolute top-[50%] left-[50%] w-[700px] h-[500px] bg-rhythm -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white"
       onClick={(e) => e.stopPropagation()}
     >
       <h2 className="text-center mt-10 font-semibold text-3xl mb-4">
@@ -154,7 +154,7 @@ function EditModal({ id }: EditModalProps) {
             />
           </div>
         </section>
-        <button className="border border-white bg-[#121212] text-white w-[400px] h-[60px] mt-5 hover:-translate-y-2 transition-all">
+        <button className="border border-white bg-rhythm text-white w-[400px] h-[60px] mt-5 hover:-translate-y-2 transition-all">
           정보 수정하기
         </button>
       </form>
