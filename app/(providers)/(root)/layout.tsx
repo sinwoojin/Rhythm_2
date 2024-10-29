@@ -1,12 +1,12 @@
 import { PropsWithChildren, Suspense } from 'react';
 import 'swiper/css';
-import Header from './_components/RootLayout/Header/Header';
 import MusicPlayer from './_components/RootLayout/MusicPlayer/MusicPlayer';
+import Sidebar from './_components/RootLayout/Sidebar/Sidebar';
 
 function RootLayout({ children }: PropsWithChildren) {
   return (
     <Suspense>
-      <Header />
+      <Sidebar />
       {children}
       <MusicPlayer />
     </Suspense>
