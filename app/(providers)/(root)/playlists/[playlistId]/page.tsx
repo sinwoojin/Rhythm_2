@@ -24,6 +24,7 @@ function PlayListDetail() {
   }, [playlistId]);
 
   const track = playlist?.tracks.items;
+  const playlistUri = String(playlist?.uri);
 
   return (
     <Page>
@@ -55,7 +56,10 @@ function PlayListDetail() {
         </div>
       </article>
       <article>
-        <PlaylistDetailLayout playlistTracks={track} />
+        <PlaylistDetailLayout
+          playlistTracks={track}
+          playlistUri={playlistUri}
+        />
       </article>
     </Page>
   );
