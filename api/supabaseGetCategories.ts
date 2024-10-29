@@ -31,3 +31,11 @@ export const getUserRhythms = async (rhythmCategory: string) => {
 
   return data;
 };
+
+/**
+ *
+ * @returns 유저들이 만든 리듬 페이지 목록 데이터
+ */
+export const getAllUserRhythm = async () => {
+  return await supabase.from('userRhythm').select('*, author:users (*)');
+};
