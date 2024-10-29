@@ -133,7 +133,7 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
 
   return (
     <div
-      className="absolute top-[50%] left-[50%] w-[500px] h-[530px] bg-rhythm -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white"
+      className="absolute top-[50%] left-[50%] w-[500px] h-[530px] bg-rhythm -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="bg-black rounded-xl p-10 w-full h-full">

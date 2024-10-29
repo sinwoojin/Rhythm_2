@@ -55,7 +55,7 @@ function OptionModal() {
 
   return (
     <div className="fixed w-full h-screen z-50" onClick={handleClickModalClose}>
-      <div className="fixed bottom-[116px] left-80 w-60 bg-rhythm rounded-md">
+      <div className="fixed bottom-[116px] left-80 w-60 bg-rhythm rounded-md">
         <ul className="bg-white bg-opacity-20 w-full text-white pb-4 rounded-md">
           <li className="flex gap-x-4 items-center py-4 px-4 hover:bg-white/[0.05]">
             <Link
