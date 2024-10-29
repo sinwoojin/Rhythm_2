@@ -8,11 +8,15 @@ import PlayButton from '../_components/PlayButton/PlayButton';
 interface PlaylistDetailLayoutProps {
   playlistTracks?: { track: Track }[];
   playlistUri: string;
+  playlistId: string;
+  snapshotId: string;
 }
 
 function PlaylistDetailLayout({
   playlistTracks,
   playlistUri,
+  playlistId,
+  snapshotId,
 }: PlaylistDetailLayoutProps) {
   return playlistTracks ? (
     <ul className="flex flex-col">
@@ -51,10 +55,14 @@ function PlaylistDetailLayout({
               </Link>
             </div>
           </div>
-          <DeleteButton />
           <button aria-label="옵션 버튼" className="text-xl text-white/50">
             <SlOptions />
           </button>
+          <DeleteButton
+            playlistId={playlistId}
+            trackUri={track.uri}
+            snapshotId={snapshotId}
+          />
         </li>
       ))}
     </ul>

@@ -1,17 +1,24 @@
 import useSpotifyStore from '@/zustand/spotifyStore';
-
-function DeleteButton() {
+interface DeleteButtonProps {
+  trackUri: string;
+  playlistId: string;
+  snapshotId: string;
+}
+function DeleteButton({ playlistId, trackUri, snapshotId }: DeleteButtonProps) {
   const deleteTrack = useSpotifyStore((state) => state.deleteTrackToPlaylists);
 
   const handleClickDeleteTrack = () => {
-    deleteTrack(
-      '1sn2lED7HkCuT82HKTBA62',
-      'spotify:track:2fRFwWwZG7Qfkui7GcxTMy',
-      'AAAACSuO4N2saEIYgaZxv2d4I28hQO1j ',
-    );
+    deleteTrack(playlistId, trackUri, snapshotId);
+    console.log('playlistId', playlistId);
+    console.log('trackUri', trackUri);
+    console.log('snapshot_id', snapshotId);
   };
 
-  return <button onClick={handleClickDeleteTrack}>삭제하기</button>;
+  return (
+    <button onClick={handleClickDeleteTrack} className="text-sm w-[150px]">
+      삭제하기
+    </button>
+  );
 }
 
 export default DeleteButton;

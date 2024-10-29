@@ -15,13 +15,10 @@ function MyPlaylist() {
 
   const { data: playlists } = useQuery({
     queryKey: ['myPlaylists'],
-    queryFn: () => getMyPlaylists(),
+    queryFn: getMyPlaylists,
   });
 
   const myPlaylists = playlists?.items;
-  if (!playlists) {
-    return <div className="text-white text-center mt-20">로딩 중...</div>;
-  }
 
   return (
     <Page title="내 플레이리스트" isNav={true}>

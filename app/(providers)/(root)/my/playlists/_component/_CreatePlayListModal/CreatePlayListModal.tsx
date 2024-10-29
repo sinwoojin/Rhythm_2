@@ -5,12 +5,13 @@ import Input from '@/components/Input';
 import { useAuthStore } from '@/zustand/authStore';
 import { useModalStore } from '@/zustand/modalStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import PublicCheckButton from '../_PublicCheckButton/PublicCheckButton';
 
 function CreatePlayListModal() {
+  const queryClient = useQueryClient();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -36,6 +37,7 @@ function CreatePlayListModal() {
       return createPlaylist;
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['myPlaylists'] });
       toast.success('플레이리스트가 성공적으로 생성되었습니다!');
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -86,14 +86,14 @@ const addTrackToPlaylists = async (
  * @param uri 트랙에 uri
  * @param accessToken 사용자의 accessToken
  * @param playlistId 사용자의 플레이 리스트 명
- * @param snapshot_id 플레이 리스트의 스냅샷 id(플레이 리스트 수정시 바뀔 수 있음)
+ * @param snapshotId 플레이 리스트의 스냅샷 id(플레이 리스트 수정시 바뀔 수 있음)
  * @returns
  */
 const deleteTrackToPlaylists = async (
   accessToken: string,
   playlistId: string,
   uri: string,
-  snapshot_id: string,
+  snapshotId: string,
 ) => {
   try {
     // Spotify API에 플레이리스트 생성 요청
@@ -108,10 +108,10 @@ const deleteTrackToPlaylists = async (
         data: {
           track: [
             {
-              uri: uri,
+              uri,
             },
           ],
-          snapshot_id: snapshot_id,
+          snapshot_id: snapshotId,
         },
       },
     );
