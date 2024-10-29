@@ -4,13 +4,12 @@ import { useModalStore } from '@/zustand/modalStore';
 import { SlOptions } from 'react-icons/sl';
 interface OptionButtonProps {
   position: string;
-  trackId: string;
 }
-function OptionButton({ position, trackId }: OptionButtonProps) {
+function OptionButton({ position }: OptionButtonProps) {
   const openModal = useModalStore((state) => state.openModal);
   const handleClickOption = () => {
     openModal({
-      element: <OptionModal position={position} trackId={trackId} />,
+      element: <OptionModal position={position} />,
       backdrop: false,
     });
   };

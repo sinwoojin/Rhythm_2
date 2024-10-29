@@ -1,5 +1,4 @@
 'use client';
-import { api } from '@/api/spotifyApi';
 import { useModalStore } from '@/zustand/modalStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
 import Link from 'next/link';
@@ -12,16 +11,12 @@ import AddMusicOnMyPlaylistModal from '../AddMusicOnMyPlaylistModal/AddMusicOnMy
 import LyricsModal from '../LyricsModal/LyricsModal';
 interface OptionModalProps {
   position: string;
-  trackId: string;
 }
 
-function OptionModal({ position, trackId }: OptionModalProps) {
+function OptionModal({ position }: OptionModalProps) {
   const closeModal = useModalStore((state) => state.closeModal);
   const openModal = useModalStore((state) => state.openModal);
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
-  const track = api.track.getTracks(trackId);
-
-  console.log(track);
 
   const handleClickModalClose: ComponentProps<'div'>['onClick'] = (e) => {
     closeModal();

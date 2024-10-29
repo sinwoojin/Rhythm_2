@@ -29,7 +29,9 @@ const getTrack = async (trackId: string): Promise<Track | undefined> => {
  * 트랙 가져오기 (노래 여러 개)
  * @param trackIds
  */
-const getTracks = async (trackIds: string | string[]): Promise<Track[] | undefined> => {
+const getTracks = async (
+  trackIds: string | string[],
+): Promise<Track[] | undefined> => {
   try {
     const accessToken = await getAccessToken(); // 액세스 토큰을 비동기로 가져옴
     if (!accessToken) {
@@ -44,6 +46,7 @@ const getTracks = async (trackIds: string | string[]): Promise<Track[] | undefin
 
     // 응답 데이터 출력
     return response.data.tracks;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error(
       'Error fetching multiple tracks:',

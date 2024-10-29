@@ -47,7 +47,8 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
   const { data: tracks } = useQuery({
     queryKey: ['tracks', userId],
     queryFn: async () => {
-      const trackIds = myLikeTracks?.map((item) => item.trackId)!;
+      const trackIds = myLikeTracks?.map((item) => item.trackId);
+      if (!trackIds) return;
       const ids = trackIds.map((item) => item);
       return api.track.getTracks(ids);
     },
@@ -172,7 +173,10 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
         <ul className="flex flex-col w-[200px] max-h-full overflow-auto scrollbar-hide bg-white/20 rounded-md">
           {/* 여기있는 li를 map돌려주면 됨 */}
           {tracks?.map((track) => (
-            <li className="h-[66px] w-full rounded-sm transition-all hover:bg-white/10">
+            <li
+              className="h-[66px] w-full rounded-sm transition-all hover:bg-white/10"
+              key={track.id}
+            >
               <button
                 className="h-full w-full flex gap-x-3 items-center relative px-3 py-3"
                 onClick={() => handleClickAddTrack(track.id, track.name)}
