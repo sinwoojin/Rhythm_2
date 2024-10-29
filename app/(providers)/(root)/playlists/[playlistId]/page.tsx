@@ -9,7 +9,6 @@ import { FaPlay } from 'react-icons/fa';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import PlaylistDetailLayout from '../../_components/Layouts/PlaylistDetailLayout/PlaylistDetailLayout';
 import Page from '../../_components/Page/Page';
-
 function PlayListDetail() {
   const { playlistId } = useParams();
   const [playlist, setPlaylist] = useState<Playlist | undefined>(undefined);
@@ -22,7 +21,6 @@ function PlayListDetail() {
       setPlaylist(playlist);
     })();
   }, [playlistId]);
-
   const track = playlist?.tracks.items;
   const playlistUri = String(playlist?.uri);
 

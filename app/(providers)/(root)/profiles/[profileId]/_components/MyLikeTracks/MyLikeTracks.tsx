@@ -29,7 +29,8 @@ function MyLikeTracks({ profileId }: MyLikeTracksProps) {
   const { data: tracks } = useQuery({
     queryKey: ['tracks', userId],
     queryFn: async () => {
-      const trackIds = myLikeTracks?.map((item) => item.trackId)!;
+      const trackIds = myLikeTracks?.map((item) => item.trackId);
+      if (!trackIds) return;
       const ids = trackIds.map((item) => item);
       return api.track.getTracks(ids);
     },
@@ -46,7 +47,7 @@ function MyLikeTracks({ profileId }: MyLikeTracksProps) {
       <ul className="flex gap-x-5">
         {tracks?.map(async (track) => (
           <li key={track.id}>
-            <Link href={`/music/${track.id}`}>
+            <Link href={`/track/${track.id}`}>
               <img
                 src={track.album.images[0].url}
                 alt=""

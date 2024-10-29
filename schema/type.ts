@@ -60,6 +60,7 @@ export type Playlist = {
     url: string;
   }[];
   uri: string;
+  snapshot_id: string;
 };
 export type UserPlaylist = {
   href: string;
