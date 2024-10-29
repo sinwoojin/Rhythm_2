@@ -5,10 +5,11 @@ import useSpotifyStore from '@/zustand/spotifyStore';
 import { FaPause, FaPlay } from 'react-icons/fa';
 import { IoMdSkipBackward, IoMdSkipForward } from 'react-icons/io';
 import { PiHeartStraightDuotone } from 'react-icons/pi';
-import LyricsButton from '../LyricsButton/LyricsButton';
-import OptionButton from '../OptionButton/OptionButton';
-import RecentPlaylistButton from '../RecentPlaylistButton/RecentPlaylistButton';
+import LyricsButton from './LyricsButton/LyricsButton';
+import OptionButton from './OptionButton/OptionButton';
+import RecentPlaylistButton from './RecentPlaylistButton/RecentPlaylistButton';
 import VolumeBar from './VolumeBar';
+import RepeatMusicButton from './RepeatMusicButton/RepeatMusicButton';
 
 function MusicPlayer() {
   // spotify store
@@ -114,7 +115,10 @@ function MusicPlayer() {
       <div className="col-span-2 flex items-center ml-auto">
         <VolumeBar />
         {/* 현재 재생한 곡들의 목록 */}
-        <RecentPlaylistButton />
+        <div className="flex">
+          <RepeatMusicButton />
+          <RecentPlaylistButton />
+        </div>
       </div>
     </div>
   );
