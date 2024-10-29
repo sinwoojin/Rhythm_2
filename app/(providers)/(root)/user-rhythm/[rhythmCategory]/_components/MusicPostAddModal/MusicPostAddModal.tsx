@@ -26,6 +26,7 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
   const [content, setContent] = useState('');
   const [trackId, setTrackId] = useState('');
   const [trackName, setTrackName] = useState('노래 추가하기 +');
+  const [trackImgURL, setTrackImgURL] = useState('');
 
   const currentUser = useAuthStore((state) => state.currentUser);
 
@@ -63,6 +64,7 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
         userId,
         userName,
         trackId,
+        trackImgURL,
         title,
         content,
         category: rhythmCategory,
@@ -86,10 +88,15 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
   });
 
   // 트랙 선택하기
-  const handleClickAddTrack = (trackId: string, trackName: string) => {
+  const handleClickAddTrack = (
+    trackId: string,
+    trackName: string,
+    trackImgUrl: string,
+  ) => {
     setTrackId(trackId);
     setTrackName(trackName);
     setIsSongListOpen((prev) => !prev);
+    setTrackImgURL(trackImgUrl);
   };
 
   // 버튼 클릭 시 창 표시 상태 토글
@@ -179,7 +186,13 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
             >
               <button
                 className="h-full w-full flex gap-x-3 items-center relative px-3 py-3"
-                onClick={() => handleClickAddTrack(track.id, track.name)}
+                onClick={() =>
+                  handleClickAddTrack(
+                    track.id,
+                    track.name,
+                    track.album.images[0].url,
+                  )
+                }
               >
                 <div className="w-full h-full absolute top-0 left-0 right-0 bg-black/70 z-10 text-xl font-bold grid place-items-center opacity-0 focus:opacity-100">
                   선택됨
