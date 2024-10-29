@@ -44,7 +44,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   const follow = useFollowStore((state) => state.follow);
   const unFollow = useFollowStore((state) => state.unFollow);
 
-  const loginUserId = currentUser?.id;
+  const userId = currentUser?.id;
 
   // 모달 관련 핸들러
   const handleClickToggleEditModal = () => {
@@ -125,10 +125,10 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   // 팔로우 상태 확인
   const { mutate: checkingFollow } = useMutation({
     mutationFn: async () => {
-      if (!loginUserId) return;
+      if (!userId) return;
 
       // 현재 로그인한 사람의 id
-      const follower = loginUserId;
+      const follower = userId;
 
       // 현재 프로필 페이지의 id
       const following = profileId;
@@ -147,10 +147,10 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   // 유저 정보, 팔로워 ,팔로잉 수 가져오기, 팔로우 상태 확인 실행
   useEffect(() => {
     const fetchData = async () => {
-      if (!loginUserId && profileId) return;
+      if (!userId && profileId) return;
 
       // 수정하기 버튼 띄우기
-      const editUser = loginUserId === profileId;
+      const editUser = userId === profileId;
       if (editUser === true) {
         setIsButtonVisibility(true);
       } else {
@@ -162,7 +162,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
     };
 
     fetchData();
-  }, [profileId, loginUserId, user, isFollowing]);
+  }, [profileId, userId, user, isFollowing]);
 
   return (
     <Page>

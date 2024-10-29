@@ -37,7 +37,7 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
 
   // 유저별 팔로우 상태 지정
   const { data: myFollowings } = useQuery({
-    queryKey: ['follows', { followerId: currentUser!.id! }],
+    queryKey: ['follows', { followerId: currentUser?.id }],
     queryFn: async () =>
       await supabase
         .from('follow')

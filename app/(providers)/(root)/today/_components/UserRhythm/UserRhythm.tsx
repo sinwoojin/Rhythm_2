@@ -1,10 +1,15 @@
+'use client';
+
 import { getAllUserRhythm } from '@/api/supabaseGetCategories';
 import { baseURL } from '@/config/config';
+import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
 async function UserRhythm() {
-  const response = await getAllUserRhythm();
-  const getUserRhythms = response.data;
+  const { data: getUserRhythms } = useQuery({
+    queryKey: ['userRhythms'],
+    queryFn: () => getAllUserRhythm(),
+  });
 
   return (
     <div className="mt-20">
@@ -17,7 +22,7 @@ async function UserRhythm() {
             <div className="relative group">
               <img
                 aria-label="플레이 리스트 커버 이미지"
-                src={baseURL + userRhythm.trackId}
+                src={userRhythm.trackImgURL}
                 alt="플레이 리스트 커버 이미지"
                 className="w-full aspect-square object-cover group-hover:brightness-75"
               />
