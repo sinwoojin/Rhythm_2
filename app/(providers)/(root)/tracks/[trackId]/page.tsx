@@ -3,7 +3,7 @@ import LikeButton from '@/components/LikeButton';
 import PlayButton from '@/components/PlayButton';
 import dayjs from 'dayjs';
 import Page from '../../_components/Page/Page';
-import OptionButton from '../../_components/RootLayout/OptionButton/OptionButton';
+import OptionButton from '../../_components/RootLayout/MusicPlayer/OptionButton/OptionButton';
 import TrackDetailLyric from './_components/TrackDetailLyric';
 
 interface MusicDetailPageProps {
