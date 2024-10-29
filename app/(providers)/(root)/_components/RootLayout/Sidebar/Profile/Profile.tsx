@@ -57,7 +57,7 @@ function Profile() {
                 />
               </div>
               <div className="flex justify-between w-full">
-                <span className="text-sm font-medium line-clamp-1">
+                <span className="text-sm font-medium truncate w-[70px]">
                   {currentUser?.userName}
                 </span>
               </div>
