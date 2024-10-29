@@ -45,7 +45,7 @@ function ArtistDetailLayout({ artistId }: ArtistsDetailLayoutProps) {
                 <div className="flex gap-4 items-center">
                   <img src={track.album.images[2].url} alt="image" />
                   <div className="w-full">
-                    <Link href={`/track/${track.id}`}>{track.name}</Link>
+                    <Link href={`/tracks/${track.id}`}>{track.name}</Link>
                   </div>
                 </div>
                 <div className="w-full flex items-center">

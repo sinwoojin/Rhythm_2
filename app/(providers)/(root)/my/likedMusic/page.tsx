@@ -67,7 +67,10 @@ function LikedMusics() {
               </button>
               <div className="grid grid-cols-4 w-full">
                 <span className="col-span-2 text-lg">
-                  <Link href={`/track/${track.id}`} className="hover:underline">
+                  <Link
+                    href={`/tracks/${track.id}`}
+                    className="hover:underline"
+                  >
                     {track.name}
                   </Link>
                 </span>

@@ -34,7 +34,7 @@ function PlaylistDetailLayout({
             <div className="flex gap-4 items-center">
               <img src={track?.album?.images[2].url} alt="image" />
               <div className="w-full">
-                <Link href={`/track/${track?.id}`}>{track?.name}</Link>
+                <Link href={`/tracks/${track?.id}`}>{track?.name}</Link>
                 <div className="w-full text-white/50 flex">
                   {track?.artists.map((artist, index) => (
                     <span key={artist.id}>

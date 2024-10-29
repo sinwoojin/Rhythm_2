@@ -4,7 +4,7 @@ import PlayButton from '@/components/PlayButton';
 import dayjs from 'dayjs';
 import Page from '../../_components/Page/Page';
 import OptionButton from '../../_components/RootLayout/OptionButton/OptionButton';
-import TrackDetailLyric from '../../music/[musicId]/_components/TrackDetailLyric';
+import TrackDetailLyric from './_components/TrackDetailLyric';
 
 interface MusicDetailPageProps {
   params: { trackId: string };
@@ -13,8 +13,6 @@ interface MusicDetailPageProps {
 async function MusicDetailPage({ params: { trackId } }: MusicDetailPageProps) {
   const track = await api.track.getTrack(trackId);
   if (!track) return console.error('해당 트랙이 없습니다');
-  const lyricUrl = await api.lyrics.getSpotifyLyricsUrl(trackId);
-  const lyric = await api.lyrics.scrapeLyricsFromGenius(lyricUrl);
 
   const album = track?.album;
   const release_year = dayjs(track!.album.release_date).format('YYYY');

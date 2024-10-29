@@ -47,7 +47,7 @@ function MyLikeTracks({ profileId }: MyLikeTracksProps) {
       <ul className="flex gap-x-5">
         {tracks?.map(async (track) => (
           <li key={track.id}>
-            <Link href={`/track/${track.id}`}>
+            <Link href={`/tracks/${track.id}`}>
               <img
                 src={track.album.images[0].url}
                 alt=""

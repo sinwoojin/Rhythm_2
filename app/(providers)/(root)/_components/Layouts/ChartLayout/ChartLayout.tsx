@@ -29,7 +29,7 @@ function ChartLayout({ title, tracks }: ChartProps) {
               {trackGroup.map((track, trackIdx) => (
                 <Link
                   key={track.id}
-                  href={`/track/${track.id}`}
+                  href={`/tracks/${track.id}`}
                   className="w-full h-[50px] mr-5 flex gap-x-5"
                 >
                   <div className="h-full aspect-square bg-white">
