@@ -105,7 +105,7 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
       className="absolute flex gap-x-10 top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] text-white"
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="bg-[#121212] rounded-2xl w-[700px] h-[480px] py-10 fixed top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] z-10">
+      <div className="bg-rhythm rounded-2xl w-[700px] h-[480px] py-10 fixed top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] z-10">
         <h2 className="text-center mb-10 font-semibold text-3xl">음악 추천</h2>
         <form
           className="flex flex-col items-center gap-y-6"
@@ -146,14 +146,14 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
           />
           <Button
             size={'lg'}
-            className="border border-white bg-[#121212] text-white hover:-translate-y-2 transition-all px-4 py-4 w-[400px]"
+            className="border border-white bg-rhythm text-white hover:-translate-y-2 transition-all px-4 py-4 w-[400px]"
           >
             음악 추천글 작성하기
           </Button>
         </form>
       </div>
       <div
-        className={`bg-[#121212] flex flex-col gap-y-4 pb-14 items-center rounded-2xl w-[300px] h-[480px] py-10 fixed top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] transition-all duration-500 opacity-0 ${
+        className={`bg-rhythm flex flex-col gap-y-4 pb-14 items-center rounded-2xl w-[300px] h-[480px] py-10 fixed top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] transition-all duration-500 opacity-0 ${
           isSongListOpen ? 'left-[calc(520px+50%)] opacity-100' : ''
         }`}
       >

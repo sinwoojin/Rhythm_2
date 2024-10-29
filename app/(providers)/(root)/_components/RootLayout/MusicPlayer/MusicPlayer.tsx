@@ -23,7 +23,7 @@ function MusicPlayer() {
   const trackId = currentTrack?.id;
 
   return (
-    <div className="fixed bottom-0 w-full bg-[#121212] grid grid-cols-7 items-center py-6 px-8 max-h-[116px] z-30">
+    <div className="fixed bottom-0 w-full bg-rhythm grid grid-cols-7 items-center py-6 px-8 max-h-[116px] z-30">
       <div
         id="music-player-left"
         className="col-span-2 grid grid-cols-5 gap-x-2 items-center"

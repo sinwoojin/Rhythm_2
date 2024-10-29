@@ -31,7 +31,7 @@ function LyricsModal() {
 
   return (
     <div
-      className="fixed top-[50%] left-[50%] w-[500px] h-[500px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white p-8 z-30"
+      className="fixed top-[50%] left-[50%] w-[500px] h-[500px] bg-rhythm -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white p-8 z-30"
       onClick={(e) => e.stopPropagation()}
     >
       <button

@@ -6,9 +6,9 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FaPlay } from 'react-icons/fa';
+import RhythmDetailLayout from '../../_components/Layouts/RhythmDetailLayout/RhythmDetailLayout';
 import Page from '../../_components/Page/Page';
 import MusicPostAddButton from './_components/MusicPostAddButton/MusicPostAddButton';
-import RhythmDetailLayout from '../../_components/Layouts/RhythmDetailLayout/RhythmDetailLayout';
 
 interface PlayListPageProps {
   params: {
@@ -75,7 +75,7 @@ function PlayListPage({ params: { rhythmCategory } }: PlayListPageProps) {
                   </div>
                 </div>
               </div>
-              <ul className="mt-[310px] bg-[#121212]">
+              <ul className="mt-[310px] bg-rhythm">
                 {userRhythm?.map((rhythm) => (
                   <li key={rhythm.id}>
                     <Link href={`/profiles/${rhythm.userId}`}>
@@ -88,7 +88,7 @@ function PlayListPage({ params: { rhythmCategory } }: PlayListPageProps) {
               </ul>
             </div>
           </div>
-          <div className="mt-[310px] bg-[#121212]">
+          <div className="mt-[310px] bg-rhythm">
             <RhythmDetailLayout />
           </div>
         </>

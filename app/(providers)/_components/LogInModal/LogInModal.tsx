@@ -72,7 +72,7 @@ function LogInModal() {
   return (
     <>
       <div
-        className="absolute top-[50%] left-[50%] w-[500px] h-[530px] bg-[#121212] -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white"
+        className="absolute top-[50%] left-[50%] w-[500px] h-[530px] bg-rhythm -translate-x-[50%] -translate-y-[50%] rounded-2xl text-white"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-center mt-10 font-semibold text-3xl">로그인</h2>
@@ -102,7 +102,7 @@ function LogInModal() {
             />
           </div>
 
-          <button className="border border-white bg-[#121212] text-white w-[400px] h-[60px] mt-5 hover:-translate-y-2 transition-all">
+          <button className="border border-white bg-rhythm text-white w-[400px] h-[60px] mt-5 hover:-translate-y-2 transition-all">
             로그인하기
           </button>
         </form>
