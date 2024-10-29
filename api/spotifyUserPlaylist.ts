@@ -81,7 +81,53 @@ const addTrackToPlaylists = async (
   }
 };
 
+/**
+ *플레이 리스트에 트랙을 제거하는 api
+ * @param uri 트랙에 uri
+ * @param accessToken 사용자의 accessToken
+ * @param playlistId 사용자의 플레이 리스트 명
+ * @param snapshot_id 플레이 리스트의 스냅샷 id(플레이 리스트 수정시 바뀔 수 있음)
+ * @returns
+ */
+const deleteTrackToPlaylists = async (
+  accessToken: string,
+  playlistId: string,
+  uri: string,
+  snapshot_id: string,
+) => {
+  try {
+    // Spotify API에 플레이리스트 생성 요청
+    const response = await spotifyAPI.delete(
+      `playlists/${playlistId}/tracks`,
+
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        data: {
+          track: [
+            {
+              uri: uri,
+            },
+          ],
+          snapshot_id: snapshot_id,
+        },
+      },
+    );
+    return response.data;
+  } catch (error: any) {
+    // 에러 메시지를 명확히 출력
+    console.error(
+      `플레이 리스트에 노래 추가 중 에러 발생: ${
+        error.response?.data?.error?.message || error.message
+      }`,
+    );
+    throw error;
+  }
+};
 export const userPlaylistApi = {
   createPlaylists,
   addTrackToPlaylists,
+  deleteTrackToPlaylists,
 };

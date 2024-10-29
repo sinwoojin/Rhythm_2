@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Track } from '@/schema/type';
+import useSpotifyStore from '@/zustand/spotifyStore';
 import Link from 'next/link';
 import { SlOptions } from 'react-icons/sl';
 import PlayButton from '../_components/PlayButton/PlayButton';
@@ -13,6 +14,16 @@ function PlaylistDetailLayout({
   playlistTracks,
   playlistUri,
 }: PlaylistDetailLayoutProps) {
+  const deleteTrack = useSpotifyStore((state) => state.deleteTrackToPlaylists);
+
+  const handleClickDeleteTrack = () => {
+    deleteTrack(
+      '1sn2lED7HkCuT82HKTBA62',
+      'spotify:track:2fRFwWwZG7Qfkui7GcxTMy',
+      'AAAACSuO4N2saEIYgaZxv2d4I28hQO1j ',
+    );
+  };
+
   return playlistTracks ? (
     <ul className="flex flex-col">
       {playlistTracks.map(({ track }, index) => (
@@ -33,7 +44,7 @@ function PlaylistDetailLayout({
             <div className="flex gap-4 items-center">
               <img src={track?.album?.images[2].url} alt="image" />
               <div className="w-full">
-                <Link href={`/music/${track?.id}`}>{track?.name}</Link>
+                <Link href={`/track/${track?.id}`}>{track?.name}</Link>
                 <div className="w-full text-white/50 flex">
                   {track?.artists.map((artist, index) => (
                     <span key={artist.id}>
@@ -50,6 +61,7 @@ function PlaylistDetailLayout({
               </Link>
             </div>
           </div>
+          <button onClick={handleClickDeleteTrack}>삭제하기</button>
           <button aria-label="옵션 버튼" className="text-xl text-white/50">
             <SlOptions />
           </button>

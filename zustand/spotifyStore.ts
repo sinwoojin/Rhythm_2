@@ -48,6 +48,12 @@ interface SpotifyStoreState {
   getMyPlaylists: () => Promise<UserPlaylist | undefined>;
 
   addTrackToPlaylist: (uri: string, playlistId: string) => void;
+
+  deleteTrackToPlaylists: (
+    uri: string,
+    playlistId: string,
+    snapshot_id: string,
+  ) => void;
 }
 
 const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
@@ -184,6 +190,19 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
     }
     await api.userPlay.addTrackToPlaylists(accessToken, uri, playlistId);
     return;
+  },
+  deleteTrackToPlaylists: async (uri, playlistId, snapshot_id) => {
+    const { accessToken } = get();
+    if (!accessToken) {
+      toast.warn('프리미엄 로그인이 필요한 기능입니다.');
+      return;
+    }
+    await api.userPlay.deleteTrackToPlaylists(
+      accessToken,
+      uri,
+      playlistId,
+      snapshot_id,
+    );
   },
 }));
 

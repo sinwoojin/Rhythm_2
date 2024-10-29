@@ -29,7 +29,7 @@ function ChartLayout({ title, tracks }: ChartProps) {
               {trackGroup.map((track, trackIdx) => (
                 <Link
                   key={track.id}
-                  href={`/music/${track.id}`}
+                  href={`/track/${track.id}`}
                   className="w-full h-[50px] mr-5 flex gap-x-5"
                 >
                   <div className="h-full aspect-square bg-white">
@@ -41,7 +41,9 @@ function ChartLayout({ title, tracks }: ChartProps) {
                   </div>
                   {/* 전체 인덱스를 계산하여 표시 */}
                   <div className="h-full">
-                    <p className="font-bold">{groupIdx * 5 + trackIdx + 1}</p>
+                    <p className="font-bold text-center">
+                      {groupIdx * 5 + trackIdx + 1}
+                    </p>
                   </div>
                   <div className="w-full flex flex-col gap-y-[2px]">
                     <p className="font-bold line-clamp-1">{track.name}</p>

@@ -1,18 +1,20 @@
 import { api } from '@/api/spotifyApi';
 import LikeButton from '@/components/LikeButton';
 import PlayButton from '@/components/PlayButton';
-import PlusButton from '@/components/PlusButton';
 import dayjs from 'dayjs';
 import Page from '../../_components/Page/Page';
-import TrackDetailLyric from './_components/TrackDetailLyric';
+import OptionButton from '../../_components/RootLayout/OptionButton/OptionButton';
+import TrackDetailLyric from '../../music/[musicId]/_components/TrackDetailLyric';
 
 interface MusicDetailPageProps {
-  params: { musicId: string };
+  params: { trackId: string };
 }
 
-async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
-  const track = await api.track.getTrack(musicId);
+async function MusicDetailPage({ params: { trackId } }: MusicDetailPageProps) {
+  const track = await api.track.getTrack(trackId);
   if (!track) return console.error('해당 트랙이 없습니다');
+  const lyricUrl = await api.lyrics.getSpotifyLyricsUrl(trackId);
+  const lyric = await api.lyrics.scrapeLyricsFromGenius(lyricUrl);
 
   const album = track?.album;
   const release_year = dayjs(track!.album.release_date).format('YYYY');
@@ -40,11 +42,11 @@ async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
           <div className="flex gap-x-4 items-center">
             <PlayButton track={track} />
             <LikeButton trackId={track.id} hasBorder={true} />
-            <PlusButton trackUri={track.uri} />
+            <OptionButton position={'track'} />
           </div>
         </div>
       </div>
-      <TrackDetailLyric trackId={musicId} />
+      <TrackDetailLyric trackId={trackId} />
     </Page>
   );
 }

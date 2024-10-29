@@ -25,7 +25,7 @@ function MusicsLayout({ tracks, title }: ChartListProps) {
             <ul className="flex gap-x-4 overflow-hidden scrollbar-hide max-w-full">
               {tracks.map((track) => (
                 <SwiperSlide key={track.id}>
-                  <Link href={`/music/${track.id}`}>
+                  <Link href={`/track/${track.id}`}>
                     <div className="w-full aspect-square">
                       <img
                         className="object-cover"

@@ -28,7 +28,7 @@ function AlbumDetailLayout({ albumTracks, albumUri }: AlbumDetailLayoutProps) {
           <div className="grid grid-cols-2 gap-4 w-full">
             <div className="flex gap-4 items-center">
               <div className="w-full">
-                <Link href={`/music/${track.id}`}>{track.name}</Link>
+                <Link href={`/track/${track.id}`}>{track.name}</Link>
                 <div className="w-full text-white/50 flex">
                   {track.artists.map((artist, index) => (
                     <li key={artist.id}>

@@ -14,7 +14,6 @@ function PlayButton(props: PlayButtonProps) {
   const play = useSpotifyStore((state) => state.play);
   const pause = useSpotifyStore((state) => state.pause);
   const isPaused = useSpotifyStore((state) => state.isPaused);
-
   const [equalTrack, setEqualTrack] = useState(false);
 
   const handleClickPlayButton = () => {

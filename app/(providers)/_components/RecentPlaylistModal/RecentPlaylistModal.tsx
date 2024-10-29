@@ -63,7 +63,7 @@ function RecentPlaylistModal() {
           recentPlaylists.map((track, index) => (
             <li key={nanoid()}>
               <Link
-                href={`/music/${track.track.id}`}
+                href={`/track/${track.track.id}`}
                 className="flex gap-3 mb-5 items-center"
               >
                 <span className="min-w-[24px]">{index + 1}</span>

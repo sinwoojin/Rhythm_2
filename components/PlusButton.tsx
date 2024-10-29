@@ -1,20 +1,39 @@
 'use client';
+import { useModalStore } from '@/zustand/modalStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
+import { IoIosAddCircleOutline } from 'react-icons/io';
 interface PlusButtonProps {
-  trackUri: string;
+  playlistId: string;
+  playlistName: string;
 }
 
-const MY_PLAYLIST_ID = '32v2pHqcrHlAmYs42NEHtO';
-
-function PlusButton({ trackUri }: PlusButtonProps) {
+function PlusButton({ playlistId, playlistName }: PlusButtonProps) {
+  const closeModal = useModalStore((state) => state.closeModal);
   const addTrackToPlaylist = useSpotifyStore(
     (state) => state.addTrackToPlaylist,
   );
-  const handleClickAddTrack = () => {
-    addTrackToPlaylist(MY_PLAYLIST_ID, String(trackUri));
+  const track = useSpotifyStore((state) => state.currentTrack);
+
+  if (!track) return;
+  const trackUri = track.uri;
+  const handleClickAddTrackButton = () => {
+    addTrackToPlaylist(playlistId, String(trackUri));
+    closeModal();
   };
 
-  return <button onClick={handleClickAddTrack}>추가하기</button>;
+  return (
+    <button
+      className="flex items-center gap-x-3 px-4 py-1"
+      onClick={handleClickAddTrackButton}
+    >
+      <div className="min-w-10 min-h-10 text-white/70 bg-black/10">
+        <IoIosAddCircleOutline className="w-full h-full p-2" />
+      </div>
+      <div className="flex flex-col text-start">
+        <p className="line-clamp-1 text-white/90 text-sm">{playlistName}</p>
+      </div>
+    </button>
+  );
 }
 
 export default PlusButton;

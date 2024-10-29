@@ -1,16 +1,25 @@
+'use client';
+import PlusButton from '@/components/PlusButton';
 import { useModalStore } from '@/zustand/modalStore';
+import useSpotifyStore from '@/zustand/spotifyStore';
+import { useQuery } from '@tanstack/react-query';
 import { IoCloseOutline } from 'react-icons/io5';
-import { toast } from 'react-toastify';
 
 function AddMusicOnMyPlaylistModal() {
   const closeModal = useModalStore((state) => state.closeModal);
+  const getMyPlaylists = useSpotifyStore((state) => state.getMyPlaylists);
+
+  const { data: playlists } = useQuery({
+    queryKey: ['myPlaylists'],
+    queryFn: () => getMyPlaylists(),
+  });
   const handleClickCloseModal = () => {
     closeModal();
   };
-  const handleClickAddMusicButton = () => {
-    // 여기에 노래 추가하는 코드 적어주면 됨
-    toast.success(`1곡을 (노래 추가한 플리 이름)에 추가하였습니다.`);
-  };
+  const myPlaylists = playlists?.items;
+  if (!myPlaylists) {
+    return <div>로딩 중...</div>;
+  }
   return (
     <div
       className="fixed top-[35%] left-1/2 -translate-x-1/2 bg-rhythm text-white w-[340px] rounded-md max-h-52 overflow-auto scrollbar-hide"
@@ -25,25 +34,14 @@ function AddMusicOnMyPlaylistModal() {
           내 플레이리스트에 추가
         </h2>
         <ul className="flex flex-col">
-          {/* {내 플레이리스트들을 받아온 배열.map((playlist) => (
-          <li className="hover:bg-white/10">
-            <button
-              className="flex items-center gap-x-3 px-4 py-1"
-              onClick={handleClickAddMusicButton}
-            >
-              <div className="w-10 h-10 text-white/70 bg-black/10">
-                <IoIosAddCircleOutline className="w-full h-full p-2" />
-              </div>
-              <div className="flex flex-col text-start">
-                <p className="line-clamp-1 text-white/90 text-sm">
-                  // {playlist.name}
-                </p>
-                <p className="line-clamp-1 text-white/30 text-xs">
-                // {playlist.length}
-                </p>
-              </div>
-            </button>
-          </li>))} */}
+          {myPlaylists.map((playlist) => (
+            <li className="hover:bg-white/10" key={playlist.id}>
+              <PlusButton
+                playlistId={playlist.id}
+                playlistName={playlist.name}
+              />
+            </li>
+          ))}
         </ul>
       </div>
     </div>
