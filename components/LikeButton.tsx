@@ -65,17 +65,23 @@ function LikeButton({ trackId, hasBorder }: ToggleLikeButtonProps) {
 
   return (
     <button
-      className={cx('w-14 h-14 rounded-full text-white transition-all', {
-        'border border-white': hasBorder === true,
-      })}
+      className={cx(
+        'w-10 h-10 rounded-full text-gray-400 transition-all hover:text-white relative',
+        {
+          'border border-white': hasBorder === true,
+        },
+      )}
       onClick={() => toggleLikeTracks(trackId)}
     >
       <motion.div
-        className="w-full h-full text-center text-4xl flex items-center justify-center"
-        whileHover={{ scale: 1.1 }}
+        className="w-full h-full absolute top-1.5 left-1.5"
         whileTap={{ scale: 0.8 }}
       >
-        {!isLike ? <PiHeartStraightDuotone /> : <PiHeartStraightFill />}
+        {!isLike ? (
+          <PiHeartStraightDuotone className="w-7 h-7" />
+        ) : (
+          <PiHeartStraightFill className="w-7 h-7" />
+        )}
       </motion.div>
     </button>
   );
