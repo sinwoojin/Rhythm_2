@@ -19,6 +19,9 @@ interface SpotifyStoreState {
   accessToken: string | null;
   setAccessToken: (accessToken: SpotifyStoreState['accessToken']) => void;
 
+  refreshToken: string | null;
+  setRefreshToken: (refreshToken: SpotifyStoreState['refreshToken']) => void;
+
   deviceId: string | null;
   setDeviceId: (deviceId: SpotifyStoreState['deviceId']) => void;
 
@@ -62,6 +65,9 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
 
   accessToken: null,
   setAccessToken: (accessToken) => set({ accessToken }),
+
+  refreshToken: null,
+  setRefreshToken: (refreshToken) => set({ refreshToken }),
 
   deviceId: null,
   setDeviceId: (deviceId) => set({ deviceId }),
