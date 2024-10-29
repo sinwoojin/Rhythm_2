@@ -1,11 +1,19 @@
 'use client';
 import { supabaseProfile } from '@/api/supabaseProfile';
 import { useAuthStore } from '@/zustand/authStore';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
-function MyLikeTracks() {
+interface MyLikeTracksProps {
+  profileId: string;
+}
+
+function MyLikeTracks({ profileId }: MyLikeTracksProps) {
   const queryClient = useQueryClient();
   const currentUser = useAuthStore((state) => state.currentUser);
   const userId = String(currentUser?.id);
@@ -13,17 +21,16 @@ function MyLikeTracks() {
   const { data: tracks } = useQuery({
     queryKey: ['userLikeTracks', userId],
     queryFn: () => supabaseProfile.getMyLikeTracks(userId),
+    placeholderData: keepPreviousData,
   });
 
   useEffect(() => {
-    (async () => {
-      queryClient.invalidateQueries({
-        queryKey: ['userLikeTracks', userId],
-      });
-    })();
+    queryClient.invalidateQueries({
+      queryKey: ['userLikeTracks', userId],
+    });
   }, [currentUser]);
 
-  return (
+  return profileId === userId ? (
     <div>
       <ul className="flex gap-x-5">
         {tracks?.map(async (track) => (
@@ -35,7 +42,7 @@ function MyLikeTracks() {
         ))}
       </ul>
     </div>
-  );
+  ) : null;
 }
 
 export default MyLikeTracks;
