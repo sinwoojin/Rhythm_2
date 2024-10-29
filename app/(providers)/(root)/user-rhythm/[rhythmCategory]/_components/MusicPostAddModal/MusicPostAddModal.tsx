@@ -20,13 +20,14 @@ interface MusicPostAddModal {
 }
 
 function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
-  // state
+  // State
   const [isSongListOpen, setIsSongListOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [trackId, setTrackId] = useState('');
-  const [trackName, setTrackName] = useState('노래 추가하기 +');
+  const [trackUri, setTrackUri] = useState('');
   const [trackImgURL, setTrackImgURL] = useState('');
+  const [trackName, setTrackName] = useState('노래 추가하기 +');
 
   const currentUser = useAuthStore((state) => state.currentUser);
 
@@ -68,6 +69,7 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
         title,
         content,
         category: rhythmCategory,
+        trackUri,
       };
 
       const response = await supabase.from('userRhythm').insert(data);
@@ -92,11 +94,13 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
     trackId: string,
     trackName: string,
     trackImgUrl: string,
+    trackUri: string,
   ) => {
     setTrackId(trackId);
     setTrackName(trackName);
     setIsSongListOpen((prev) => !prev);
     setTrackImgURL(trackImgUrl);
+    setTrackUri(trackUri);
   };
 
   // 버튼 클릭 시 창 표시 상태 토글
@@ -191,6 +195,7 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
                     track.id,
                     track.name,
                     track.album.images[0].url,
+                    track.uri,
                   )
                 }
               >
