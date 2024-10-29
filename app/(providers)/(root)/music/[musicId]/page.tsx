@@ -30,7 +30,7 @@ async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
           <img src={albumImg} alt="앨범 이미지" />
         </div>
         <div className="flex flex-col gap-y-4 w-full">
-          <h2 className="font-bold text-7xl whitespace-pre-wrap line">
+          <h2 className="font-bold text-7xl whitespace-pre-wrap line-clamp-2">
             {track?.name}
           </h2>
           <div className="flex">
