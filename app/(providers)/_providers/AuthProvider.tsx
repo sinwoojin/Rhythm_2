@@ -14,15 +14,22 @@ function AuthProvider({ children }: PropsWithChildren) {
   const setSpotifyAccessToken = useSpotifyStore(
     (state) => state.setAccessToken,
   );
+  const setSpotifyRefreshToken = useSpotifyStore(
+    (state) => state.setRefreshToken,
+  );
 
   // 로그인 상태 확인, 로그인 정보 supabase에 넣기
   useEffect(() => {
     (async () => {
       supabase.auth.onAuthStateChange((_event, session) => {
-        if (session && session.provider_token) {
+        if (
+          session &&
+          session.provider_token &&
+          session.provider_refresh_token
+        ) {
           setSpotifyAccessToken(session.provider_token);
+          setSpotifyRefreshToken(session.provider_refresh_token);
         }
-
         if (session?.user) {
           logIn();
 
