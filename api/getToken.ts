@@ -30,7 +30,6 @@ export const getAccessToken = async () => {
       client_id: clientId,
       client_secret: clientSecret,
     }).toString(),
-
     {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     },
@@ -42,13 +41,11 @@ export const getAccessToken = async () => {
 
 // accessToken이 만료되었을때 다시 accessToken을 불러오는 것
 
-export const getRefreshToken = async (): Promise<string | null> => {
-  const refreshToken = localStorage.getItem('refresh_token');
-
+export const getRefreshToken = async (refreshToken: string | undefined) => {
   if (!refreshToken) {
     console.error('Refresh token이 없습니다. 다시 로그인해 주세요.');
     alert('로그인이 필요합니다.'); // 로그인 유도
-    return null;
+    return;
   }
 
   try {
@@ -65,16 +62,8 @@ export const getRefreshToken = async (): Promise<string | null> => {
       },
     );
 
-    const { access_token: newAccessToken, refresh_token: newRefreshToken } =
-      response.data;
-
-    // 새로운 access_token과 refresh_token 저장
-    localStorage.setItem('spotify_provider_token', newAccessToken);
-    if (newRefreshToken) {
-      localStorage.setItem('refresh_token', newRefreshToken);
-    }
-
-    return newAccessToken;
+    const { access_token } = response.data;
+    return access_token;
   } catch (error: any) {
     console.error('Refresh token을 가져오는 중 오류 발생:', error);
 
@@ -83,6 +72,6 @@ export const getRefreshToken = async (): Promise<string | null> => {
       alert('세션이 만료되었습니다. 다시 로그인해 주세요.');
     }
 
-    return null;
+    return;
   }
 };
