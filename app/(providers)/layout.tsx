@@ -13,8 +13,8 @@ function ProvidersLayout({ children }: PropsWithChildren) {
       <ModalProvider>
         <AuthProvider>
           <SpotifyProvider>
-            <ToastContainer limit={4} />
             {children}
+            <ToastContainer limit={4} />
           </SpotifyProvider>
         </AuthProvider>
       </ModalProvider>

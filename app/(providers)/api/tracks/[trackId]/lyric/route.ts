@@ -2,12 +2,10 @@ import { api } from '@/api/spotifyApi';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
-  request: NextRequest,
+  _: NextRequest,
   context: { params: { trackId: string } },
 ) {
-  const trackId = context.params.trackId;
-  const lyricsId = await api.lyrics.getSpotifyLyricsUrl(trackId);
-  const lyrics = await api.lyrics.scrapeLyricsFromGenius(lyricsId);
+  const lyric = await api.lyrics.getTrackLyricOnServer(context.params.trackId);
 
-  return NextResponse.json(lyrics);
+  return NextResponse.json(lyric);
 }

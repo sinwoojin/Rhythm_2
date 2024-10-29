@@ -4,6 +4,7 @@ import PlayButton from '@/components/PlayButton';
 import PlusButton from '@/components/PlusButton';
 import dayjs from 'dayjs';
 import Page from '../../_components/Page/Page';
+import TrackDetailLyric from './_components/TrackDetailLyric';
 
 interface MusicDetailPageProps {
   params: { musicId: string };
@@ -12,13 +13,9 @@ interface MusicDetailPageProps {
 async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
   const track = await api.track.getTrack(musicId);
   if (!track) return console.error('해당 트랙이 없습니다');
-  const lyricUrl = await api.lyrics.getSpotifyLyricsUrl(musicId);
-  const lyric = await api.lyrics.scrapeLyricsFromGenius(lyricUrl);
 
   const album = track?.album;
-  const release_date = dayjs(track!.album.release_date);
-  const release_year = release_date.format('YYYY');
-
+  const release_year = dayjs(track!.album.release_date).format('YYYY');
   const albumTitle = track?.album.name;
   const albumImg = track?.album.images[1].url;
   const artists = album?.artists[0].name;
@@ -47,12 +44,7 @@ async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
           </div>
         </div>
       </div>
-      <div className="pb-9 ">
-        <h2 className="mb-5 text-3xl font-bold">가사</h2>
-        <p className="whitespace-pre-wrap break-words break-all  text-base">
-          {lyric}
-        </p>
-      </div>
+      <TrackDetailLyric trackId={musicId} />
     </Page>
   );
 }

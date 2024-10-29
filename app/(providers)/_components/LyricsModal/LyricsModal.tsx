@@ -1,30 +1,20 @@
 'use client';
 
+import { api } from '@/api/spotifyApi';
 import { useModalStore } from '@/zustand/modalStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 
 function LyricsModal() {
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
   const closeModal = useModalStore((state) => state.closeModal);
 
-  const [isLoading, setIsLoading] = useState(true); //로딩 상태 추가
-
-  const { data: lyric } = useQuery({
-    queryKey: ['trackId'],
-    queryFn: async () => {
-      if (!currentTrack) return;
-      setIsLoading(true); //요청 시작했을때 로딩 상태 true
-      const response = await axios(`/api/tracks/${currentTrack.id}/lyric`, {
-        baseURL: window.location.origin,
-      });
-      setIsLoading(false); // 요청 완료 했을때 false
-      return response.data;
-    },
+  const { data: lyric, isLoading } = useQuery({
+    queryKey: ['lyric', { trackId: currentTrack!.id }],
+    queryFn: () => api.lyrics.getTrackLyricOnClient(currentTrack!.id!),
+    enabled: !!currentTrack,
   });
 
   if (!currentTrack) return null;

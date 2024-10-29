@@ -109,7 +109,25 @@ const scrapeLyricsFromGenius = async (
   }
 };
 
+const getTrackLyricOnServer = async (trackId: string) => {
+  const lyricUrl = await getSpotifyLyricsUrl(trackId);
+  const lyric = await scrapeLyricsFromGenius(lyricUrl);
+
+  return lyric;
+};
+
+const getTrackLyricOnClient = async (trackId: string) => {
+  const { data: lyric } = await axios.get<string>(
+    `/api/tracks/${trackId}/lyric`,
+    {
+      baseURL: window.location.origin,
+    },
+  );
+
+  return lyric;
+};
+
 export const lyricsApi = {
-  getSpotifyLyricsUrl,
-  scrapeLyricsFromGenius,
+  getTrackLyricOnServer,
+  getTrackLyricOnClient,
 };
