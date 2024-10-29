@@ -1,9 +1,19 @@
+import { setRepeatMusic } from '@/api/spotifyPlayMusicAPI';
+import useSpotifyStore from '@/zustand/spotifyStore';
 import { cx } from 'class-variance-authority';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { PiRepeatBold } from 'react-icons/pi';
 
 function RepeatMusicButton() {
   const [isClicked, setIsClicked] = useState(false);
+
+  const accessToken = useSpotifyStore((state) => state.accessToken);
+
+  const handleClickRepeatTrack = () => {
+    setRepeatMusic(String(accessToken), 'track');
+    setIsClicked((prev) => !prev);
+  };
+
   return (
     <button
       aria-label="노래 반복"
@@ -13,7 +23,7 @@ function RepeatMusicButton() {
           'text-white': isClicked,
         },
       )}
-      onClick={() => setIsClicked((prev) => !prev)}
+      onClick={() => handleClickRepeatTrack()}
     >
       <PiRepeatBold />
     </button>
