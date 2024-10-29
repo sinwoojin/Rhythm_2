@@ -1,16 +1,105 @@
+import { api } from '@/api/spotifyApi';
+import { supabaseProfile } from '@/api/supabaseProfile';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
-import { useState } from 'react';
+import { Database } from '@/database.types';
+import { supabase } from '@/supabase/client';
+import { useAuthStore } from '@/zustand/authStore';
+import { useModalStore } from '@/zustand/modalStore';
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
-function MusicPostAddModal() {
+interface MusicPostAddModal {
+  rhythmCategory: string;
+}
+
+function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
+  // state
   const [isSongListOpen, setIsSongListOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [trackId, setTrackId] = useState('');
+  const [trackName, setTrackName] = useState('노래 추가하기 +');
 
-  const handleSubmitNewMusicPost = () => {};
+  const currentUser = useAuthStore((state) => state.currentUser);
+
+  const closeModal = useModalStore((state) => state.closeModal);
+
+  const queryClient = useQueryClient();
+
+  const userId = String(currentUser?.id);
+  const userName = String(currentUser?.userName);
+
+  // 좋아요 표시한 트랙
+  const { data: myLikeTracks } = useQuery({
+    queryKey: ['userLikeTracks', userId],
+    queryFn: () => supabaseProfile.getMyLikeTracks(userId),
+    placeholderData: keepPreviousData,
+  });
+
+  // 좋아요 표시한 트랙 뿌리기
+  const { data: tracks } = useQuery({
+    queryKey: ['tracks', userId],
+    queryFn: async () => {
+      const trackIds = myLikeTracks?.map((item) => item.trackId)!;
+      const ids = trackIds.map((item) => item);
+      return api.track.getTracks(ids);
+    },
+  });
+
+  // 음악 추천글 작성
+  const { mutate: handleSubmitNewMusicPost } = useMutation({
+    mutationFn: async (e: React.FormEvent) => {
+      e.preventDefault();
+
+      const data: Database['public']['Tables']['userRhythm']['Insert'] = {
+        userId,
+        userName,
+        trackId,
+        title,
+        content,
+        category: rhythmCategory,
+      };
+
+      const response = await supabase.from('userRhythm').insert(data);
+      console.log(response);
+
+      if (response) {
+        toast.success('글 작성에 성공하셨습니다!');
+        closeModal();
+      } else {
+        toast.error('글 작성에 실패하셨습니다...');
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['userRhythms', { category: rhythmCategory }],
+      });
+    },
+  });
+
+  // 트랙 선택하기
+  const handleClickAddTrack = (trackId: string, trackName: string) => {
+    setTrackId(trackId);
+    setTrackName(trackName);
+    setIsSongListOpen((prev) => !prev);
+  };
 
   // 버튼 클릭 시 창 표시 상태 토글
   const handleToggleSongList = () => {
     setIsSongListOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['tracks', userId] });
+  }, [userId]);
+
   return (
     <div
       className="absolute flex gap-x-10 top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] text-white"
@@ -29,7 +118,7 @@ function MusicPostAddModal() {
             className="text-[#b3b3b3] px-4 py-4 font-bold w-[400px]"
             size={'lg'}
           >
-            노래 추가하기 +
+            {trackName}
           </Button>
 
           <Input
@@ -38,6 +127,10 @@ function MusicPostAddModal() {
             padding={'md'}
             id="title"
             placeholder="음악 추천의 제목을 적어주세요."
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
           />
 
           <Input
@@ -46,6 +139,10 @@ function MusicPostAddModal() {
             padding={'md'}
             id="comments"
             placeholder="음악 추천의 내용을 적어주세요."
+            value={content}
+            onChange={(e) => {
+              setContent(e.target.value);
+            }}
           />
           <Button
             size={'lg'}
@@ -74,24 +171,35 @@ function MusicPostAddModal() {
         {/* 노래 추가하기 버튼을 누르면 보여주는 내가 좋아요 표시한 노래들 */}
         <ul className="flex flex-col w-[200px] max-h-full overflow-auto scrollbar-hide bg-white/20 rounded-md">
           {/* 여기있는 li를 map돌려주면 됨 */}
-          <li className="px-3 py-3 h-[66px] w-full rounded-sm transition-all hover:bg-white/10 relative">
-            <div className="w-full h-full absolute top-0 left-0 right-0 bg-black/70 z-10 text-xl font-bold grid place-items-center opacity-0 focus:opacity-100">
-              선택됨
-            </div>
-            <button className="h-full w-full flex gap-x-3 items-center">
-              <div className="h-full aspect-square bg-white/50">
-                {/* <img className="w-full h-full overflow-hidden" src="" alt="" /> */}
-              </div>
-              <div className="flex">
-                <div className="w-full flex flex-col">
-                  <span className="font-semibold line-clamp-1">노래 제목</span>
-                  <span className="text-white/50 text-sm line-clamp-1">
-                    가수 이름
-                  </span>
+          {tracks?.map((track) => (
+            <li className="h-[66px] w-full rounded-sm transition-all hover:bg-white/10">
+              <button
+                className="h-full w-full flex gap-x-3 items-center relative px-3 py-3"
+                onClick={() => handleClickAddTrack(track.id, track.name)}
+              >
+                <div className="w-full h-full absolute top-0 left-0 right-0 bg-black/70 z-10 text-xl font-bold grid place-items-center opacity-0 focus:opacity-100">
+                  선택됨
                 </div>
-              </div>
-            </button>
-          </li>
+                <div className="h-full aspect-square bg-white/50">
+                  <img
+                    className="w-full h-full overflow-hidden"
+                    src={track.album.images[0].url}
+                    alt=""
+                  />
+                </div>
+                <div className="flex">
+                  <div className="w-full flex flex-col">
+                    <span className="font-semibold line-clamp-1">
+                      {track.name}
+                    </span>
+                    <span className="text-white/50 text-sm line-clamp-1">
+                      {track.artists[0].name}
+                    </span>
+                  </div>
+                </div>
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
     </div>

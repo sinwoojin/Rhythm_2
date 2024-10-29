@@ -43,12 +43,12 @@ function EditModal({ id }: EditModalProps) {
 
     const file = files[0];
 
-    const previewProfile = URL.createObjectURL(file); // 첫 번째 파일로 URL 생성
-    setImage(file); // 파일 상태 저장
-    setPreviewProfile(previewProfile); // 미리보기 URL 저장
+    const previewProfile = URL.createObjectURL(file);
+    setImage(file);
+    setPreviewProfile(previewProfile);
   };
 
-  // 글 수정하기
+  // 프로필 수정 버튼
   const { mutate: handleSubmitModifyDeal } = useMutation({
     mutationFn: async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -70,12 +70,12 @@ function EditModal({ id }: EditModalProps) {
       };
 
       const response = await supabaseProfile.updateProfile(data, id);
-      setCurrentUser(data);
 
       if (response.error) {
         return toast.error('프로필 수정에 실패했습니다!...');
       } else {
         toast.success('프로필 수정에 성공했습니다!');
+        setCurrentUser({ ...currentUser, ...data });
         closeModal();
       }
     },
@@ -112,7 +112,7 @@ function EditModal({ id }: EditModalProps) {
         <section className="flex w-2/3 gap-x-6 items-center">
           <div className="relative h-full flex w-2/3 text-center gap-y-3 group aspect-square">
             <input
-              className="w-0 h-0 p-0 overflow-hidden border border-0 absolute"
+              className="w-0 h-0 p-0 overflow-hidden border absolute"
               type="file"
               id="profileImg"
               onChange={(e) => handleChangeFileInput(e)}

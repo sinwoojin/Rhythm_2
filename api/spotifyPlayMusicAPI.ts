@@ -290,3 +290,64 @@ export const getRecentPlayedTracks = async (accessToken: string) => {
     console.error('Error skipping to next track:', error);
   }
 };
+
+/**
+ * 노래 반복재생 기능
+ * @param accessToken string
+ * @param repeatState 'track' | 'context' | 'off'
+ * @returns
+ */
+export const setRepeatMusic = async (
+  accessToken: string,
+  repeatState: 'track' | 'context' | 'off',
+) => {
+  if (!accessToken) return;
+  try {
+    const response = await spotifyAPI.put(
+      `me/player/repeat?state=${repeatState}`,
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+
+    console.log('Repeat mode set successfully');
+    return response.data;
+  } catch (error) {
+    console.error('Error setting repeat mode:', error);
+  }
+};
+
+/**
+ * 노래 셔플 기능
+ *
+ * 단일 트랙 재생에서는 불가
+ * @param accessToken string
+ * @param shuffleState boolean
+ * @returns
+ */
+export const setShuffleMusic = async (
+  accessToken: string,
+  shuffleState: boolean,
+) => {
+  if (!accessToken) return;
+  try {
+    const response = await spotifyAPI.put(
+      `me/player/shuffle?state=${shuffleState}`,
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error setting shuffle state:', error);
+  }
+};

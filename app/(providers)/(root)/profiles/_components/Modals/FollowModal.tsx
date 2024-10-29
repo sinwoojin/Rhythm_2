@@ -78,8 +78,8 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
   // 팔로우, 언팔로우 함수 (미완성)
   const { mutate: handleToggleFollow } = useMutation({
     mutationFn: async (targetUserId: string) => {
-      const user = await api.getUser.getUser(); // 유저 정보
-      if (!user) return; // 로그인한 유저가 없을 경우
+      const user = await api.getUser.getUser();
+      if (!user) return;
 
       // 로그인한 유저의 id
       const userId = user?.id;
@@ -114,7 +114,13 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
+      queryClient.refetchQueries({
+        queryKey: ['followers', { userId: userId }],
+      });
+      queryClient.refetchQueries({
+        queryKey: ['followings', { userId: userId }],
+      });
+      queryClient.refetchQueries({
         queryKey: ['follows', { followerId: currentUser!.id! }],
       });
     },

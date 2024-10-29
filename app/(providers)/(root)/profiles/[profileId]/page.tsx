@@ -9,7 +9,12 @@ import { User } from '@/schema/type';
 import { useAuthStore } from '@/zustand/authStore';
 import { useFollowStore } from '@/zustand/followStore';
 import { useModalStore } from '@/zustand/modalStore';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Page from '../../_components/Page/Page';
@@ -65,18 +70,22 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   const { data: followers } = useQuery({
     queryKey: ['followers', { userId: profileId }],
     queryFn: () => supabaseProfile.getFollowers(profileId),
+    placeholderData: keepPreviousData,
   });
 
   // 팔로잉 수 가져오기
   const { data: followings } = useQuery({
     queryKey: ['followings', { userId: profileId }],
     queryFn: () => supabaseProfile.getFollowing(profileId),
+    placeholderData: keepPreviousData,
   });
 
   // 유저 정보 가져오기
   const { data: user } = useQuery<User | null>({
     queryKey: ['user', profileId],
     queryFn: () => supabaseProfile.getProfile(profileId),
+    placeholderData: keepPreviousData,
+    staleTime: 10000,
   });
 
   // 팔로우, 언팔로우 기능
@@ -148,14 +157,13 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
       } else {
         setIsButtonVisibility(false);
       }
-      await queryClient.invalidateQueries({ queryKey: ['user', profileId] });
 
       // 팔로우 상태 갱신 후 표기
       checkingFollow();
     };
 
     fetchData();
-  }, [profileId, loginUserId]);
+  }, [profileId, loginUserId, user, isFollowing]);
 
   return (
     <Page>
@@ -217,7 +225,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
         <div>{/* <PlayLists playListsId={playListsId} /> */}</div>
         <span>좋아요 표시한 노래</span>
         <div>
-          <MyLikeTracks />
+          <MyLikeTracks profileId={profileId} />
         </div>
       </div>
     </Page>

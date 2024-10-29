@@ -15,3 +15,19 @@ export const getCategory = async (name: string) => {
 
   return category;
 };
+
+/**
+ * 카테고리별 커뮤니티글 가져오기
+ * @param rhythmCategory
+ * @returns
+ */
+export const getUserRhythms = async (rhythmCategory: string) => {
+  const response = await supabase
+    .from('userRhythm')
+    .select('*, author:users (*)')
+    .eq('category', rhythmCategory);
+
+  const data = response.data;
+
+  return data;
+};
