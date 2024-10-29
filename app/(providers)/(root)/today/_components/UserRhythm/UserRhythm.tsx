@@ -12,14 +12,14 @@ async function UserRhythm() {
         {getUserRhythms?.map((userRhythm) => (
           <li
             key={userRhythm.id}
-            className="w-[200px] border border-red-500 p-4 "
+            className="w-[200px] border border-white p-4 "
           >
             <div className="relative group">
               <img
                 aria-label="플레이 리스트 커버 이미지"
                 src={baseURL + userRhythm.trackId}
                 alt="플레이 리스트 커버 이미지"
-                className="w-full aspect-square border border-green-500 object-cover group-hover:brightness-75"
+                className="w-full aspect-square object-cover group-hover:brightness-75"
               />
               <div className="absolute top-0 right-1 flex items-center gap-x-3 opacity-0 group-hover:opacity-90">
                 <div className="w-[30px] h-[30px] aspect-square gap-x-3">
