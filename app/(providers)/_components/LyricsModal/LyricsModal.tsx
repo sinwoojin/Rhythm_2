@@ -3,6 +3,7 @@
 import { useModalStore } from '@/zustand/modalStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
@@ -18,11 +19,11 @@ function LyricsModal() {
     queryFn: async () => {
       if (!currentTrack) return;
       setIsLoading(true); //요청 시작했을때 로딩 상태 true
-      const response = await fetch(
-        window.location.origin + `/api/tracks/${currentTrack.id}/lyric`,
-      );
+      const response = await axios(`/api/tracks/${currentTrack.id}/lyric`, {
+        baseURL: window.location.origin,
+      });
       setIsLoading(false); // 요청 완료 했을때 false
-      return response.json();
+      return response.data;
     },
   });
 
@@ -52,6 +53,7 @@ function LyricsModal() {
           </div>
         </div>
         <div className="max-h-full overflow-y-auto">
+          {/* 로딩중일때  */}
           {isLoading ? (
             <motion.div
               animate={{ opacity: [0, 1, 0] }}
