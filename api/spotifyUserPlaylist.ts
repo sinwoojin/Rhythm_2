@@ -106,7 +106,7 @@ const deleteTrackToPlaylists = async (
           'Content-Type': 'application/json',
         },
         data: {
-          track: [
+          tracks: [
             {
               uri,
             },

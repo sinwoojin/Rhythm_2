@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
+'use client';
 import DeleteButton from '@/components/DeleteButton';
 import { Track } from '@/schema/type';
+import { useAuthStore } from '@/zustand/authStore';
 import Link from 'next/link';
 import { SlOptions } from 'react-icons/sl';
 import PlayButton from '../_components/PlayButton/PlayButton';
@@ -10,6 +12,7 @@ interface PlaylistDetailLayoutProps {
   playlistUri: string;
   playlistId: string;
   snapshotId: string;
+  ownerId: string;
 }
 
 function PlaylistDetailLayout({
@@ -17,7 +20,9 @@ function PlaylistDetailLayout({
   playlistUri,
   playlistId,
   snapshotId,
+  ownerId,
 }: PlaylistDetailLayoutProps) {
+  const currentUser = useAuthStore((state) => state.currentUser);
   return playlistTracks ? (
     <ul className="flex flex-col">
       {playlistTracks.map(({ track }, index) => (
@@ -58,11 +63,13 @@ function PlaylistDetailLayout({
           <button aria-label="옵션 버튼" className="text-xl text-white/50">
             <SlOptions />
           </button>
-          <DeleteButton
-            playlistId={playlistId}
-            trackUri={track.uri}
-            snapshotId={snapshotId}
-          />
+          {ownerId === currentUser?.spotifyId && (
+            <DeleteButton
+              playlistId={playlistId}
+              trackUri={track.uri}
+              snapshotId={snapshotId}
+            />
+          )}
         </li>
       ))}
     </ul>

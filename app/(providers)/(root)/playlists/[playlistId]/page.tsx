@@ -25,7 +25,6 @@ function PlayListDetail() {
   if (!playlist) return;
   const track = playlist?.tracks.items;
   const playlistUri = String(playlist?.uri);
-
   return (
     <Page>
       <article className="py-4 border-b mb-4 border-white">
@@ -61,6 +60,7 @@ function PlayListDetail() {
           playlistUri={playlistUri}
           playlistId={playlist?.id}
           snapshotId={playlist.snapshot_id}
+          ownerId={playlist.owner.id}
         />
       </article>
     </Page>
