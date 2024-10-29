@@ -13,7 +13,7 @@ export default function HTMLLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className="antialiased bg-rhythmBlackBlack">{children}</body>
+      <body className="antialiased bg-rhythmBlack">{children}</body>
     </html>
   );
 }
