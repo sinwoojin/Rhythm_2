@@ -72,7 +72,6 @@ function AuthProvider({ children }: PropsWithChildren) {
 
       if (!newAccessToken) return;
       // #1. 스토어에 있는 리프레시 토큰을 사용해서 스포티파이로부터 새로운 엑세스토큰과 리프레시토큰을 받아오기
-      console.log(newAccessToken);
       setSpotifyAccessToken(newAccessToken);
       setSpotifyRefreshToken(newAccessToken);
     }, 3420000);
