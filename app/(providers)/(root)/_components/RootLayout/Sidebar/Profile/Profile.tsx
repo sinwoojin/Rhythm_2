@@ -46,7 +46,7 @@ function Profile() {
               </div>
             </Link>
 
-            <div className="flex items-center pr-2 py-3 gap-x-2 mb-5 w-full justify-end">
+            <div className="flex items-center pr-2 py-3 gap-x-2 w-full justify-end">
               <button onClick={handleClickSignOutButton}>
                 <span className="text-sm font-sm">로그아웃</span>
               </button>
