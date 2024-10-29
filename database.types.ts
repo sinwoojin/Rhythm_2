@@ -81,6 +81,7 @@ export type Database = {
           title: string
           trackId: string
           trackImgURL: string
+          trackUri: string
           userId: string
           userName: string
         }
@@ -92,6 +93,7 @@ export type Database = {
           title: string
           trackId: string
           trackImgURL: string
+          trackUri: string
           userId: string
           userName: string
         }
@@ -103,6 +105,7 @@ export type Database = {
           title?: string
           trackId?: string
           trackImgURL?: string
+          trackUri?: string
           userId?: string
           userName?: string
         }

@@ -1,8 +1,8 @@
 import { getUserRhythms } from '@/api/supabaseGetCategories';
 import { baseURL } from '@/config/config';
+import useSpotifyStore from '@/zustand/spotifyStore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react';
 import { FaPlay } from 'react-icons/fa';
 
 interface RhythmDetailLayout {
@@ -11,6 +11,8 @@ interface RhythmDetailLayout {
 
 function RhythmDetailLayout({ userRhythms }: RhythmDetailLayout) {
   const router = useRouter();
+
+  const play = useSpotifyStore((state) => state.play);
 
   if (!userRhythms) router.push('/');
 
@@ -40,7 +42,11 @@ function RhythmDetailLayout({ userRhythms }: RhythmDetailLayout) {
               </div>
             </div>
             {/* 버튼 누르면 바로 재생 */}
-            <button className="absolute bottom-2 left-1/2 -translate-x-1/2 text-red-500 text-xs opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:text-xl">
+            <button
+              onClick={() => play([String(userRhythm?.trackUri)])}
+              aria-label="재생 버튼"
+              className="absolute bottom-2 left-1/2 -translate-x-1/2 text-red-500 text-xs opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:text-xl"
+            >
               <FaPlay />
             </button>
             <img
