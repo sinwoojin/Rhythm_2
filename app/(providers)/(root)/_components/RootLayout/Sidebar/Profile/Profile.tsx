@@ -55,7 +55,7 @@ function Profile() {
         ) : (
           <button
             id="profile"
-            className="pl-2 py-3 gap-x-2 font-semibold text-gray-400 text-center text-left"
+            className="pl-2 py-3 gap-x-2 font-semibold text-gray-400"
             onClick={() =>
               openModal({ element: <LogInModal />, backdrop: true })
             }
