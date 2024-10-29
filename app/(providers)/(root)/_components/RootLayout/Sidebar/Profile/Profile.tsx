@@ -11,31 +11,14 @@ import Link from 'next/link';
 function Profile() {
   const currentUser = useAuthStore((state) => state.currentUser);
 
-  // const [userName, setUserName] = useState("");
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
 
-  // const logOut = useAuthStore((state) => state.LogOut);
   const openModal = useModalStore((state) => state.openModal);
 
   const handleClickSignOutButton = () => {
     supabase.auth.signOut();
   };
-
-  // useEffect(() => {
-  //   (async () => {
-  //     if (isLoggedIn) {
-  //       const response = await api.getUser.getUser();
-  //       if (response?.app_metadata.provider === "spotify") {
-  //         setUserName(response?.user_metadata.name);
-  //       } else if (response?.app_metadata.provider === "email") {
-  //         setUserName(response?.user_metadata.display_name);
-  //       }
-  //     } else {
-  //       logOut();
-  //     }
-  //   })();
-  // }, [isLoggedIn]);
 
   return (
     <>
@@ -44,7 +27,7 @@ function Profile() {
           <div className="flex justify-between">
             <Link
               href={`/profiles/${currentUser?.id}`}
-              className="flex items-center pl-2 py-3 gap-x-2 mb-5 w-full"
+              className="flex items-center pl-2 py-3 gap-x-2 w-full"
             >
               <div
                 id="profile-img"
@@ -72,17 +55,12 @@ function Profile() {
         ) : (
           <button
             id="profile"
-            className="flex items-center pl-2 py-3 gap-x-2 mb-5"
+            className="pl-2 py-3 gap-x-2 font-semibold text-gray-400 text-center text-left"
             onClick={() =>
               openModal({ element: <LogInModal />, backdrop: true })
             }
           >
-            <div
-              id="profile-img"
-              className="rounded-full bg-gray-400 min-w-8 aspect-square text-gray-100"
-            ></div>
-
-            <span className="text-sm font-medium">로그인</span>
+            로그인하기
           </button>
         ))}
     </>
