@@ -85,7 +85,6 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
     queryKey: ['user', profileId],
     queryFn: () => supabaseProfile.getProfile(profileId),
     placeholderData: keepPreviousData,
-    staleTime: 10000,
   });
 
   // 팔로우, 언팔로우 기능
