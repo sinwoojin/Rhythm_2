@@ -59,14 +59,12 @@ const getSpotifyLyricsUrl = async (trackId: string) => {
   try {
     // 1. Spotify에서 트랙 정보 가져오기
     const trackInfo = await fetchSpotifyTrack(trackId);
-
     if (trackInfo) {
       // 2. Genius에서 가사 검색하기
       const trackName = trackInfo.title.split('-')[0].split(' (')[0];
       const featuring = trackInfo.title.match(/\(with (.+?)\)/)?.[1] || '';
       const trackArtist = trackInfo.artist + ' & ' + featuring;
       const lyricsUrl = await fetchLyricsFromGenius(trackName, trackArtist);
-
       if (lyricsUrl) {
         return lyricsUrl;
       } else {

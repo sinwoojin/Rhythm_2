@@ -8,7 +8,7 @@ function ModalProvider({ children }: PropsWithChildren) {
   const closeModal = useModalStore((state) => state.closeModal);
 
   // 바깥영역 클릭시 나가짐
-  const handleToggleModal = () => {
+  const handleClickBackdrop = () => {
     closeModal();
   };
 
@@ -17,7 +17,7 @@ function ModalProvider({ children }: PropsWithChildren) {
       {modal?.backdrop ? (
         <div
           className="bg-white/10 flex items-center justify-center fixed top-0 left-0 right-0 bottom-0 z-50"
-          onClick={handleToggleModal}
+          onClick={handleClickBackdrop}
         >
           {modal?.element}
         </div>

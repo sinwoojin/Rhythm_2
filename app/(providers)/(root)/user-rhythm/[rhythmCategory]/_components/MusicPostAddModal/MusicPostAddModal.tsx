@@ -94,7 +94,6 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
   // 버튼 클릭 시 창 표시 상태 토글
   const handleToggleSongList = () => {
     setIsSongListOpen((prev) => !prev);
-    console.log('isSongListOpen', isSongListOpen);
   };
 
   useEffect(() => {

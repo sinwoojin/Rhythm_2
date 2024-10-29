@@ -30,7 +30,9 @@ function PlayListDetail() {
       <article className="py-4 border-b mb-4 border-white">
         <div className="flex gap-x-6 mb-6 h-[200px]">
           <div className="aspect-square bg-white/20 h-full">
-            <img src={playlist?.images[0].url} alt="image" />
+            {playlist?.images !== null ? (
+              <img src={playlist?.images[0].url} alt="image" />
+            ) : null}
           </div>
           <div className="flex flex-col gap-y-4">
             <h2 className="text-7xl font-bold line-clamp-1">

@@ -43,12 +43,12 @@ function MusicPlayer() {
 
         <div className="flex flex-col col-span-2">
           <p className="text-white font-bold text-lg line-clamp-1">
-            {currentTrack ? currentTrack.name : 'music title'}
+            {currentTrack ? currentTrack.name : '오늘 뭐 듣지?'}
           </p>
           <p className="text-gray-400 line-clamp-1">
             {currentTrack
               ? currentTrack.artists.map((artist) => artist.name).join(', ')
-              : 'music singer'}
+              : '노래를 재생해보세요.'}
           </p>
         </div>
         <div className="flex items-center gap-x-2 col-span-2">
@@ -64,7 +64,7 @@ function MusicPlayer() {
           </button>
           {/* 가사 보기 버튼 */}
           <LyricsButton />
-          {/* 곡 정보 버튼 */}
+          {/* 옵션 버튼 */}
           <OptionButton />
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { api } from '@/api/spotifyApi';
 import LikeButton from '@/components/LikeButton';
 import PlayButton from '@/components/PlayButton';
+import PlusButton from '@/components/PlusButton';
 import dayjs from 'dayjs';
 import Page from '../../_components/Page/Page';
 
@@ -42,6 +43,7 @@ async function MusicDetailPage({ params: { musicId } }: MusicDetailPageProps) {
           <div className="flex gap-x-4 items-center">
             <PlayButton track={track} />
             <LikeButton trackId={track.id} hasBorder={true} />
+            <PlusButton trackUri={track.uri} />
           </div>
         </div>
       </div>

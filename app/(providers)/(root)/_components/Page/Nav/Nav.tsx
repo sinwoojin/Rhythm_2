@@ -12,7 +12,7 @@ function Nav() {
 
   useEffect(() => {
     if (pathname === '/my/likedMusic') setSelectedTab('노래');
-    else if (pathname === '/my/createPlaylist') setSelectedTab('플레이리스트');
+    else if (pathname === '/my/playlists') setSelectedTab('플레이리스트');
   }, [pathname]);
 
   return (
@@ -30,7 +30,7 @@ function Nav() {
             'border-b-2 border-red-500': selectedTab === '플레이리스트',
           })}
         >
-          <Link href="/my/createPlaylist">플레이리스트</Link>
+          <Link href="/my/playlists">플레이리스트</Link>
         </li>
       </ul>
     </nav>

@@ -1,12 +1,16 @@
 'use client';
 
-import LyricsModal from '@/app/(providers)/_components/LyricsModal';
+import LyricsModal from '@/app/(providers)/_components/LyricsModal/LyricsModal';
 import { useModalStore } from '@/zustand/modalStore';
+import useSpotifyStore from '@/zustand/spotifyStore';
 import { MdOutlineLyrics } from 'react-icons/md';
+import { toast } from 'react-toastify';
 
-function Lyrics() {
+function LyricsButton() {
   const openModal = useModalStore((state) => state.openModal);
+  const currentTrack = useSpotifyStore((state) => state.currentTrack);
   const handleClickLyrics = () => {
+    if (!currentTrack) return toast.warn('재생중인 음악이 없습니다.');
     openModal({ element: <LyricsModal />, backdrop: true });
   };
   return (
@@ -20,4 +24,4 @@ function Lyrics() {
   );
 }
 
-export default Lyrics;
+export default LyricsButton;

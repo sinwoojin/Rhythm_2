@@ -40,6 +40,10 @@ export type Track = {
  * 플레이리스트 타입
  */
 export type Playlist = {
+  owner: {
+    id: string;
+    display_name: string;
+  };
   id: string; // 플레이리스트 ID
   name: string; // 플레이리스트 이름
   description: string; // 플레이리스트 설명
@@ -56,6 +60,11 @@ export type Playlist = {
     url: string;
   }[];
   uri: string;
+};
+export type UserPlaylist = {
+  href: string;
+  items: Playlist[];
+  total: number;
 };
 
 /**
