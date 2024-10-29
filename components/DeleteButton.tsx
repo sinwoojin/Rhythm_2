@@ -1,17 +1,37 @@
 import useSpotifyStore from '@/zustand/spotifyStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-function DeleteButton() {
-  const deleteTrack = useSpotifyStore((state) => state.deleteTrackToPlaylists);
+interface DeleteButtonProps {
+  trackUri: string;
+  playlistId: string;
+  snapshotId: string;
+}
 
-  const handleClickDeleteTrack = () => {
-    deleteTrack(
-      '1sn2lED7HkCuT82HKTBA62',
-      'spotify:track:2fRFwWwZG7Qfkui7GcxTMy',
-      'AAAACSuO4N2saEIYgaZxv2d4I28hQO1j ',
-    );
-  };
+function DeleteButton({ playlistId, trackUri, snapshotId }: DeleteButtonProps) {
+  const queryClient = useQueryClient();
+  const deleteTrackToPlaylist = useSpotifyStore(
+    (state) => state.deleteTrackToPlaylists,
+  );
 
-  return <button onClick={handleClickDeleteTrack}>삭제하기</button>;
+  const { mutate: deleteTrack } = useMutation({
+    mutationFn: async () =>
+      deleteTrackToPlaylist(playlistId, trackUri, snapshotId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['playlist'] });
+    },
+    onError: (error) => {
+      console.error('트랙 삭제 중 오류 발생:', error);
+    },
+  });
+
+  return (
+    <button
+      onClick={() => deleteTrack()}
+      className="text-sm w-[150px] disabled:opacity-50"
+    >
+      삭제하기
+    </button>
+  );
 }
 
 export default DeleteButton;

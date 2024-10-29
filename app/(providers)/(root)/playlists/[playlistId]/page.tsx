@@ -3,27 +3,28 @@
 import { api } from '@/api/spotifyApi';
 import { Playlist } from '@/schema/type';
 import useSpotifyStore from '@/zustand/spotifyStore';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { FaPlay } from 'react-icons/fa';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import PlaylistDetailLayout from '../../_components/Layouts/PlaylistDetailLayout/PlaylistDetailLayout';
 import Page from '../../_components/Page/Page';
 function PlayListDetail() {
   const { playlistId } = useParams();
-  const [playlist, setPlaylist] = useState<Playlist | undefined>(undefined);
 
   const play = useSpotifyStore((state) => state.play);
 
-  useEffect(() => {
-    (async () => {
-      const playlist = await api.playlist.getPlaylist(String(playlistId));
-      setPlaylist(playlist);
-    })();
-  }, [playlistId]);
+  const { data: playlist }: UseQueryResult<Playlist> = useQuery({
+    queryKey: ['playlist'],
+    queryFn: async (): Promise<Playlist | undefined> => {
+      const response = await api.playlist.getPlaylist(String(playlistId));
+      if (!response) return;
+      return response;
+    },
+  });
+  if (!playlist) return;
   const track = playlist?.tracks.items;
   const playlistUri = String(playlist?.uri);
-
   return (
     <Page>
       <article className="py-4 border-b mb-4 border-white">
@@ -57,6 +58,9 @@ function PlayListDetail() {
         <PlaylistDetailLayout
           playlistTracks={track}
           playlistUri={playlistUri}
+          playlistId={playlist?.id}
+          snapshotId={playlist.snapshot_id}
+          ownerId={playlist.owner.id}
         />
       </article>
     </Page>
