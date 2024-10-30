@@ -12,13 +12,20 @@ function RecentPlaylistButton() {
   const currentUser = useAuthStore((state) => state.currentUser);
   const queryClient = useQueryClient();
 
+  const modal = useModalStore((state) => state.modal);
+  const close = useModalStore((state) => state.closeModal);
+
   // 최근재생목록 열기
   const handleClickOpenRecentPlaylistButton = () => {
     if (!currentUser) return;
-    openModal({ element: <RecentPlaylistModal />, backdrop: false });
-    queryClient.invalidateQueries({
-      queryKey: ['recentPlay', currentUser?.id],
-    });
+    if (!modal) {
+      openModal({ element: <RecentPlaylistModal />, backdrop: false });
+      queryClient.invalidateQueries({
+        queryKey: ['recentPlay', currentUser?.id],
+      });
+    } else {
+      close();
+    }
   };
   return (
     <button

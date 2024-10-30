@@ -47,9 +47,9 @@ function RecentPlaylistModal() {
     },
   });
   return (
-    <div className="p-5 fixed right-0 bottom-[116px] z-10 bg-blue-100 w-[400px] h-[300px] overflow-scroll">
+    <div className="py-5 fixed right-0 bottom-[116px] z-10 rounded-md bg-rhythmBlack border text-white border-white w-[400px] h-[300px] overflow-scroll">
       <div className="flex items-center justify-between mb-7">
-        <h2 className="font-semibold text-2xl">최근 재생 목록</h2>
+        <h2 className="font-semibold text-2xl ml-4">최근 재생 목록</h2>
         <button
           onClick={handleClickCloseModal}
           aria-label="닫기"
@@ -61,10 +61,10 @@ function RecentPlaylistModal() {
       <ul>
         {recentPlaylists.length > 0 ? (
           recentPlaylists.map((track, index) => (
-            <li key={nanoid()}>
+            <li key={nanoid()} className="p-5 hover:bg-white/[0.05]">
               <Link
                 href={`/tracks/${track.track.id}`}
-                className="flex gap-3 mb-5 items-center"
+                className="flex gap-3 items-center"
               >
                 <span className="min-w-[24px]">{index + 1}</span>
                 <img src={track.track.album.images[2].url} alt="" />
