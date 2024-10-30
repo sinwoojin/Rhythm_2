@@ -91,15 +91,15 @@ function MyPlaylists({ location }: MyPlaylistsProps) {
             {myPlaylists.map((playlist) => (
               <SwiperSlide key={playlist.id}>
                 <Link href={`/playlists/${playlist.id}`}>
-                  {playlist.images?.length === 0 ? (
-                    <div className="w-full aspect-square bg-slate-600 "></div>
+                  {playlist.images && playlist.images.length > 0 ? (
+                    <img
+                      src={playlist.images[0].url}
+                      alt={playlist.name}
+                      className="object-contain w-full h-full"
+                    />
                   ) : (
-                    <div className="w-full aspect-square bg-slate-600 ">
-                      <img
-                        alt={playlist.name}
-                        src={playlist.images?.[0].url}
-                        className="object-cover"
-                      />
+                    <div className="w-[165px] h-[165px] bg-gray-700 flex justify-center items-center">
+                      <MdMusicOff className="w-10 h-10 text-white/70" />
                     </div>
                   )}
                   <p className="text-xl font-semibold line-clamp-1">

@@ -2,7 +2,9 @@
 import { api } from '@/api/spotifyApi';
 import LikeButton from '@/components/LikeButton';
 import PlayButton from '@/components/PlayButton';
+import UnderLine from '@/components/UnderLine';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 import Page from '../../_components/Page/Page';
 import OptionButton from '../../_components/RootLayout/MusicPlayer/OptionButton/OptionButton';
 import TrackDetailLyric from './_components/TrackDetailLyric';
@@ -19,7 +21,8 @@ async function TrackDetailPage({ params: { trackId } }: TrackDetailPageProps) {
   const release_year = dayjs(track!.album.release_date).format('YYYY');
   const albumTitle = track?.album.name;
   const albumImg = track?.album.images[1].url;
-  const artists = album?.artists[0].name;
+  const artistsId = album.artists.map((item) => item.id);
+  const artists = album?.artists.map((item) => item.name);
 
   return (
     <Page>
@@ -35,9 +38,15 @@ async function TrackDetailPage({ params: { trackId } }: TrackDetailPageProps) {
             {track?.name}
           </h1>
           <div className="flex">
-            <p>{artists}</p>
+            <Link href={`/artists/${artistsId}`}>
+              <UnderLine>{artists}</UnderLine>
+            </Link>
+
             <span className="px-3">•</span>
-            <span>{albumTitle}</span>
+            <Link href={`/albums/${album.id}`}>
+              <UnderLine>{albumTitle}</UnderLine>
+            </Link>
+
             <span className="px-3">•</span>
             <span>{release_year}</span>
           </div>
