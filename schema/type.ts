@@ -193,8 +193,11 @@ export type Artist = {
   uri: string;
 };
 
-export type PlaybackState = {
+export interface PlaybackState {
   progress_ms: number;
-  item: { name: string; duration_ms: number };
+  item: {
+    name: string;
+    duration_ms: number;
+  };
   is_playing: boolean;
-};
+}
