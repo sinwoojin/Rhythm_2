@@ -8,7 +8,7 @@ import SidebarSearchInput from './SidebarSearchInput';
 
 function Sidebar() {
   return (
-    <header className="fixed left-0 w-[245px] h-screen bg-rhythmBlack text-white py-8">
+    <header className="fixed left-0 w-[245px] border-r border-r-white/10 h-screen bg-rhythmBlack text-white py-8">
       <Link
         href="/today"
         className="flex items-center gap-x-1 px-5 text-center text-2xl font-black tracking-wide mb-5 hover:text-red-500 transition w-fit"
