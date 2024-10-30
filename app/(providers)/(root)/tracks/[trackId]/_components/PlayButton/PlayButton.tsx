@@ -11,6 +11,8 @@ function PlayButton(props: PlayButtonProps) {
   const currentTrackId = props.track?.id;
   const pause = useSpotifyStore((state) => state.pause);
 
+  console.log(equalTrack);
+
   const handleClickPlayButton = () => {
     if (prevTrackId === currentTrackId) {
       setEqualTrack(true);
@@ -20,7 +22,7 @@ function PlayButton(props: PlayButtonProps) {
     }
   };
 
-  return <div>PlayButton</div>;
+  return <div onClick={handleClickPlayButton}>PlayButton</div>;
 }
 
 export default PlayButton;

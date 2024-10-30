@@ -19,7 +19,6 @@ function PlayButton({
   albumTracks,
   playlistUri,
   albumUri,
-  track,
   index,
 }: PlayButtonProps) {
   // spotify store
@@ -29,8 +28,6 @@ function PlayButton({
 
   const [currentTrackId, setCurrentTrackId] = useState<string | null>(null);
 
-  console.log('index', index);
-
   // 재생 버튼
   const handleTogglePlayButton = (index: number) => {
     if (!playlistTracks && !albumTracks) return;
@@ -38,7 +35,7 @@ function PlayButton({
     const trackId = playlistTracks![index].track.id || albumTracks![index]?.id;
 
     if (!trackId) return;
-    setCurrentTrackId((prev) => trackId);
+    setCurrentTrackId(trackId);
 
     if (trackId === currentTrack?.id) {
       pause();
