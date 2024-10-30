@@ -2,7 +2,9 @@
 import { api } from '@/api/spotifyApi';
 import LikeButton from '@/components/LikeButton';
 import PlayButton from '@/components/PlayButton';
+import UnderLine from '@/components/UnderLine';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 import Page from '../../_components/Page/Page';
 import OptionButton from '../../_components/RootLayout/MusicPlayer/OptionButton/OptionButton';
 import TrackDetailLyric from './_components/TrackDetailLyric';
@@ -17,9 +19,11 @@ async function TrackDetailPage({ params: { trackId } }: TrackDetailPageProps) {
 
   const album = track?.album;
   const release_year = dayjs(track!.album.release_date).format('YYYY');
-  const trackTitle = track?.album.name;
-  const trackImg = track?.album.images[1].url;
-  const artists = album?.artists[0].name;
+  const albumTitle = track?.album.name;
+  const albumImg = track?.album.images[1].url;
+  const artistsId = album.artists.map((item) => item.id);
+  const artists = album?.artists.map((item) => item.name);
+
 
   return (
     <Page>
@@ -31,13 +35,20 @@ async function TrackDetailPage({ params: { trackId } }: TrackDetailPageProps) {
 
         <div className="flex flex-col gap-y-4 w-full">
           {/* 트랙, 앨범 정보 */}
-          <h1 className="font-bold text-7xl whitespace-pre-wrap line-clamp-2">
+          <h2 className="font-bold text-7xl whitespace-pre-wrap leading-snug line-clamp-1">
             {track?.name}
-          </h1>
+          </h2>
           <div className="flex">
-            <p>{artists}</p>
+            <Link href={`/artists/${artistsId}`}>
+              <UnderLine>{artists}</UnderLine>
+            </Link>
+
             <span className="px-3">•</span>
-            <span>{trackTitle}</span>
+
+            <Link href={`/albums/${album.id}`}>
+              <UnderLine>{albumTitle}</UnderLine>
+            </Link>
+
             <span className="px-3">•</span>
             <span>{release_year}</span>
           </div>
