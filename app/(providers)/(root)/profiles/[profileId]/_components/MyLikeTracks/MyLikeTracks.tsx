@@ -19,14 +19,14 @@ function MyLikeTracks({ profileId }: MyLikeTracksProps) {
   const currentUser = useAuthStore((state) => state.currentUser);
   const userId = String(currentUser?.id);
 
-  const { data: myLikeTracks, isLoading: loadingMyLikeTracks } = useQuery({
+  const { data: myLikeTracks } = useQuery({
     queryKey: ['userLikeTracks', userId],
     queryFn: () => supabaseProfile.getMyLikeTracks(userId),
     placeholderData: keepPreviousData,
   });
 
   // 좋아요 표시한 트랙 뿌리기
-  const { data: tracks, isLoading: loadingTracks } = useQuery({
+  const { data: tracks } = useQuery({
     queryKey: ['tracks', userId],
     queryFn: async () => {
       const trackIds = myLikeTracks?.map((item) => item.trackId);
@@ -41,11 +41,6 @@ function MyLikeTracks({ profileId }: MyLikeTracksProps) {
       queryKey: ['tracks', userId],
     });
   }, [currentUser, queryClient, userId]);
-
-  // 로딩 중일 때 스피너 표시
-  if (loadingMyLikeTracks || loadingTracks) {
-    return <div className="text-center">로딩 중...</div>;
-  }
 
   return profileId === userId ? (
     <div>
