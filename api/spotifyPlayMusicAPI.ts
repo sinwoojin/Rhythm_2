@@ -351,3 +351,52 @@ export const setShuffleMusic = async (
     console.error('Error setting shuffle state:', error);
   }
 };
+
+/**
+ * 트랙 재생 위치 지정해 재생
+ *
+ * @param accessToken string
+ * @param newPosition number
+ * @returns
+ */
+export const setTrackSeek = async (
+  accessToken: string,
+  newPosition: number,
+) => {
+  if (!accessToken) return;
+  try {
+    const response = await spotifyAPI.put(
+      `me/player/seek?position_ms=${newPosition}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response;
+  } catch (error) {
+    console.error('Seek 요청 실패:', error);
+  }
+};
+
+/**
+ * 유저 가져오기
+ *
+ * @param accessToken string
+ * @returns
+ */
+export const getPlayer = async (accessToken: string) => {
+  if (!accessToken) return;
+
+  try {
+    const response = await spotifyAPI.get('me/player', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Playback data 요청 실패:', error);
+  }
+};
