@@ -30,7 +30,9 @@ function AlbumDetail() {
             <img src={album?.images[0].url} alt="image" />
           </div>
           <div className="flex flex-col gap-y-4">
-            <h2 className="text-7xl font-bold line-clamp-1">{album?.name}</h2>
+            <h2 className="text-7xl font-bold leading-snug line-clamp-1">
+              {album?.name}
+            </h2>
             <span className="line-clamp-1">{album?.description}</span>
             <div className="flex gap-x-4">
               <button
@@ -47,7 +49,7 @@ function AlbumDetail() {
         </div>
       </article>
       <article>
-        <AlbumDetailLayout albumTracks={track} albumUri={albumUri}/>
+        <AlbumDetailLayout albumTracks={track} albumUri={albumUri} />
       </article>
     </Page>
   );

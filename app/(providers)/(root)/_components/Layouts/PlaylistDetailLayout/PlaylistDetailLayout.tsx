@@ -31,7 +31,9 @@ function PlaylistDetailLayout({
           className="relative flex h-20 px-4 py-[10px] w-full gap-4 items-center rounded-sm transition-all hover:bg-white/10 group"
         >
           <span className="flex flex-row-reverse min-w-[24px] items-center relative">
-            <span className="group-hover:hidden">{index + 1}</span>
+            <span className="w-full text-center group-hover:hidden">
+              {index + 1}
+            </span>
             <PlayButton
               track={track}
               index={index}
