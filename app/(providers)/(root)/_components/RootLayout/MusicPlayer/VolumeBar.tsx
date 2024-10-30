@@ -1,13 +1,15 @@
-import React from 'react';
+import { useAuthStore } from '@/zustand/authStore';
+import useSpotifyStore from '@/zustand/spotifyStore';
 import { useRef } from 'react';
 import MuteButton from './MuteButton';
-import useSpotifyStore from '@/zustand/spotifyStore';
 
 function VolumeBar() {
   const setVolume = useSpotifyStore((state) => state.setVolume);
   const volumeRef = useRef<HTMLInputElement>(null);
+  const currentUser = useAuthStore((state) => state.currentUser);
 
   const handleSetVolume = () => {
+    if (!currentUser) return;
     const volume = Math.floor(Number(volumeRef.current?.valueAsNumber));
     setVolume(volume);
   };

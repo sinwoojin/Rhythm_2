@@ -14,6 +14,7 @@ function RecentPlaylistButton() {
 
   // 최근재생목록 열기
   const handleClickOpenRecentPlaylistButton = () => {
+    if (!currentUser) return;
     openModal({ element: <RecentPlaylistModal />, backdrop: false });
     queryClient.invalidateQueries({
       queryKey: ['recentPlay', currentUser?.id],
