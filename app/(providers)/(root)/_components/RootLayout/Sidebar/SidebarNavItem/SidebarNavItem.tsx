@@ -11,13 +11,13 @@ interface SidebarNavItemProps {
 }
 
 function SidebarNavItem({ href, icon, label }: SidebarNavItemProps) {
-  const pathName = usePathname();
+  const pathName = usePathname().split('/')[1];
   return (
     <Link
       href={href}
       className={cx(
         'flex items-center gap-x-4 text-gray-400 font-semibold hover:text-red-500 transition py-2.5',
-        { 'text-red-500': href === pathName },
+        { 'text-red-500': href.includes(pathName) },
       )}
     >
       <span className="text-xl">{icon}</span>
