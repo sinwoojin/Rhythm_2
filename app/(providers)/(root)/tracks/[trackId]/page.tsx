@@ -34,9 +34,9 @@ async function TrackDetailPage({ params: { trackId } }: TrackDetailPageProps) {
 
         <div className="flex flex-col gap-y-4 w-full">
           {/* 트랙, 앨범 정보 */}
-          <h1 className="font-bold text-7xl whitespace-pre-wrap line-clamp-2">
+          <h2 className="font-bold text-7xl whitespace-pre-wrap leading-snug line-clamp-1">
             {track?.name}
-          </h1>
+          </h2>
           <div className="flex">
             <Link href={`/artists/${artistsId}`}>
               <UnderLine>{artists}</UnderLine>
