@@ -15,6 +15,7 @@ function UserRhythm() {
 
   return (
     <div className="mt-20">
+      <h3 className="text-2xl font-bold mb-6">최신 RHYTHM</h3>
       <Swiper
         spaceBetween={10}
         slidesPerView={5.5}
