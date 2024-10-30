@@ -24,7 +24,7 @@ function AlbumsLayout({ albums, title }: ChartListProps) {
             <ul className="flex gap-x-4 overflow-hidden scrollbar-hide max-w-full">
               {albums.map((album) => (
                 <SwiperSlide key={album.id}>
-                  <Link href={`/album/${album.id}`}>
+                  <Link href={`/albums/${album.id}`}>
                     {album.images.length === 0 ? (
                       <div className="w-full aspect-square bg-slate-600"></div>
                     ) : (

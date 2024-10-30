@@ -32,7 +32,7 @@ function AlbumDetailLayout({ albumTracks, albumUri }: AlbumDetailLayoutProps) {
                 <div className="w-full text-white/50 flex">
                   {track.artists.map((artist, index) => (
                     <li key={artist.id}>
-                      <Link href={`/artist/${artist.id}`}>
+                      <Link href={`/artists/${artist.id}`}>
                         {index !== 0 && ',  '}
                         {artist.name}
                       </Link>

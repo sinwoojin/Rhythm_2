@@ -48,14 +48,14 @@ function PlaylistDetailLayout({
                   {track?.artists.map((artist, index) => (
                     <span key={artist.id}>
                       {index > 0 && ', '}
-                      <Link href={`/artist/${artist.id}`}>{artist.name}</Link>
+                      <Link href={`/artists/${artist.id}`}>{artist.name}</Link>
                     </span>
                   ))}
                 </div>
               </div>
             </div>
             <div className="w-full flex items-center">
-              <Link href={`/album/${track?.album.id}`}>
+              <Link href={`/albums/${track?.album.id}`}>
                 {track?.album.name}
               </Link>
             </div>

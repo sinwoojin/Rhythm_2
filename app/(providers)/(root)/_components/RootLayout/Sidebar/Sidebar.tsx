@@ -39,7 +39,7 @@ function Sidebar() {
             </li>
             <li>
               <SidebarNavItem
-                href="/user-rhythm"
+                href="/userRhythm"
                 label="유저 리듬"
                 icon={<BsMusicNoteList />}
               />
