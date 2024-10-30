@@ -66,7 +66,7 @@ function ArtistDetailLayout({ artistId }: ArtistsDetailLayoutProps) {
         <h3 className="mb-5 text-2xl font-semibold">앨범</h3>
         <Swiper
           spaceBetween={10}
-          slidesPerView={7}
+          slidesPerView={5.5}
           loop={false}
           className="overflow-hidden"
         >

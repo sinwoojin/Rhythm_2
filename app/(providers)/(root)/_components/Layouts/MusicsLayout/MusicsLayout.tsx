@@ -18,7 +18,7 @@ function MusicsLayout({ tracks, title }: ChartListProps) {
         {tracks && tracks.length > 0 ? (
           <Swiper
             spaceBetween={10}
-            slidesPerView={7}
+            slidesPerView={5.5}
             loop={false}
             className="overflow-hidden"
           >

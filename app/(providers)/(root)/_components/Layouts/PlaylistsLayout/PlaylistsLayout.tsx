@@ -18,7 +18,7 @@ function PlaylistsLayout({ playlists, title }: PlaylistsLayoutProps) {
       {playlists.length > 0 ? (
         <Swiper
           spaceBetween={10}
-          slidesPerView={7}
+          slidesPerView={5.5}
           loop={false}
           className="overflow-hidden"
         >
