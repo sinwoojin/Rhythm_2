@@ -19,7 +19,7 @@ function LikeButton({ trackId, hasBorder }: ToggleLikeButtonProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [isLike, setIsLike] = useState(false);
   const currentUser = useAuthStore((state) => state.currentUser);
-  const userId = currentUser?.id;
+  const userId = String(currentUser?.id);
   const queryClient = useQueryClient();
 
   const { data: myLikeOnTrack } = useQuery({
@@ -51,8 +51,15 @@ function LikeButton({ trackId, hasBorder }: ToggleLikeButtonProps) {
         setIsLike(false);
       }
     },
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ['isLike', { trackId }] }),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['isLike', { trackId }],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ['userLikeTracks', userId],
+      });
+      await queryClient.invalidateQueries({ queryKey: ['tracks', userId] });
+    },
   });
 
   useEffect(() => {

@@ -25,7 +25,8 @@ export const getUserRhythms = async (rhythmCategory: string) => {
   const response = await supabase
     .from('userRhythm')
     .select('*, author:users (*)')
-    .eq('category', rhythmCategory);
+    .eq('category', rhythmCategory)
+    .order('createdAt', { ascending: false });
 
   const data = response.data;
 
@@ -39,9 +40,27 @@ export const getUserRhythms = async (rhythmCategory: string) => {
 export const getAllUserRhythm = async () => {
   const response = await supabase
     .from('userRhythm')
-    .select('*, author:users (*)');
+    .select('*, author:users (*)')
+    .order('createdAt', { ascending: false });
 
   const data = response.data;
 
+  return data;
+};
+
+/**
+ * 클릭한 유저 리듬 삭제
+ * @param userId
+ * @param rhythmId
+ * @returns
+ */
+export const deleteUserRhythm = async (userId: string, rhythmId: number) => {
+  const response = await supabase
+    .from('userRhythm')
+    .delete()
+    .eq('userId', userId)
+    .eq('id', rhythmId);
+
+  const data = response.data;
   return data;
 };

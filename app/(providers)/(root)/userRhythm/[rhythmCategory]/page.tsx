@@ -17,18 +17,16 @@ interface PlayListPageProps {
 function PlayListPage({ params: { rhythmCategory } }: PlayListPageProps) {
   const router = useRouter();
 
-  // 유저 리듬
-  const { data: userRhythms } = useQuery({
-    queryKey: ['userRhythms', { category: rhythmCategory }],
-    queryFn: () => getUserRhythms(rhythmCategory),
-  });
-
-  console.log(userRhythms);
-
   // 카테고리 데이터
   const { data: category } = useQuery({
     queryKey: ['category', { name: rhythmCategory }],
     queryFn: () => getCategory(rhythmCategory),
+  });
+
+  // 유저 리듬
+  const { data: userRhythms } = useQuery({
+    queryKey: ['userRhythms', { category: rhythmCategory }],
+    queryFn: () => getUserRhythms(rhythmCategory),
   });
 
   if (category === null) return router.replace('/today');
@@ -72,7 +70,7 @@ function PlayListPage({ params: { rhythmCategory } }: PlayListPageProps) {
                 </div>
               </div>
             </div>
-            <RhythmDetailLayout userRhythms={userRhythms} />
+            <RhythmDetailLayout userRhythms={userRhythms} rhythmCategory={rhythmCategory}/>
           </div>
         </>
       ) : null}

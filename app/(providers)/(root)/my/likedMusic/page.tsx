@@ -2,13 +2,13 @@
 
 import { api } from '@/api/spotifyApi';
 import { supabaseProfile } from '@/api/supabaseProfile';
-import Button from '@/components/Button';
+import LikeButton from '@/components/LikeButton';
 import { useAuthStore } from '@/zustand/authStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { FaPlay } from 'react-icons/fa';
-import { RxShuffle } from 'react-icons/rx';
 import { SlOptions } from 'react-icons/sl';
 import Page from '../../_components/Page/Page';
 
@@ -18,33 +18,33 @@ function LikedMusics() {
 
   const play = useSpotifyStore((state) => state.play);
 
+  const queryClient = useQueryClient();
+
   const { data: myLikeTracks } = useQuery({
     queryKey: ['userLikeTracks', userId],
     queryFn: () => supabaseProfile.getMyLikeTracks(userId),
-    placeholderData: keepPreviousData,
   });
+
+  const tracksILikeIds = myLikeTracks?.map((item) => item.trackId) || [];
 
   // 좋아요 표시한 트랙 뿌리기
   const { data: tracks } = useQuery({
-    queryKey: ['tracks', userId],
+    queryKey: ['tracks', { userId, tracksILikeIds }],
     queryFn: async () => {
-      const trackIds = myLikeTracks?.map((item) => item.trackId);
-      if (!trackIds) return;
-      const ids = trackIds.map((item) => item);
-      return api.track.getTracks(ids);
+      if (!tracksILikeIds || tracksILikeIds.length === 0) return [];
+      return api.track.getTracks(tracksILikeIds);
     },
+    enabled: !!myLikeTracks,
+    placeholderData: (prev) => prev,
   });
 
-  return tracks ? (
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['userLikeTracks', userId] });
+    queryClient.invalidateQueries({ queryKey: ['tracks', userId] });
+  }, [queryClient, userId]);
+
+  return tracks?.length ? (
     <Page title="좋아요 한 노래" isNav={true}>
-      <div className="flex w-full gap-x-6 mb-10">
-        <Button className="w-full py-3 flex items-center justify-center gap-x-4 text-xl">
-          <FaPlay /> PLAY
-        </Button>
-        <Button className="w-full py-3 flex items-center justify-center gap-x-4 text-xl">
-          <RxShuffle /> SHUFFLE
-        </Button>
-      </div>
       <div>
         <ul>
           {tracks.map((track) => (
@@ -65,6 +65,7 @@ function LikedMusics() {
                   />
                 </div>
               </button>
+
               <div className="grid grid-cols-4 w-full">
                 <span className="col-span-2 text-lg">
                   <Link
@@ -82,7 +83,8 @@ function LikedMusics() {
                     {track.artists[0].name}
                   </Link>
                 </span>
-                <span className="col-span-1 text-lg ml-auto">
+                <span className="col-span-1 text-lg ml-auto flex items-center gap-x-5">
+                <LikeButton trackId={track.id} hasBorder={true} />
                   <button aria-label="설정">
                     <SlOptions />
                   </button>
@@ -93,7 +95,11 @@ function LikedMusics() {
         </ul>
       </div>
     </Page>
-  ) : null;
+  ) : (
+    <Page title="좋아요 한 노래" isNav={true}>
+      현재 좋아요 표시한 곡이 없습니다.
+    </Page>
+  );
 }
 
 export default LikedMusics;
