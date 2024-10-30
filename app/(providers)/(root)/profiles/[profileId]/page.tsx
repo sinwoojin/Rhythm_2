@@ -9,12 +9,7 @@ import { User } from '@/schema/type';
 import { useAuthStore } from '@/zustand/authStore';
 import { useFollowStore } from '@/zustand/followStore';
 import { useModalStore } from '@/zustand/modalStore';
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import MyPlaylists from '../../_components/MyPlaylists/MyPlaylists';
@@ -71,21 +66,24 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
   const { data: followers } = useQuery({
     queryKey: ['followers', { userId: profileId }],
     queryFn: () => supabaseProfile.getFollowers(profileId),
-    placeholderData: keepPreviousData,
+    placeholderData: (previousData) => previousData,
+    staleTime: 1000 * 60 * 5,
   });
 
   // 팔로잉 수 가져오기
   const { data: followings } = useQuery({
     queryKey: ['followings', { userId: profileId }],
     queryFn: () => supabaseProfile.getFollowing(profileId),
-    placeholderData: keepPreviousData,
+    placeholderData: (previousData) => previousData,
+    staleTime: 1000 * 60 * 5,
   });
 
   // 유저 정보 가져오기
   const { data: user } = useQuery<User | null>({
     queryKey: ['user', profileId],
     queryFn: () => supabaseProfile.getProfile(profileId),
-    placeholderData: keepPreviousData,
+    placeholderData: (previousData) => previousData,
+    staleTime: 1000 * 60 * 5,
   });
 
   // 팔로우, 언팔로우 기능
@@ -163,7 +161,7 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
     };
 
     fetchData();
-  }, [profileId, userId, user, isFollowing]);
+  }, [profileId, userId, isFollowing, checkingFollow]);
 
   return (
     <Page>

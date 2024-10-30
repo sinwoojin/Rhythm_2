@@ -8,7 +8,12 @@ import { User } from '@/schema/type';
 import { supabase } from '@/supabase/client';
 import { useAuthStore } from '@/zustand/authStore';
 import { useModalStore } from '@/zustand/modalStore';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -44,6 +49,7 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
         .select('*')
         .eq('follower', currentUser!.id!),
     select: (response) => response.data,
+    placeholderData: keepPreviousData,
   });
 
   // 유저별 팔로우 상태 지정 (boolean)

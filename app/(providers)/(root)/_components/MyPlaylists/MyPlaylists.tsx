@@ -1,8 +1,9 @@
 'use client';
 import { useAuthStore } from '@/zustand/authStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { MdMusicOff } from 'react-icons/md';
 import { SlOptions } from 'react-icons/sl';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -15,10 +16,16 @@ function MyPlaylists({ location }: MyPlaylistsProps) {
   const currentUser = useAuthStore((state) => state.currentUser);
   const getMyPlaylists = useSpotifyStore((state) => state.getMyPlaylists);
 
+  const queryClient = useQueryClient();
+
   const { data: playlists } = useQuery({
     queryKey: ['myPlaylists'],
-    queryFn: getMyPlaylists,
+    queryFn: () => getMyPlaylists(),
   });
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['myPlaylists'] });
+  }, [currentUser, queryClient]);
 
   const myPlaylists = playlists?.items;
   if (!myPlaylists) return;
