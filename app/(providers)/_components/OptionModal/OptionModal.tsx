@@ -2,7 +2,6 @@
 import { useModalStore } from '@/zustand/modalStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
 import Link from 'next/link';
-import { BaseSyntheticEvent, MouseEvent } from 'react';
 import { CiHeart } from 'react-icons/ci';
 import { IoMdAddCircle, IoMdShare } from 'react-icons/io';
 import { MdOutlineLyrics } from 'react-icons/md';
@@ -18,18 +17,19 @@ function OptionModal({ position }: OptionModalProps) {
   const openModal = useModalStore((state) => state.openModal);
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
 
-  const handleClickModalClose = (
-    e: BaseSyntheticEvent<MouseEvent, HTMLDivElement, HTMLButtonElement>,
-  ) => {
+  const handleClickModalClose = (e: React.MouseEvent<HTMLDivElement>) => {
     closeModal();
-    console.log('e.currentTarget', e.currentTarget, e.target);
-    if (e.target.id === 'addMusicToMyPlaylistButton') {
+
+    const targetElement = (e.target as HTMLElement).closest('[id]');
+    const targetId = targetElement?.id;
+
+    if (targetId === 'addMusicToMyPlaylistButton') {
       if (!currentTrack) return toast.warn('재생중인 음악이 없습니다.');
       openModal({
         element: <AddMusicOnMyPlaylistModal />,
         backdrop: true,
       });
-    } else if (e.target.id === 'showMusicLyricsButton') {
+    } else if (targetId === 'showMusicLyricsButton') {
       if (!currentTrack) return toast.warn('재생중인 음악이 없습니다.');
       openModal({
         element: <LyricsModal />,
@@ -72,33 +72,14 @@ function OptionModal({ position }: OptionModalProps) {
                 좋아요
               </button>
             </li>
-            <li
-              className="py-[12px] px-4 hover:bg-white/[0.05] text-base"
-              id="addMusicToMyPlaylistButton"
-            >
-              <button
-                className="flex gap-x-4 items-center"
-                id="addMusicToMyPlaylistButton"
-              >
-                <IoMdAddCircle
-                  className="text-2xl"
-                  id="addMusicToMyPlaylistButton"
-                />
-                내 플레이리스트 추가
+            <li className="py-[12px] px-4 hover:bg-white/[0.05] text-base">
+              <button className="flex gap-x-4 items-center">
+                <IoMdAddCircle className="text-2xl" />내 플레이리스트 추가
               </button>
             </li>
-            <li
-              className="py-[12px] px-4 hover:bg-white/[0.05] text-base"
-              id="showMusicLyricsButton"
-            >
-              <button
-                className="flex gap-x-4 items-center"
-                id="showMusicLyricsButton"
-              >
-                <MdOutlineLyrics
-                  className="text-2xl"
-                  id="showMusicLyricsButton"
-                />
+            <li className="py-[12px] px-4 hover:bg-white/[0.05] text-base">
+              <button className="flex gap-x-4 items-center">
+                <MdOutlineLyrics className="text-2xl" />
                 가사 보기
               </button>
             </li>
@@ -146,33 +127,14 @@ function OptionModal({ position }: OptionModalProps) {
                 좋아요
               </button>
             </li>
-            <li
-              className="py-[12px] px-4 hover:bg-white/[0.05] text-base"
-              id="addMusicToMyPlaylistButton"
-            >
-              <button
-                className="flex gap-x-4 items-center"
-                id="addMusicToMyPlaylistButton"
-              >
-                <IoMdAddCircle
-                  className="text-2xl"
-                  id="addMusicToMyPlaylistButton"
-                />
-                내 플레이리스트 추가
+            <li className="py-[12px] px-4 hover:bg-white/[0.05] text-base">
+              <button className="flex gap-x-4 items-center">
+                <IoMdAddCircle className="text-2xl" />내 플레이리스트 추가
               </button>
             </li>
-            <li
-              className="py-[12px] px-4 hover:bg-white/[0.05] text-base"
-              id="showMusicLyricsButton"
-            >
-              <button
-                className="flex gap-x-4 items-center"
-                id="showMusicLyricsButton"
-              >
-                <MdOutlineLyrics
-                  className="text-2xl"
-                  id="showMusicLyricsButton"
-                />
+            <li className="py-[12px] px-4 hover:bg-white/[0.05] text-base">
+              <button className="flex gap-x-4 items-center">
+                <MdOutlineLyrics className="text-2xl" />
                 가사 보기
               </button>
             </li>
