@@ -13,7 +13,7 @@ async function PlaylistsPage() {
         <ul className="w-full h-[480px] grid grid-rows-2 grid-flow-col gap-6 auto-cols-fr">
           {categories?.map((category) => (
             <li key={category.id}>
-              <Link href={`user-rhythm/${category?.name}`}>
+              <Link href={`userRhythm/${category?.name}`}>
                 <div className="w-full h-full rounded-md overflow-hidden group relative">
                   <img
                     className="w-full h-full object-cover grayscale-[20%] absolute"
