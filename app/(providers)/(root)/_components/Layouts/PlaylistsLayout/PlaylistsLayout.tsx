@@ -13,7 +13,7 @@ interface PlaylistsLayoutProps {
 
 function PlaylistsLayout({ playlists, title }: PlaylistsLayoutProps) {
   return (
-    <div className="relative max-w-full">
+    <div className="mt-4 relative max-w-full">
       <h3 className="text-2xl font-bold mb-6">{title}</h3>
       {playlists.length > 0 ? (
         <Swiper
@@ -26,17 +26,17 @@ function PlaylistsLayout({ playlists, title }: PlaylistsLayoutProps) {
             <SwiperSlide key={playlist.id}>
               <Link href={`/playlists/${playlist.id}`}>
                 {playlist.images.length === 0 ? (
-                  <div className="w-full aspect-square bg-slate-600 "></div>
+                  <div className="w-full aspect-square bg-slate-600 mb-1"></div>
                 ) : (
-                  <div className="w-full aspect-square bg-slate-600 ">
+                  <div className="w-full aspect-square bg-slate-600 mb-1">
                     <img
                       alt={playlist.name}
                       src={playlist.images[0].url}
-                      className="object-cover"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                 )}
-                <p className="text-xl font-semibold line-clamp-1">
+                <p className="w-[calc(90%)] text-xl font-semibold line-clamp-1">
                   {playlist.name}
                 </p>
               </Link>
