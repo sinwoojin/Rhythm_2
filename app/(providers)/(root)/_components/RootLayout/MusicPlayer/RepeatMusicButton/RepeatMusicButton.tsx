@@ -1,4 +1,7 @@
+'use client';
+
 import { setRepeatMusic } from '@/api/spotifyPlayMusicAPI';
+import { useAuthStore } from '@/zustand/authStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
 import { cx } from 'class-variance-authority';
 import { useState } from 'react';
@@ -7,9 +10,11 @@ import { PiRepeatBold } from 'react-icons/pi';
 function RepeatMusicButton() {
   const [isClicked, setIsClicked] = useState(false);
 
+  const currentUser = useAuthStore((state) => state.currentUser);
   const accessToken = useSpotifyStore((state) => state.accessToken);
 
   const handleClickRepeatTrack = () => {
+    if (!currentUser) return;
     setRepeatMusic(String(accessToken), 'track');
     setIsClicked((prev) => !prev);
   };
