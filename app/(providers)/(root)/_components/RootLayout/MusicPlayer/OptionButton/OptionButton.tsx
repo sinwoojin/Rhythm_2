@@ -5,12 +5,21 @@ import { cx } from 'class-variance-authority';
 import { SlOptions } from 'react-icons/sl';
 interface OptionButtonProps {
   location: string;
+
+  trackTitle?: string;
+  trackImg?: string;
 }
-function OptionButton({ location }: OptionButtonProps) {
+function OptionButton({ location, trackTitle, trackImg }: OptionButtonProps) {
   const openModal = useModalStore((state) => state.openModal);
   const handleClickOption = () => {
     openModal({
-      element: <OptionModal location={location} />,
+      element: (
+        <OptionModal
+          location={location}
+          trackTitle={String(trackTitle)}
+          trackImg={String(trackImg)}
+        />
+      ),
       backdrop: false,
     });
   };

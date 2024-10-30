@@ -1,6 +1,7 @@
 'use client';
 import { useModalStore } from '@/zustand/modalStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
+import { cx } from 'class-variance-authority';
 import Link from 'next/link';
 import { CiHeart } from 'react-icons/ci';
 import { IoMdAddCircle, IoMdShare } from 'react-icons/io';
@@ -8,12 +9,18 @@ import { MdOutlineLyrics } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import AddMusicOnMyPlaylistModal from '../AddMusicOnMyPlaylistModal/AddMusicOnMyPlaylistModal';
 import LyricsModal from '../LyricsModal/LyricsModal';
-import { cx } from 'class-variance-authority';
 interface OptionModalProps {
   location: string;
+
+  trackTitle: string;
+  trackImg: string;
 }
 
-function OptionTrackModal({ location }: OptionModalProps) {
+function OptionTrackModal({
+  location,
+  trackTitle,
+  trackImg,
+}: OptionModalProps) {
   const closeModal = useModalStore((state) => state.closeModal);
   const openModal = useModalStore((state) => state.openModal);
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
@@ -56,13 +63,13 @@ function OptionTrackModal({ location }: OptionModalProps) {
               >
                 <img
                   className="h-full w-full object-cover"
-                  src={currentTrack?.album.images[0].url}
-                  alt=""
+                  src={!trackImg ? trackImg : currentTrack?.album.images[0].url}
+                  alt="흠"
                 />
               </Link>
               <div className="flex flex-col overflow-x-hidden">
                 <span className="text-lg line-clamp-1">
-                  {currentTrack?.name}
+                  {!trackTitle ? trackTitle : currentTrack?.name}
                 </span>
                 <span className="text-base text-white text-opacity-50 line-clamp-1">
                   {currentTrack?.artists[0].name}
