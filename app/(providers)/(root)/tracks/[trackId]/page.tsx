@@ -17,6 +17,7 @@ async function TrackDetailPage({ params: { trackId } }: TrackDetailPageProps) {
   const track = await api.track.getTrack(trackId);
   if (!track) return console.error('해당 트랙이 없습니다');
 
+  const trackTitle = track.name;
   const album = track?.album;
   const release_year = dayjs(track!.album.release_date).format('YYYY');
   const albumTitle = track?.album.name;
@@ -24,13 +25,12 @@ async function TrackDetailPage({ params: { trackId } }: TrackDetailPageProps) {
   const artistsId = album.artists.map((item) => item.id);
   const artists = album?.artists.map((item) => item.name);
 
-
   return (
     <Page>
       <div className="flex gap-x-6 py-4 border-b border-white mb-4 ">
         {/* 앨범 이미지 */}
         <div>
-          <img src={trackImg} alt="앨범 이미지" />
+          <img src={albumImg} alt="앨범 이미지" />
         </div>
 
         <div className="flex flex-col gap-y-4 w-full">
@@ -64,7 +64,11 @@ async function TrackDetailPage({ params: { trackId } }: TrackDetailPageProps) {
               type="bigRed"
             />
             <LikeButton trackId={track.id} hasBorder={true} />
-            <OptionButton location={'track'} trackTitle={trackTitle} trackImg={trackImg}/>
+            <OptionButton
+              location={'track'}
+              trackTitle={trackTitle}
+              trackImg={albumImg}
+            />
           </div>
         </div>
       </div>
