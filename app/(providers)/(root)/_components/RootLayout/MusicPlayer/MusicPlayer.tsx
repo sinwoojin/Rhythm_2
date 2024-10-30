@@ -8,8 +8,8 @@ import { PiHeartStraightDuotone } from 'react-icons/pi';
 import LyricsButton from './LyricsButton/LyricsButton';
 import OptionButton from './OptionButton/OptionButton';
 import RecentPlaylistButton from './RecentPlaylistButton/RecentPlaylistButton';
-import VolumeBar from './VolumeBar';
 import RepeatMusicButton from './RepeatMusicButton/RepeatMusicButton';
+import VolumeBar from './VolumeBar';
 
 function MusicPlayer() {
   // spotify store
@@ -66,7 +66,7 @@ function MusicPlayer() {
           {/* 가사 보기 버튼 */}
           <LyricsButton />
           {/* 옵션 버튼 */}
-          <OptionButton position={'player'} />
+          <OptionButton location={'player'} />
         </div>
       </div>
       <div
