@@ -147,7 +147,7 @@ const FollowModal = ({ userId, modalType }: FollowModalProps) => {
               : '팔로잉이 없습니다.'}
           </p>
         ) : (
-          <Swiper spaceBetween={15} slidesPerView={7} loop={false}>
+          <Swiper spaceBetween={15} slidesPerView={5.5} loop={false}>
             <ul>
               {followers.map((follower) => (
                 <li

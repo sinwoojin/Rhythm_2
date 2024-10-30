@@ -19,7 +19,7 @@ function ChartLayout({ title, tracks }: ChartProps) {
       <h2 className="font-bold text-2xl mb-6">{title}</h2>
       <Swiper
         spaceBetween={10}
-        slidesPerView={3} // 세로로 3개의 슬라이드 보기
+        slidesPerView={3.5} // 세로로 3개의 슬라이드 보기
         loop={false}
         className="overflow-hidden grid grid-rows-3 gap-x-5 grid-flow-col gap-y-4 overflow-x-auto scrollbar-hide w-full"
       >
