@@ -2,12 +2,13 @@
 
 import LikeButton from '@/components/LikeButton';
 import useSpotifyStore from '@/zustand/spotifyStore';
-import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { FaPause, FaPlay } from 'react-icons/fa';
 import { IoMdSkipBackward, IoMdSkipForward } from 'react-icons/io';
 import { PiHeartStraightDuotone } from 'react-icons/pi';
 import LyricsButton from './LyricsButton/LyricsButton';
 import OptionButton from './OptionButton/OptionButton';
+import PlaybackBar from './PlaybackBar/PlaybackBar';
 import RecentPlaylistButton from './RecentPlaylistButton/RecentPlaylistButton';
 import RepeatMusicButton from './RepeatMusicButton/RepeatMusicButton';
 import VolumeBar from './VolumeBar';
@@ -25,11 +26,14 @@ function MusicPlayer() {
   const getPlayBackState = useSpotifyStore((state) => state.getPlayBackState);
   const trackId = currentTrack?.id;
 
-  useEffect(() => {
-    (async () => {
-      await getPlayBackState();
-    })();
-  }, []);
+  const { data } = useQuery({
+    queryKey: ['playbackState'],
+    queryFn: async () => {
+      return await getPlayBackState();
+    },
+  });
+
+  console.log(data);
 
   return (
     <div className="fixed bottom-0 w-full bg-rhythmBlack grid grid-cols-7 items-center py-6 px-8 max-h-[116px] z-30">
@@ -119,6 +123,7 @@ function MusicPlayer() {
         >
           <IoMdSkipForward />
         </button>
+        <PlaybackBar />
       </div>
       <div className="col-span-2 flex items-center ml-auto">
         <VolumeBar />

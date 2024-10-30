@@ -2,7 +2,7 @@
 import { api } from '@/api/spotifyApi';
 import { setSpotifyVolume } from '@/api/spotifyMusicVolume';
 import {} from '@/api/spotifyPlayMusicAPI';
-import { UserPlaylist } from '@/schema/type';
+import { PlaybackState, UserPlaylist } from '@/schema/type';
 import { toast } from 'react-toastify';
 import { create } from 'zustand';
 
@@ -56,7 +56,7 @@ export interface SpotifyStoreState {
     snapshot_id: string,
   ) => void;
 
-  getPlayBackState: () => void;
+  getPlayBackState: () => Promise<PlaybackState | null>;
 }
 
 const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
