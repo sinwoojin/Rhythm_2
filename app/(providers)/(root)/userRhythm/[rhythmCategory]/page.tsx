@@ -70,7 +70,10 @@ function PlayListPage({ params: { rhythmCategory } }: PlayListPageProps) {
                 </div>
               </div>
             </div>
-            <RhythmDetailLayout userRhythms={userRhythms} rhythmCategory={rhythmCategory}/>
+            <RhythmDetailLayout
+              userRhythms={userRhythms}
+              rhythmCategory={rhythmCategory}
+            />
           </div>
         </>
       ) : null}
