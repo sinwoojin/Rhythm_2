@@ -1,7 +1,7 @@
 import { Track } from '@/schema/type';
 import Link from 'next/link';
-import { SlOptions } from 'react-icons/sl';
 import PlayButton from '../_components/PlayButton/PlayButton';
+import OptionButton from '../../RootLayout/MusicPlayer/OptionButton/OptionButton';
 
 interface AlbumDetailLayoutProps {
   albumTracks?: Track[];
@@ -42,9 +42,7 @@ function AlbumDetailLayout({ albumTracks, albumUri }: AlbumDetailLayoutProps) {
               </div>
             </div>
           </div>
-          <button aria-label="옵션 버튼" className="text-xl text-white/50">
-            <SlOptions />
-          </button>
+          <OptionButton location="tracks" />
         </li>
       ))}
     </ul>

@@ -4,8 +4,8 @@ import DeleteButton from '@/components/DeleteButton';
 import { Track } from '@/schema/type';
 import { useAuthStore } from '@/zustand/authStore';
 import Link from 'next/link';
-import { SlOptions } from 'react-icons/sl';
 import PlayButton from '../_components/PlayButton/PlayButton';
+import OptionButton from '../../RootLayout/MusicPlayer/OptionButton/OptionButton';
 
 interface PlaylistDetailLayoutProps {
   playlistTracks?: { track: Track }[];
@@ -28,7 +28,7 @@ function PlaylistDetailLayout({
       {playlistTracks.map(({ track }, index) => (
         <li
           key={track?.id}
-          className="flex h-20 px-4 py-[10px] w-full gap-4 items-center rounded-sm transition-all hover:bg-white/10 group"
+          className="relative flex h-20 px-4 py-[10px] w-full gap-4 items-center rounded-sm transition-all hover:bg-white/10 group"
         >
           <span className="flex flex-row-reverse min-w-[24px] items-center relative">
             <span className="group-hover:hidden">{index + 1}</span>
@@ -60,9 +60,7 @@ function PlaylistDetailLayout({
               </Link>
             </div>
           </div>
-          <button aria-label="옵션 버튼" className="text-xl text-white/50">
-            <SlOptions />
-          </button>
+          <OptionButton location="tracks" />
           {ownerId === currentUser?.spotifyId && (
             <DeleteButton
               playlistId={playlistId}
