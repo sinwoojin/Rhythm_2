@@ -2,6 +2,7 @@
 
 import LikeButton from '@/components/LikeButton';
 import useSpotifyStore from '@/zustand/spotifyStore';
+import { useEffect } from 'react';
 import { FaPause, FaPlay } from 'react-icons/fa';
 import { IoMdSkipBackward, IoMdSkipForward } from 'react-icons/io';
 import { PiHeartStraightDuotone } from 'react-icons/pi';
@@ -21,7 +22,14 @@ function MusicPlayer() {
   );
   const playPrevTrack = useSpotifyStore((state) => state.playPrevTrack);
   const playNextTrack = useSpotifyStore((state) => state.playNextTrack);
+  const getPlayBackState = useSpotifyStore((state) => state.getPlayBackState);
   const trackId = currentTrack?.id;
+
+  useEffect(() => {
+    (async () => {
+      await getPlayBackState();
+    })();
+  }, []);
 
   return (
     <div className="fixed bottom-0 w-full bg-rhythmBlack grid grid-cols-7 items-center py-6 px-8 max-h-[116px] z-30">

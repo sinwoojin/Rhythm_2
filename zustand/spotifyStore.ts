@@ -1,14 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { api } from '@/api/spotifyApi';
 import { setSpotifyVolume } from '@/api/spotifyMusicVolume';
-import {
-  pauseTrack,
-  nextTrack as playNextTrack,
-  previousTrack as playPreviousTrack,
-  playTrack,
-  resumeTrackFromLastPosition,
-  playRandomTrack as shuffleTracks,
-} from '@/api/spotifyPlayMusicAPI';
+import {} from '@/api/spotifyPlayMusicAPI';
 import { UserPlaylist } from '@/schema/type';
 import { toast } from 'react-toastify';
 import { create } from 'zustand';
@@ -42,7 +35,7 @@ export interface SpotifyStoreState {
 
   pause: () => void;
 
-  shuffle: (playlistId: string) => void;
+  // shuffle: (playlistId: string) => void;
 
   playPrevTrack: () => void;
 
@@ -62,6 +55,8 @@ export interface SpotifyStoreState {
     playlistId: string,
     snapshot_id: string,
   ) => void;
+
+  getPlayBackState: () => void;
 }
 
 const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
@@ -95,7 +90,7 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
         return prevState;
       }
 
-      playTrack(context, accessToken, deviceId, index);
+      api.playMusic.playTrack(context, accessToken, deviceId, index);
 
       return prevState;
     }),
@@ -115,7 +110,7 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
         return prevState;
       }
 
-      resumeTrackFromLastPosition(
+      api.playMusic.resumeTrackFromLastPosition(
         contextUriOrTrackURIs,
         accessToken,
         deviceId,
@@ -133,24 +128,25 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
         return prevState;
       }
 
-      pauseTrack(accessToken);
+      api.playMusic.pauseTrack(accessToken);
       return prevState;
     }),
 
-  shuffle: (playlistId: string) => {
-    const { accessToken, deviceId } = get();
-    if (!accessToken) return toast.warn('프리미엄 로그인이 필요한 기능입니다.');
-    if (!deviceId) return toast.warn('현재 플레이 할 수 있는 기기가 없습니다.');
+  //작동 안됌
+  // shuffle: (playlistId: string) => {
+  //   const { accessToken, deviceId } = get();
+  //   if (!accessToken) return toast.warn('프리미엄 로그인이 필요한 기능입니다.');
+  //   if (!deviceId) return toast.warn('현재 플레이 할 수 있는 기기가 없습니다.');
 
-    shuffleTracks(accessToken, deviceId, playlistId);
-  },
+  //   api.playMusic.setShuffleMusic(accessToken,deviceId, playlistId);
+  // },
 
   playPrevTrack: () => {
     const { accessToken } = get();
     if (!accessToken)
       return toast.error('프리미엄 게정 로그인이 필요한 기능입니다.');
 
-    playPreviousTrack(accessToken);
+    api.playMusic.previousTrack(accessToken);
   },
 
   playNextTrack: () => {
@@ -158,7 +154,7 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
     if (!accessToken)
       return toast.error('프리미엄 게정 로그인이 필요한 기능입니다');
 
-    playNextTrack(accessToken, String(deviceId));
+    api.playMusic.nextTrack(accessToken, String(deviceId));
   },
 
   volume: 50,
@@ -214,6 +210,16 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
       playlistId,
       snapshot_id,
     );
+  },
+  getPlayBackState: async () => {
+    const { accessToken } = get();
+    if (!accessToken) {
+      toast.warn('프리미엄 로그인이 필요한 기능입니다.');
+      return;
+    }
+    const response = await api.playMusic.getPlayer(accessToken);
+
+    return response;
   },
 }));
 

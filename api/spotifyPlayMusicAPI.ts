@@ -17,7 +17,7 @@ import { api, spotifyAPI } from './spotifyApi';
  * @param deviceId
  * @param index
  */
-export const playTrack = async (
+const playTrack = async (
   uri: string | string[],
   accessToken: string,
   deviceId: string,
@@ -69,7 +69,7 @@ export const playTrack = async (
  * @param accessToken
  * @returns {number}
  */
-export const pauseTrack = async (accessToken: string) => {
+const pauseTrack = async (accessToken: string) => {
   if (!accessToken) return 0;
   try {
     const response = await spotifyAPI.get('me/player', {
@@ -98,7 +98,7 @@ export const pauseTrack = async (accessToken: string) => {
  * @param deviceId
  * @param index
  */
-export const resumeTrackFromLastPosition = async (
+const resumeTrackFromLastPosition = async (
   trackURI: string | string[],
   accessToken: string,
   deviceId: string,
@@ -113,7 +113,7 @@ export const resumeTrackFromLastPosition = async (
  * 다음 노래 재생
  * @param accessToken
  */
-export const nextTrack = async (accessToken: string, deviceId: string) => {
+const nextTrack = async (accessToken: string, deviceId: string) => {
   if (!accessToken) return;
   try {
     await spotifyAPI.post(`me/player/next`, undefined, {
@@ -134,7 +134,7 @@ export const nextTrack = async (accessToken: string, deviceId: string) => {
  * 이전 노래 재생
  * @param accessToken
  */
-export const previousTrack = async (accessToken: string) => {
+const previousTrack = async (accessToken: string) => {
   if (!accessToken) return;
   try {
     await spotifyAPI.post(`me/player/previous`, undefined, {
@@ -153,7 +153,7 @@ export const previousTrack = async (accessToken: string) => {
  * @param accessToken
  * @param deviceId
  */
-export const playRandomTrack = async (
+const playRandomTrack = async (
   accessToken: string,
   deviceId: string,
   playlistId: string,
@@ -182,7 +182,7 @@ export const playRandomTrack = async (
  * @param accessToken
  * @returns
  */
-export const getUsersQueue = async (accessToken: string) => {
+const getUsersQueue = async (accessToken: string) => {
   if (!accessToken) return;
   try {
     const response = await spotifyAPI.get(`me/player/queue`, {
@@ -203,7 +203,7 @@ export const getUsersQueue = async (accessToken: string) => {
  * @param accessToken
  * @returns
  */
-export const getRecentPlayedTracks = async (accessToken: string) => {
+const getRecentPlayedTracks = async (accessToken: string) => {
   if (!accessToken) return [];
   try {
     const response = await spotifyAPI.get(`me/player/recently-played`, {
@@ -228,7 +228,7 @@ export const getRecentPlayedTracks = async (accessToken: string) => {
  * @param repeatState 'track' | 'context' | 'off'
  * @returns
  */
-export const setRepeatMusic = async (
+const setRepeatMusic = async (
   accessToken: string,
   repeatState: 'track' | 'context' | 'off',
 ) => {
@@ -260,10 +260,7 @@ export const setRepeatMusic = async (
  * @param shuffleState boolean
  * @returns
  */
-export const setShuffleMusic = async (
-  accessToken: string,
-  shuffleState: boolean,
-) => {
+const setShuffleMusic = async (accessToken: string, shuffleState: boolean) => {
   if (!accessToken) return;
   try {
     const response = await spotifyAPI.put(
@@ -290,10 +287,7 @@ export const setShuffleMusic = async (
  * @param newPosition number
  * @returns
  */
-export const setTrackSeek = async (
-  accessToken: string,
-  newPosition: number,
-) => {
+const setTrackSeek = async (accessToken: string, newPosition: number) => {
   if (!accessToken) return;
   try {
     const response = await spotifyAPI.put(
@@ -311,12 +305,12 @@ export const setTrackSeek = async (
 };
 
 /**
- * 유저 가져오기
+ * 재생상태 가져오기
  *
  * @param accessToken string
  * @returns
  */
-export const getPlayer = async (accessToken: string) => {
+const getPlayer = async (accessToken: string) => {
   if (!accessToken) return;
 
   try {
@@ -330,4 +324,19 @@ export const getPlayer = async (accessToken: string) => {
   } catch (error) {
     console.error('Playback data 요청 실패:', error);
   }
+};
+
+export const playMusic = {
+  playTrack,
+  pauseTrack,
+  resumeTrackFromLastPosition,
+  nextTrack,
+  previousTrack,
+  playRandomTrack,
+  getUsersQueue,
+  getRecentPlayedTracks,
+  setRepeatMusic,
+  setShuffleMusic,
+  setTrackSeek,
+  getPlayer,
 };

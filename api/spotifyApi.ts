@@ -5,6 +5,7 @@ import { albumApi } from './spotifyAlbumApi';
 import { artistsApi } from './spotifyArtistsApi';
 import { categoriesApi } from './spotifyCategoriesApi';
 import { playlistApi } from './spotifyPlaylistApi';
+import { playMusic } from './spotifyPlayMusicAPI';
 import { searchItemsApi } from './spotifySearch';
 import { tracksApi } from './spotifyTrackApi';
 import { userPlaylistApi } from './spotifyUserPlaylist';
@@ -22,4 +23,5 @@ export const api = {
   userPlay: userPlaylistApi,
   lyrics: lyricsApi,
   category: categoriesApi,
+  playMusic: playMusic,
 };
