@@ -32,7 +32,7 @@ function ChartLayout({ title, tracks }: ChartProps) {
                   href={`/tracks/${track.id}`}
                   className="w-full h-[50px] mr-5 flex gap-x-5"
                 >
-                  <div className="h-full aspect-square bg-white">
+                  <div className="h-full aspect-square bg-white mb-1">
                     <img
                       src={track.album.images[0]?.url}
                       alt={track.name}
@@ -45,7 +45,7 @@ function ChartLayout({ title, tracks }: ChartProps) {
                       {groupIdx * 5 + trackIdx + 1}
                     </p>
                   </div>
-                  <div className="w-full flex flex-col gap-y-[2px]">
+                  <div className="w-[calc(90%)] flex flex-col gap-y-[2px]">
                     <p className="font-bold line-clamp-1">{track.name}</p>
                     <p className="text-sm text-white/50 line-clamp-1">
                       {track.artists[0]?.name}
