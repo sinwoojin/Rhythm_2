@@ -19,38 +19,43 @@ function MyLikeTracks({ profileId }: MyLikeTracksProps) {
   const currentUser = useAuthStore((state) => state.currentUser);
   const userId = String(currentUser?.id);
 
-  const { data: myLikeTracks } = useQuery({
+  const { data: myLikeTracks, isLoading: loadingMyLikeTracks } = useQuery({
     queryKey: ['userLikeTracks', userId],
     queryFn: () => supabaseProfile.getMyLikeTracks(userId),
     placeholderData: keepPreviousData,
   });
 
   // 좋아요 표시한 트랙 뿌리기
-  const { data: tracks } = useQuery({
+  const { data: tracks, isLoading: loadingTracks } = useQuery({
     queryKey: ['tracks', userId],
     queryFn: async () => {
       const trackIds = myLikeTracks?.map((item) => item.trackId);
-      if (!trackIds) return;
-      const ids = trackIds.map((item) => item);
-      return api.track.getTracks(ids);
+      if (!trackIds) return [];
+      return api.track.getTracks(trackIds);
     },
+    enabled: !!myLikeTracks,
   });
 
   useEffect(() => {
     queryClient.invalidateQueries({
       queryKey: ['tracks', userId],
     });
-  }, [currentUser]);
+  }, [currentUser, queryClient, userId]);
+
+  // 로딩 중일 때 스피너 표시
+  if (loadingMyLikeTracks || loadingTracks) {
+    return <div className="text-center">로딩 중...</div>;
+  }
 
   return profileId === userId ? (
     <div>
       <ul className="flex gap-x-5">
-        {tracks?.map(async (track) => (
+        {tracks?.map((track) => (
           <li key={track.id}>
             <Link href={`/tracks/${track.id}`}>
               <img
                 src={track.album.images[0].url}
-                alt=""
+                alt={track.name}
                 className="w-[165px] h-[165px]"
               />
               <p className="w-[160px] truncate">{track.name}</p>
