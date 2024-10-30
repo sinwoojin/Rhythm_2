@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 import { api } from '@/api/spotifyApi';
+import PlayButton from '@/components/PlayButton';
 import { Album } from '@/schema/type';
+import useSpotifyStore from '@/zustand/spotifyStore';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FaPlay } from 'react-icons/fa';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import AlbumDetailLayout from '../../_components/Layouts/AlbumDetailLayout/AlbumDetailLayout';
 import Page from '../../_components/Page/Page';
@@ -18,9 +19,12 @@ function AlbumDetail() {
       setAlbum(response);
     })();
   }, [albumId]);
+  const currentTrack = useSpotifyStore((state) => state.currentTrack);
 
-  const track = album?.tracks.items;
+  const tracks = album?.tracks.items || [];
   const albumUri = String(album?.uri);
+  let trackIndex = tracks.findIndex((track) => track.id === currentTrack?.id);
+  trackIndex = trackIndex === -1 ? 0 : trackIndex;
 
   return (
     <Page>
@@ -35,12 +39,14 @@ function AlbumDetail() {
             </h2>
             <span className="line-clamp-1">{album?.description}</span>
             <div className="flex gap-x-4">
-              <button
-                aria-label="재생"
-                className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl"
-              >
-                <FaPlay />
-              </button>
+              <PlayButton
+                source={{ context: albumUri, index: trackIndex }}
+                trackInfo={{
+                  tracks: tracks || [],
+                  index: trackIndex,
+                }}
+                type="bigRed"
+              />
               <button aria-label="플레이리스트 추가" className="text-5xl">
                 <IoIosAddCircleOutline />
               </button>
@@ -49,7 +55,7 @@ function AlbumDetail() {
         </div>
       </article>
       <article>
-        <AlbumDetailLayout albumTracks={track} albumUri={albumUri} />
+        <AlbumDetailLayout albumTracks={tracks} albumUri={albumUri} />
       </article>
     </Page>
   );

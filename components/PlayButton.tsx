@@ -1,59 +1,48 @@
 'use client';
 
+import BigRedButton from '@/app/(providers)/(root)/_components/Layouts/_components/PlayButton/BigRedButton';
+import WhiteSmallButton from '@/app/(providers)/(root)/_components/Layouts/_components/PlayButton/WhiteSmallButton';
 import { Track } from '@/schema/type';
-import useSpotifyStore from '@/zustand/spotifyStore';
-import { FaPause, FaPlay } from 'react-icons/fa';
-import { toast } from 'react-toastify';
+import useSpotifyStore, { SpotifyStoreState } from '@/zustand/spotifyStore';
 
-interface PlayButtonProps {
-  track: Track | undefined;
-}
+type PlayButtonProps = {
+  source: Parameters<SpotifyStoreState['play']>[0];
+  trackInfo: { tracks: Track[]; index: number };
+  type: 'bigRed' | 'smallWhite';
+};
 
-function PlayButton(props: PlayButtonProps) {
+function PlayButton({ source, trackInfo, type }: PlayButtonProps) {
   const play = useSpotifyStore((state) => state.play);
+  const currentTrack = useSpotifyStore((state) => state.currentTrack);
+  const resume = useSpotifyStore((state) => state.pauseAndResumeTrack);
   const pause = useSpotifyStore((state) => state.pause);
   const isPaused = useSpotifyStore((state) => state.isPaused);
-  // const [equalTrack, setEqualTrack] = useState(false);
+  const isPlayButtonOnCurrentTrack =
+    currentTrack && trackInfo.tracks[trackInfo.index]?.id === currentTrack.id;
+  const ButtonComponent = type === 'bigRed' ? BigRedButton : WhiteSmallButton;
 
   const handleClickPlayButton = () => {
-    const trackURI = props.track!.uri;
-    if (!trackURI) return toast.error('해당 음악이 존재하지 않습니다.');
-    play([trackURI]);
+    if (
+      isPaused === true &&
+      currentTrack &&
+      trackInfo.tracks[trackInfo.index].id === currentTrack.id
+    ) {
+      resume(source.context, source.index);
+    } else {
+      play(source);
+    }
   };
 
-  //개발 중
-  // const prevTrackId = useSpotifyStore((state) => state.currentTrack?.id);
-  // const currentTrackId = props.track?.id;
+  // isPaused가 null일 수도 있기 때문에 반드시 `false`로 체크
+  if (isPaused === false && isPlayButtonOnCurrentTrack) {
+    return <ButtonComponent isPaused={false} onClick={pause} />;
+  }
 
-  // useEffect(() => {
-  //   if (prevTrackId === currentTrackId) {
-  //     setEqualTrack(true);
-  //   } else {
-  //     setEqualTrack(false);
-  //   }
-  // }, [prevTrackId, currentTrackId]); // prevTrackId 또는 currentTrackId가 변경될 때만 실행
-
-  return (
-    <div>
-      {isPaused ? (
-        <button
-          aria-label="재생 버튼"
-          className="bg-red-500 py-4 pl-5 pr-3 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl"
-          onClick={handleClickPlayButton}
-        >
-          <FaPlay type="button" />
-        </button>
-      ) : (
-        <button
-          aria-label="멈춤 버튼"
-          className="bg-red-500 py-4 pl-4 pr-4 text-white rounded-full transition-all duration-300 hover:scale-110 text-4xl"
-          onClick={pause}
-        >
-          <FaPause />
-        </button>
-      )}
-    </div>
-  );
+  // Case #1. currentTrack이 없거나
+  // Case #2. currentTrack은 있으나(노래가 재생중이나), 이 버튼에 연결된 트랙이 아니거나
+  // Case #3. currentTrack은 있고, 이 버튼에 연결된 트랙이
+  // Case #3. currentTrack도 있고, 이 버튼에 연결된 트랙이지만 일시정지 상태이거나
+  return <ButtonComponent isPaused onClick={handleClickPlayButton} />;
 }
 
 export default PlayButton;

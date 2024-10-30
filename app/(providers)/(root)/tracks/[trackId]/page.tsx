@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { api } from '@/api/spotifyApi';
 import LikeButton from '@/components/LikeButton';
 import PlayButton from '@/components/PlayButton';
@@ -6,11 +7,11 @@ import Page from '../../_components/Page/Page';
 import OptionButton from '../../_components/RootLayout/MusicPlayer/OptionButton/OptionButton';
 import TrackDetailLyric from './_components/TrackDetailLyric';
 
-interface MusicDetailPageProps {
+interface TrackDetailPageProps {
   params: { trackId: string };
 }
 
-async function MusicDetailPage({ params: { trackId } }: MusicDetailPageProps) {
+async function TrackDetailPage({ params: { trackId } }: TrackDetailPageProps) {
   const track = await api.track.getTrack(trackId);
   if (!track) return console.error('해당 트랙이 없습니다');
 
@@ -23,13 +24,16 @@ async function MusicDetailPage({ params: { trackId } }: MusicDetailPageProps) {
   return (
     <Page>
       <div className="flex gap-x-6 py-4 border-b border-white mb-4 ">
+        {/* 앨범 이미지 */}
         <div>
           <img src={albumImg} alt="앨범 이미지" />
         </div>
+
         <div className="flex flex-col gap-y-4 w-full">
-          <h2 className="font-bold text-7xl whitespace-pre-wrap line-clamp-2">
+          {/* 트랙, 앨범 정보 */}
+          <h1 className="font-bold text-7xl whitespace-pre-wrap line-clamp-2">
             {track?.name}
-          </h2>
+          </h1>
           <div className="flex">
             <p>{artists}</p>
             <span className="px-3">•</span>
@@ -37,8 +41,17 @@ async function MusicDetailPage({ params: { trackId } }: MusicDetailPageProps) {
             <span className="px-3">•</span>
             <span>{release_year}</span>
           </div>
+
+          {/* 각종 버튼 */}
           <div className="flex gap-x-4 items-center">
-            <PlayButton track={track} />
+            <PlayButton
+              source={{ context: [track.uri], index: 0 }}
+              trackInfo={{
+                tracks: [track],
+                index: 0,
+              }}
+              type="bigRed"
+            />
             <LikeButton trackId={track.id} hasBorder={true} />
             <OptionButton location={'track'} />
           </div>
@@ -49,4 +62,4 @@ async function MusicDetailPage({ params: { trackId } }: MusicDetailPageProps) {
   );
 }
 
-export default MusicDetailPage;
+export default TrackDetailPage;
