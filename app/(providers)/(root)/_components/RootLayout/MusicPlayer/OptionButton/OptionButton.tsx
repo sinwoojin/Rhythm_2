@@ -3,13 +3,13 @@ import OptionModal from '@/app/(providers)/_components/OptionModal/OptionModal';
 import { useModalStore } from '@/zustand/modalStore';
 import { SlOptions } from 'react-icons/sl';
 interface OptionButtonProps {
-  position: string;
+  location: string;
 }
-function OptionButton({ position }: OptionButtonProps) {
+function OptionButton({ location }: OptionButtonProps) {
   const openModal = useModalStore((state) => state.openModal);
   const handleClickOption = () => {
     openModal({
-      element: <OptionModal position={position} />,
+      element: <OptionModal location={location} />,
       backdrop: false,
     });
   };

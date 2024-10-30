@@ -17,6 +17,7 @@ import {
 } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import MyPlaylists from '../../_components/MyPlaylists/MyPlaylists';
 import Page from '../../_components/Page/Page';
 import EditModal from '../_components/Modals/EditModal';
 import FollowModal from '../_components/Modals/FollowModal';
@@ -221,7 +222,9 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
 
       <div className="flex flex-col gap-y-4">
         <span>나의 플레이리스트</span>
-        <div>{/* <PlayLists playListsId={playListsId} /> */}</div>
+        <div>
+          <MyPlaylists location="profile" />
+        </div>
         <span>좋아요 표시한 노래</span>
         <div>
           <MyLikeTracks profileId={profileId} />
