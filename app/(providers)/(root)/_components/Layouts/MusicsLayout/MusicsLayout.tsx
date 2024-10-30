@@ -26,9 +26,9 @@ function MusicsLayout({ tracks, title }: ChartListProps) {
               {tracks.map((track) => (
                 <SwiperSlide key={track.id}>
                   <Link href={`/tracks/${track.id}`}>
-                    <div className="w-full aspect-square">
+                    <div className="w-full aspect-square overflow-hidden">
                       <img
-                        className="object-cover"
+                        className="w-full h-full object-cover"
                         src={track.album.images[0]?.url || '/default-image.jpg'}
                         alt="이미지"
                       />
