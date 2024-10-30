@@ -47,7 +47,7 @@ function RecentPlaylistModal() {
     },
   });
 
-  const uniquePlaylists = recentPlaylists.filter(
+  const uniqueRecentPlaylists = recentPlaylists.filter(
     (track, index, self) =>
       index === self.findIndex((t) => t.track.id === track.track.id),
   );
@@ -65,15 +65,18 @@ function RecentPlaylistModal() {
         </button>
       </div>
       <ul>
-        {uniquePlaylists.length > 0 ? (
-          uniquePlaylists.map((track, index) => (
+        {uniqueRecentPlaylists.length > 0 ? (
+          uniqueRecentPlaylists.map((track, index) => (
             <li key={nanoid()} className="p-5 hover:bg-white/[0.05]">
               <Link
                 href={`/tracks/${track.track.id}`}
                 className="flex gap-3 items-center"
               >
                 <span className="min-w-[24px]">{index + 1}</span>
-                <img src={track.track.album.images[2].url} alt="" />
+                <img
+                  src={track.track.album.images[2].url}
+                  alt={track.track.name}
+                />
                 <p className="line-clamp-1">{track.track.name} | </p>
                 <p>
                   {track.track.artists.map((artist) => artist.name).join(', ')}
