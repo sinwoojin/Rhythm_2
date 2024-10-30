@@ -110,7 +110,7 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
 
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ['tracks', userId] });
-  }, [userId]);
+  }, [queryClient, userId]);
 
   return (
     <div

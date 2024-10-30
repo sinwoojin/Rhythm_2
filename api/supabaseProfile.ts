@@ -134,7 +134,8 @@ const getMyLikeTracks = async (userId: string) => {
   const response = await supabase
     .from('likeMusic')
     .select('*')
-    .eq('userId', userId);
+    .eq('userId', userId)
+    .order('created_at', { ascending: false });
   const data = response.data;
   return data;
 };

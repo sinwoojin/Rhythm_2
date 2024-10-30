@@ -1,18 +1,45 @@
-import { getUserRhythms } from '@/api/supabaseGetCategories';
+import { deleteUserRhythm, getUserRhythms } from '@/api/supabaseGetCategories';
 import { baseURL } from '@/config/config';
+import { useAuthStore } from '@/zustand/authStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FaPlay } from 'react-icons/fa';
 
 interface RhythmDetailLayout {
   userRhythms: Awaited<ReturnType<typeof getUserRhythms>> | undefined;
+  rhythmCategory: string;
 }
 
-function RhythmDetailLayout({ userRhythms }: RhythmDetailLayout) {
+function RhythmDetailLayout({
+  userRhythms,
+  rhythmCategory,
+}: RhythmDetailLayout) {
   const router = useRouter();
 
+  const queryClient = useQueryClient();
+
   const play = useSpotifyStore((state) => state.play);
+
+  const currentUser = useAuthStore((state) => state.currentUser);
+
+  const { mutate: handleClickDeleteUserRhythm } = useMutation({
+    mutationFn: async ({
+      userId,
+      rhythmId,
+    }: {
+      userId: string;
+      rhythmId: number;
+    }) => {
+      await deleteUserRhythm(userId, rhythmId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['userRhythms', { category: rhythmCategory }],
+      });
+    },
+  });
 
   if (!userRhythms) router.push('/');
 
@@ -39,6 +66,20 @@ function RhythmDetailLayout({ userRhythms }: RhythmDetailLayout) {
                 <p className="text-white font-semibold line-clamp-1">
                   {userRhythm?.userName}
                 </p>
+
+                {currentUser?.id === userRhythm?.userId ? (
+                  <button
+                    onClick={() =>
+                      handleClickDeleteUserRhythm({
+                        userId: String(userRhythm?.userId),
+                        rhythmId: Number(userRhythm?.id),
+                      })
+                    }
+                    className="absolute bottom-0 right-0 p-2 text-[13px]"
+                  >
+                    글 삭제
+                  </button>
+                ) : null}
               </div>
             </div>
             {/* 버튼 누르면 바로 재생 */}
