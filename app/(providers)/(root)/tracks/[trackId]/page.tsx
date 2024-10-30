@@ -24,12 +24,13 @@ async function TrackDetailPage({ params: { trackId } }: TrackDetailPageProps) {
   const artistsId = album.artists.map((item) => item.id);
   const artists = album?.artists.map((item) => item.name);
 
+
   return (
     <Page>
       <div className="flex gap-x-6 py-4 border-b border-white mb-4 ">
         {/* 앨범 이미지 */}
         <div>
-          <img src={albumImg} alt="앨범 이미지" />
+          <img src={trackImg} alt="앨범 이미지" />
         </div>
 
         <div className="flex flex-col gap-y-4 w-full">
@@ -43,6 +44,7 @@ async function TrackDetailPage({ params: { trackId } }: TrackDetailPageProps) {
             </Link>
 
             <span className="px-3">•</span>
+
             <Link href={`/albums/${album.id}`}>
               <UnderLine>{albumTitle}</UnderLine>
             </Link>
@@ -62,7 +64,7 @@ async function TrackDetailPage({ params: { trackId } }: TrackDetailPageProps) {
               type="bigRed"
             />
             <LikeButton trackId={track.id} hasBorder={true} />
-            <OptionButton location={'track'} />
+            <OptionButton location={'track'} trackTitle={trackTitle} trackImg={trackImg}/>
           </div>
         </div>
       </div>

@@ -45,7 +45,7 @@ function RhythmDetailLayout({
 
   return userRhythms ? (
     <ul className="mt-[310px] bg-[#121212] flex flex-wrap gap-2 w-full pr-32">
-      {userRhythms?.map((userRhythm?) => (
+      {userRhythms?.map((userRhythm) => (
         <li
           key={userRhythm?.id}
           className="flex flex-col gap-x-4 gap-y-2 w-[calc((100%-24px)/4)] p-5 duration-300 transition-all hover:bg-white/20"
@@ -84,7 +84,7 @@ function RhythmDetailLayout({
             </div>
             {/* 버튼 누르면 바로 재생 */}
             <button
-              onClick={() => play([String(userRhythm?.trackUri)])}
+              onClick={() => play({ context: [userRhythm.trackUri], index: 0 })}
               aria-label="재생 버튼"
               className="absolute bottom-2 left-1/2 -translate-x-1/2 text-red-500 text-xs opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:text-xl"
             >
