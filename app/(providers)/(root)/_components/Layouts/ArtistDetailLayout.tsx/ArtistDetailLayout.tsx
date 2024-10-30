@@ -49,7 +49,7 @@ function ArtistDetailLayout({ artistId }: ArtistsDetailLayoutProps) {
                   </div>
                 </div>
                 <div className="w-full flex items-center">
-                  <Link href={`/album/${track.album.id}`}>
+                  <Link href={`/albums/${track.album.id}`}>
                     {track.album.name}
                   </Link>
                 </div>

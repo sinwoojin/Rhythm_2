@@ -22,7 +22,7 @@ function ArtistsLayout({ artists, title }: ChartListProps) {
           <ul className="flex gap-x-4 overflow-auto scrollbar-hide max-w-full">
             {artists.map((artist) => (
               <SwiperSlide key={artist.id}>
-                <Link href={`/artist/${artist.id}`}>
+                <Link href={`/artists/${artist.id}`}>
                   {artist.images.length === 0 ? (
                     <div className="rounded-full overflow-hidden w-full aspect-square"></div>
                   ) : (
