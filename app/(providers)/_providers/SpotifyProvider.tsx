@@ -27,7 +27,6 @@ function SpotifyProvider({ children }: PropsWithChildren) {
 
     player.addListener('player_state_changed', (state) => {
       if (!state) return;
-
       setCurrentTrack(state.track_window.current_track);
       setIsPaused(state.paused);
     });

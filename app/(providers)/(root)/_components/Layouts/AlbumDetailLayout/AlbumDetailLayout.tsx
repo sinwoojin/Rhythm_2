@@ -1,6 +1,6 @@
+import PlayButton from '@/components/PlayButton';
 import { Track } from '@/schema/type';
 import Link from 'next/link';
-import PlayButton from '../_components/PlayButton/PlayButton';
 import OptionButton from '../../RootLayout/MusicPlayer/OptionButton/OptionButton';
 
 interface AlbumDetailLayoutProps {
@@ -9,6 +9,7 @@ interface AlbumDetailLayoutProps {
 }
 function AlbumDetailLayout({ albumTracks, albumUri }: AlbumDetailLayoutProps) {
   const order = (index: number) => index + 1;
+
   return albumTracks ? (
     <ul className="flex flex-col">
       {albumTracks?.map((track, index) => (
@@ -21,10 +22,9 @@ function AlbumDetailLayout({ albumTracks, albumUri }: AlbumDetailLayoutProps) {
               {order(index)}
             </span>
             <PlayButton
-              track={track}
-              index={index}
-              albumTracks={albumTracks}
-              albumUri={albumUri}
+              source={{ context: albumUri, index: index }}
+              trackInfo={{ tracks: albumTracks, index: index }}
+              type="smallWhite"
             />
           </span>
           <div className="grid grid-cols-2 gap-4 w-full">

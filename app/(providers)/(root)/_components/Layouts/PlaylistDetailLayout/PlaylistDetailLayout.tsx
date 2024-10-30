@@ -1,14 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 import DeleteButton from '@/components/DeleteButton';
+import PlayButton from '@/components/PlayButton';
 import { Track } from '@/schema/type';
 import { useAuthStore } from '@/zustand/authStore';
 import Link from 'next/link';
-import PlayButton from '../_components/PlayButton/PlayButton';
 import OptionButton from '../../RootLayout/MusicPlayer/OptionButton/OptionButton';
 
 interface PlaylistDetailLayoutProps {
-  playlistTracks?: { track: Track }[];
+  playlistTracks?: Track[];
   playlistUri: string;
   playlistId: string;
   snapshotId: string;
@@ -16,16 +16,17 @@ interface PlaylistDetailLayoutProps {
 }
 
 function PlaylistDetailLayout({
-  playlistTracks,
+  playlistTracks: tracks = [],
   playlistUri,
   playlistId,
   snapshotId,
   ownerId,
 }: PlaylistDetailLayoutProps) {
   const currentUser = useAuthStore((state) => state.currentUser);
-  return playlistTracks ? (
+
+  return (
     <ul className="flex flex-col">
-      {playlistTracks.map(({ track }, index) => (
+      {tracks.map((track, index) => (
         <li
           key={track?.id}
           className="relative flex h-20 px-4 py-[10px] w-full gap-4 items-center rounded-sm transition-all hover:bg-white/10 group"
@@ -35,10 +36,9 @@ function PlaylistDetailLayout({
               {index + 1}
             </span>
             <PlayButton
-              track={track}
-              index={index}
-              playlistUri={playlistUri}
-              playlistTracks={playlistTracks}
+              source={{ context: playlistUri, index: index }}
+              trackInfo={{ tracks: tracks, index: index }}
+              type="smallWhite"
             />
           </span>
           <div className="grid grid-cols-2 gap-4 w-full">
@@ -73,7 +73,7 @@ function PlaylistDetailLayout({
         </li>
       ))}
     </ul>
-  ) : null;
+  );
 }
 
 export default PlaylistDetailLayout;

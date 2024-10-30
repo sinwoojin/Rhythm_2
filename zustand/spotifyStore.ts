@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { api } from '@/api/spotifyApi';
 import { setSpotifyVolume } from '@/api/spotifyMusicVolume';
 import {
@@ -12,7 +13,11 @@ import { UserPlaylist } from '@/schema/type';
 import { toast } from 'react-toastify';
 import { create } from 'zustand';
 
-interface SpotifyStoreState {
+type PlayParams =
+  | { context: string; index?: number }
+  | { context: string[]; index?: number };
+
+export interface SpotifyStoreState {
   player: Spotify.Player | null;
   setPlayer: (player: Spotify.Player) => void;
 
@@ -28,10 +33,10 @@ interface SpotifyStoreState {
   currentTrack: Spotify.Track | null;
   setCurrentTrack: (currentTrack: SpotifyStoreState['currentTrack']) => void;
 
-  isPaused: boolean;
+  isPaused: boolean | null;
   setIsPaused: (isPaused: SpotifyStoreState['isPaused']) => void;
 
-  play: (trackURI: string | string[], index?: number) => void;
+  play(arg: PlayParams): void;
 
   pauseAndResumeTrack: (trackURI: string | string[], index?: number) => void;
 
@@ -75,10 +80,10 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
   currentTrack: null,
   setCurrentTrack: (currentTrack) => set({ currentTrack }),
 
-  isPaused: true,
+  isPaused: null,
   setIsPaused: (isPaused) => set({ isPaused }),
 
-  play: (contextUriOrTrackURIs: string | string[], index?: number) =>
+  play: ({ context, index }: { context: string | string[]; index?: number }) =>
     set((prevState) => {
       const { accessToken, deviceId } = prevState;
       if (!accessToken) {
@@ -90,7 +95,7 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
         return prevState;
       }
 
-      playTrack(contextUriOrTrackURIs, accessToken, deviceId, index);
+      playTrack(context, accessToken, deviceId, index);
 
       return prevState;
     }),
