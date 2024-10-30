@@ -17,7 +17,9 @@ function SidebarNavItem({ href, icon, label }: SidebarNavItemProps) {
       href={href}
       className={cx(
         'flex items-center gap-x-4 text-gray-400 font-semibold hover:text-red-500 transition py-2.5',
-        { 'text-red-500': href.includes(pathName) },
+        {
+          'text-red-500': !!pathName && href.includes(pathName),
+        },
       )}
     >
       <span className="text-xl">{icon}</span>
