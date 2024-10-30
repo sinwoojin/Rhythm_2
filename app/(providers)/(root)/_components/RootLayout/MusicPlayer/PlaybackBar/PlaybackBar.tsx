@@ -27,7 +27,7 @@ const Player = () => {
     fetchPlaybackState();
     intervalRef.current = setInterval(() => {
       fetchPlaybackState();
-    }, 10000);
+    }, 1000);
 
     return () => clearInterval(intervalRef.current as NodeJS.Timeout);
   }, []);
