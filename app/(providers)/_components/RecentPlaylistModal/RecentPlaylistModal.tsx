@@ -46,6 +46,12 @@ function RecentPlaylistModal() {
       return await getRecentPlayedTracks(String(accessToken)); // 유효한 결과 반환
     },
   });
+
+  const uniquePlaylists = recentPlaylists.filter(
+    (track, index, self) =>
+      index === self.findIndex((t) => t.track.id === track.track.id),
+  );
+
   return (
     <div className="py-5 fixed right-0 bottom-[116px] z-10 rounded-md bg-rhythmBlack border text-white border-white w-[400px] h-[300px] overflow-scroll">
       <div className="flex items-center justify-between mb-7">
@@ -59,8 +65,8 @@ function RecentPlaylistModal() {
         </button>
       </div>
       <ul>
-        {recentPlaylists.length > 0 ? (
-          recentPlaylists.map((track, index) => (
+        {uniquePlaylists.length > 0 ? (
+          uniquePlaylists.map((track, index) => (
             <li key={nanoid()} className="p-5 hover:bg-white/[0.05]">
               <Link
                 href={`/tracks/${track.track.id}`}
