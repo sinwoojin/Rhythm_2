@@ -11,11 +11,13 @@ interface OptionButtonProps {
   trackImg?: string;
   trackId?: string;
   trackUri?: string;
-  trackUrl?: string;
 
   artistName?: string[];
+  artistsId?: string[];
 
   track?: Track;
+
+  albumId?: string;
 }
 function OptionButton({
   location,
@@ -25,7 +27,8 @@ function OptionButton({
   trackUri,
   artistName,
   track,
-  trackUrl,
+  artistsId,
+  albumId,
 }: OptionButtonProps) {
   const openModal = useModalStore((state) => state.openModal);
   const handleClickOption = () => {
@@ -39,7 +42,8 @@ function OptionButton({
           trackUri={String(trackUri)}
           artistName={artistName}
           track={track}
-          trackUrl={trackUrl}
+          artistsId={artistsId}
+          albumId={albumId}
         />
       ),
       backdrop: false,
