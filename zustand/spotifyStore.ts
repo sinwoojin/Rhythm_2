@@ -214,7 +214,6 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
   getPlayBackState: async () => {
     const { accessToken } = get();
     if (!accessToken) {
-      toast.warn('프리미엄 로그인이 필요한 기능입니다.');
       return;
     }
     const response = await api.playMusic.getPlayer(accessToken);

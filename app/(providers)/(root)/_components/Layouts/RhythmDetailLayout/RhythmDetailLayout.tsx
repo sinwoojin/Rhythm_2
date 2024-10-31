@@ -5,6 +5,7 @@ import useSpotifyStore from '@/zustand/spotifyStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { FaPlay } from 'react-icons/fa';
+import { MdMusicOff } from 'react-icons/md';
 
 interface RhythmDetailLayout {
   userRhythms: Awaited<ReturnType<typeof getUserRhythms>> | undefined;
@@ -87,12 +88,17 @@ function RhythmDetailLayout({
                 </button>
               </div>
             </div>
-
-            <img
-              src={userRhythm?.trackImgURL}
-              alt={userRhythm?.title}
-              className="w-full h-full object-cover"
-            />
+            {userRhythm?.trackImgURL ? (
+              <img
+                src={userRhythm?.trackImgURL}
+                alt={userRhythm?.title}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-700 flex justify-center items-center">
+                <MdMusicOff className="w-10 h-10 text-white/70" />
+              </div>
+            )}
           </div>
           <div className="flex flex-col gap-y-1">
             <p className="font-bold text-white/80 line-clamp-1">

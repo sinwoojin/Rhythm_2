@@ -53,7 +53,7 @@ function RecentPlaylistModal() {
   );
 
   return (
-    <div className="py-5 fixed right-0 bottom-[116px] z-10 rounded-md bg-rhythmBlack border text-white border-white w-[400px] h-[300px] overflow-scroll">
+    <div className="py-5 fixed right-0 bottom-[116px] z-10 rounded-md bg-rhythmBlack border text-white border-white w-[400px] h-[300px] overflow-y-scroll">
       <div className="flex items-center justify-between mb-7">
         <h2 className="font-semibold text-2xl ml-4">최근 재생 목록</h2>
         <button
