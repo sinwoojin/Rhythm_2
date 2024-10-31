@@ -102,6 +102,14 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
     setTrackUri(trackUri);
   };
 
+  // 트랙 선택 초기화 버튼
+  const handleClickResetButton = () => {
+    setTrackName('노래 추가하기 +');
+    setTrackId('');
+    setTrackImgURL('');
+    setTrackUri('');
+  };
+
   // 버튼 클릭 시 창 표시 상태 토글
   const handleToggleSongList = () => {
     setIsSongListOpen((prev) => !prev);
@@ -175,8 +183,9 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
           type="button"
           className="text-[#b3b3b3] px-4 py-4 font-bold w-[200px]"
           size={'lg'}
+          onClick={handleClickResetButton}
         >
-          노래 추가하기 +
+          노래 선택 취소하기
         </Button>
 
         {/* 노래 추가하기 버튼을 누르면 보여주는 내가 좋아요 표시한 노래들 */}
