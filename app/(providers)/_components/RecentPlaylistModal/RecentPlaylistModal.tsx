@@ -1,6 +1,6 @@
 'use client';
 
-import { getRecentPlayedTracks } from '@/api/spotifyPlayMusicAPI';
+import { api } from '@/api/spotifyApi';
 import { Album, Artist } from '@/schema/type';
 import { useAuthStore } from '@/zustand/authStore';
 import { useModalStore } from '@/zustand/modalStore';
@@ -43,7 +43,7 @@ function RecentPlaylistModal() {
   const { data: recentPlaylists = [] } = useQuery<RecentPlayedItem[]>({
     queryKey: ['recentPlay', currentUser?.id],
     queryFn: async () => {
-      return await getRecentPlayedTracks(String(accessToken)); // 유효한 결과 반환
+      return await api.playMusic.getRecentPlayedTracks(String(accessToken)); // 유효한 결과 반환
     },
   });
 
