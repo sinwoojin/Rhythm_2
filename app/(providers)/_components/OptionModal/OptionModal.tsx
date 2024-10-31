@@ -84,13 +84,26 @@ function OptionTrackModal({
             </button>
           </li>
           <li className="py-[12px] px-4 hover:bg-white/[0.05] text-base">
-            <button className="flex gap-x-4 items-center">
-              <IoMdAddCircle className="text-2xl" />내 플레이리스트 추가
+            <button
+              className="flex gap-x-4 items-center"
+              id="addMusicToMyPlaylistButton"
+            >
+              <IoMdAddCircle
+                className="text-2xl"
+                id="addMusicToMyPlaylistButton"
+              />
+              내 플레이리스트 추가
             </button>
           </li>
           <li className="py-[12px] px-4 hover:bg-white/[0.05] text-base">
-            <button className="flex gap-x-4 items-center">
-              <MdOutlineLyrics className="text-2xl" />
+            <button
+              className="flex gap-x-4 items-center"
+              id="showMusicLyricsButton"
+            >
+              <MdOutlineLyrics
+                className="text-2xl"
+                id="showMusicLyricsButton"
+              />
               가사 보기
             </button>
           </li>
