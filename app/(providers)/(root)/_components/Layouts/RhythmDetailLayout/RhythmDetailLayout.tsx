@@ -4,7 +4,6 @@ import { useAuthStore } from '@/zustand/authStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { FaPlay } from 'react-icons/fa';
 
 interface RhythmDetailLayout {
@@ -16,8 +15,6 @@ function RhythmDetailLayout({
   userRhythms,
   rhythmCategory,
 }: RhythmDetailLayout) {
-  const router = useRouter();
-
   const queryClient = useQueryClient();
 
   const play = useSpotifyStore((state) => state.play);
@@ -40,8 +37,6 @@ function RhythmDetailLayout({
       });
     },
   });
-
-  if (!userRhythms) router.push('/');
 
   return userRhythms ? (
     <ul className="mt-[310px] bg-[#121212] flex flex-wrap gap-2 w-full pr-32">
@@ -75,21 +70,24 @@ function RhythmDetailLayout({
                         rhythmId: Number(userRhythm?.id),
                       })
                     }
-                    className="absolute bottom-0 right-0 p-2 text-[13px]"
+                    className="absolute bottom-0 right-0 p-2 text-[12px] font-semibold text-white/25 duration-200 hover:text-red-500"
                   >
-                    글 삭제
+                    remove
                   </button>
                 ) : null}
+                {/* 버튼 누르면 바로 재생 */}
+                <button
+                  onClick={() =>
+                    play({ context: [userRhythm.trackUri], index: 0 })
+                  }
+                  aria-label="재생 버튼"
+                  className="absolute bottom-2 left-1/2 -translate-x-1/2 text-red-500 text-xs transition-all duration-300 group-hover:text-xl"
+                >
+                  <FaPlay />
+                </button>
               </div>
             </div>
-            {/* 버튼 누르면 바로 재생 */}
-            <button
-              onClick={() => play({ context: [userRhythm.trackUri], index: 0 })}
-              aria-label="재생 버튼"
-              className="absolute bottom-2 left-1/2 -translate-x-1/2 text-red-500 text-xs opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:text-xl"
-            >
-              <FaPlay />
-            </button>
+
             <img
               src={userRhythm?.trackImgURL}
               alt={userRhythm?.title}
