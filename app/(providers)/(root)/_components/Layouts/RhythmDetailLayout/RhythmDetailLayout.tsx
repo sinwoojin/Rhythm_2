@@ -38,7 +38,6 @@ function RhythmDetailLayout({
       });
     },
   });
-
   return userRhythms ? (
     <ul className="mt-[310px] bg-[#121212] flex flex-wrap gap-2 w-full pr-32">
       {userRhythms?.map((userRhythm) => (
@@ -101,9 +100,11 @@ function RhythmDetailLayout({
             )}
           </div>
           <div className="flex flex-col gap-y-1">
-            <p className="font-bold text-white/80 line-clamp-1">
-              {userRhythm?.title}
-            </p>
+            <Link href={`/userRhythm/${rhythmCategory}/${userRhythm.id}`}>
+              <p className="font-bold text-white/80 line-clamp-1">
+                {userRhythm?.title}
+              </p>
+            </Link>
             <p className="line-clamp-2 text-white/40 text-sm">
               {userRhythm?.content}
             </p>

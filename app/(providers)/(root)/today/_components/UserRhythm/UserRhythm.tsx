@@ -28,7 +28,9 @@ function UserRhythm() {
               key={userRhythm.id}
               className="w-[200px] p-4 bg-white/20"
             >
-              <Link href={`/userRhythm/${userRhythm.category}`}>
+              <Link
+                href={`/userRhythm/${userRhythm.category}/${userRhythm.id}`}
+              >
                 <div className="relative group w-full aspect-square rounded-md overflow-hidden">
                   <img
                     aria-label="플레이 리스트 커버 이미지"
