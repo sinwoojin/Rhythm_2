@@ -10,7 +10,7 @@ import { IoCloseOutline } from 'react-icons/io5';
 interface lyricsModalProps {
   trackTitle?: string;
   trackImg?: string;
-  trackId?: string;
+  trackId?: string | null;
 }
 
 function LyricsModal({ trackTitle, trackImg, trackId }: lyricsModalProps) {

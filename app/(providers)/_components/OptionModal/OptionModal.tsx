@@ -39,12 +39,12 @@ function OptionTrackModal({
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
 
   // 트랙 정보
-  const currentTrackId = trackId || currentTrack?.id;
-  const currentTrackImg = trackImg || currentTrack?.album.images[0].url;
-  const currentTrackName = trackTitle || currentTrack?.name;
-  const currentTrackArtistName = artistName || currentTrack?.artists[0].name;
-  const currentTrackUri = trackUri || currentTrack?.uri;
-  const currentTrackUrl = trackUrl || currentTrack;
+  const currentTrackId = currentTrack?.id;
+  const currentTrackImg = currentTrack?.album.images[0].url;
+  const currentTrackName = currentTrack?.name;
+  const currentTrackArtistName = currentTrack?.artists[0].name;
+  const currentTrackUri = currentTrack?.uri;
+  const currentTrackUrl = currentTrack;
 
   const handleClickModalClose = (e: React.MouseEvent<HTMLDivElement>) => {
     closeModal();
@@ -99,7 +99,7 @@ function OptionTrackModal({
         })}
       >
         <ul className="bg-white bg-opacity-20 w-full text-white py-4 rounded-md">
-          {location === 'tracks' ? (
+          {location === 'player' ? (
             <li className="flex gap-x-4 items-center py-2 px-4 hover:bg-white/[0.05]">
               <Link
                 href={`track/${currentTrackId}`}
@@ -118,7 +118,7 @@ function OptionTrackModal({
                 </span>
               </div>
             </li>
-          ) : location === 'player' ? (
+          ) : location === 'track' ? (
             <li className="flex gap-x-4 items-center py-2 px-4 hover:bg-white/[0.05]">
               <Link
                 href={`track/${currentTrackId}`}
@@ -131,9 +131,9 @@ function OptionTrackModal({
                 />
               </Link>
               <div className="flex flex-col overflow-x-hidden">
-                <span className="text-lg line-clamp-1">{currentTrackName}</span>
+                <span className="text-lg line-clamp-1">{trackTitle}</span>
                 <span className="text-base text-white text-opacity-50 line-clamp-1">
-                  {currentTrackArtistName}
+                  {artistName}
                 </span>
               </div>
             </li>
