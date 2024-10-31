@@ -2,6 +2,7 @@ import { api } from '@/api/spotifyApi';
 import MusicsLayout from '../_components/Layouts/MusicsLayout/MusicsLayout';
 import Page from '../_components/Page/Page';
 import UserRhythm from './_components/UserRhythm/UserRhythm';
+import Users from './_components/Users/Users';
 
 const TOP_100_MUSIC_ID = '5ABHKGoOzxkaa28ttQV9sE';
 
@@ -15,6 +16,7 @@ async function TodayPage() {
       <div id="popular-music">
         <MusicsLayout title="Music-100" tracks={tracks!} />
         <UserRhythm />
+        <Users />
       </div>
     </Page>
   );
