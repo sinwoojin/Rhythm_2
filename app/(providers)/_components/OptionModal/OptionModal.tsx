@@ -4,11 +4,15 @@ import { useModalStore } from '@/zustand/modalStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
 import { cx } from 'class-variance-authority';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { GrUserManager } from 'react-icons/gr';
 import { IoMdAddCircle, IoMdShare } from 'react-icons/io';
 import { MdOutlineLyrics } from 'react-icons/md';
+import { RiAlbumLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import AddMusicOnMyPlaylistModal from '../AddMusicOnMyPlaylistModal/AddMusicOnMyPlaylistModal';
 import LyricsModal from '../LyricsModal/LyricsModal';
+
 interface OptionModalProps {
   location: string;
 
@@ -16,11 +20,13 @@ interface OptionModalProps {
   trackImg?: string;
   trackId?: string;
   trackUri?: string;
-  trackUrl?: string;
 
   artistName?: string[];
+  artistsId?: string[];
 
   track?: Track;
+
+  albumId?: string;
 }
 
 function OptionTrackModal({
@@ -31,20 +37,36 @@ function OptionTrackModal({
   trackUri,
   artistName,
   track,
-  trackUrl,
+  artistsId,
+  albumId,
 }: OptionModalProps) {
   // State
   const closeModal = useModalStore((state) => state.closeModal);
   const openModal = useModalStore((state) => state.openModal);
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
 
+  const [currentArtistId, setCurrentArtistId] = useState('');
+  const [currentAlbumId, setCurrentAlbumId] = useState('');
+
   // 트랙 정보
-  const currentTrackId = currentTrack?.id;
-  const currentTrackImg = currentTrack?.album.images[0].url;
-  const currentTrackName = currentTrack?.name;
-  const currentTrackArtistName = currentTrack?.artists[0].name;
-  const currentTrackUri = currentTrack?.uri;
-  const currentTrackUrl = currentTrack;
+  const currentTrackId = currentTrack?.id || trackId;
+  const currentTrackImg = currentTrack?.album.images[0].url || trackImg;
+  const currentTrackName = currentTrack?.name || trackTitle;
+  const currentTrackArtistName = currentTrack?.artists[0].name || artistName;
+  const currentTrackUri = currentTrack?.uri || trackUri;
+
+  const handleCopyUrl = () => {
+    const currentUrl = window.location.href; // 현재 페이지 URL 가져오기
+
+    navigator.clipboard
+      .writeText(currentUrl)
+      .then(() => {
+        toast.success('URL이 복사되었습니다!'); // 성공 메시지
+      })
+      .catch(() => {
+        toast.error('URL 복사에 실패했습니다.'); // 오류 메시지
+      });
+  };
 
   const handleClickModalClose = (e: React.MouseEvent<HTMLDivElement>) => {
     closeModal();
@@ -70,25 +92,30 @@ function OptionTrackModal({
             trackImg={trackImg}
             trackTitle={trackTitle}
             trackId={trackId}
+            artistName={artistName}
           />
         ),
         backdrop: true,
       });
     } else if (targetId === 'showMusicShareButton') {
-      if (!currentTrack && !track)
-        return toast.warn('재생중인 음악이 없습니다.');
-      openModal({
-        element: (
-          <LyricsModal
-            trackImg={trackImg}
-            trackTitle={trackTitle}
-            trackId={trackId}
-          />
-        ),
-        backdrop: true,
-      });
+      handleCopyUrl();
     }
   };
+
+  useEffect(() => {
+    if (artistsId) {
+      setCurrentArtistId('artists/' + artistsId![0]);
+      setCurrentAlbumId('albums/' + albumId);
+    } else if (currentTrack) {
+      setCurrentArtistId(currentTrack?.artists[0].url.split('/v1/')[1]);
+      setCurrentAlbumId(
+        currentTrack?.album.uri
+          .replace('spotify:', '')
+          .replace('album', 'albums')
+          .replace(/:/g, '/'),
+      );
+    }
+  }, [albumId, artistsId, currentTrack]);
 
   return (
     <div className="fixed w-full h-screen z-50" onClick={handleClickModalClose}>
@@ -139,10 +166,25 @@ function OptionTrackModal({
             </li>
           ) : null}
 
-          <li
-            className="py-[12px] px-4 hover:bg-white/[0.05] text-base"
-            id="addMusicToMyPlaylistButton"
-          >
+          <li className="py-[12px] px-4 hover:bg-white/[0.05] text-base">
+            <Link href={`/${currentArtistId}`}>
+              <button className="flex gap-x-4 items-center">
+                <GrUserManager className="text-2xl" />
+                아티스트 페이지
+              </button>
+            </Link>
+          </li>
+
+          <li className="py-[12px] px-4 hover:bg-white/[0.05] text-base">
+            <Link href={`/${currentAlbumId}`}>
+              <button className="flex gap-x-4 items-center">
+                <RiAlbumLine className="text-2xl" />
+                앨범 페이지
+              </button>
+            </Link>
+          </li>
+
+          <li className="py-[12px] px-4 hover:bg-white/[0.05] text-base">
             <button
               className="flex gap-x-4 items-center"
               id="addMusicToMyPlaylistButton"
@@ -154,10 +196,7 @@ function OptionTrackModal({
               내 플레이리스트 추가
             </button>
           </li>
-          <li
-            className="py-[12px] px-4 hover:bg-white/[0.05] text-base"
-            id="showMusicLyricsButton"
-          >
+          <li className="py-[12px] px-4 hover:bg-white/[0.05] text-base">
             <button
               className="flex gap-x-4 items-center"
               id="showMusicLyricsButton"
@@ -174,7 +213,11 @@ function OptionTrackModal({
               className="flex gap-x-4 items-center"
               id="showMusicShareButton"
             >
-              <IoMdShare className="text-2xl" id="showMusicShareButton" />
+              <IoMdShare
+                className="text-2xl"
+                id="showMusicShareButton"
+                onClick={handleCopyUrl}
+              />
               공유
             </button>
           </li>

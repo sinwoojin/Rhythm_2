@@ -72,7 +72,8 @@ async function TrackDetailPage({ params: { trackId } }: TrackDetailPageProps) {
               trackUri={track.uri}
               artistName={artists}
               track={track}
-              trackUrl={track.album.external_urls.spotify}
+              artistsId={artistsId}
+              albumId={album.id}
             />
           </div>
         </div>

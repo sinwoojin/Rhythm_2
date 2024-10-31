@@ -5,30 +5,47 @@ import { useModalStore } from '@/zustand/modalStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 
-interface lyricsModalProps {
+interface LyricsModalProps {
   trackTitle?: string;
   trackImg?: string;
   trackId?: string | null;
+  artistName?: string[];
 }
 
-function LyricsModal({ trackTitle, trackImg, trackId }: lyricsModalProps) {
+function LyricsModal({ trackTitle, trackImg, trackId, artistName }: LyricsModalProps) {
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
   const closeModal = useModalStore((state) => state.closeModal);
 
-  const activeTrackId = currentTrack?.id || trackId;
-  const activeTrackTitle = currentTrack?.name || trackTitle;
-  const activeTrackImg = currentTrack?.album.images[0].url || trackImg;
-  const activeArtistName = currentTrack?.artists[0].name || '';
+  const [currentTrackId, setCurrentTrackId] = useState('');
+  const [currentTrackTitle, setCurrentTrackTitle] = useState('');
+  const [currentTrackImg, setCurrentTrackImg] = useState('');
+  const [currentArtistName, setCurrentArtistName] = useState('');
+
+  // 상태 초기화
+  useEffect(() => {
+    if (trackTitle && trackImg && trackId && artistName) {
+      setCurrentTrackId(trackId);
+      setCurrentTrackTitle(trackTitle);
+      setCurrentTrackImg(trackImg);
+      setCurrentArtistName(artistName[0]);
+    } else if (currentTrack) {
+      setCurrentTrackId(currentTrack.id!);
+      setCurrentTrackTitle(currentTrack.name);
+      setCurrentTrackImg(currentTrack.album.images[0].url);
+      setCurrentArtistName(currentTrack.artists[0].name);
+    }
+  }, [trackTitle, trackImg, trackId, artistName, currentTrack]);
 
   const { data: lyric, isLoading } = useQuery({
-    queryKey: ['lyric', { trackId: activeTrackId }],
-    queryFn: () => api.lyrics.getTrackLyricOnClient(activeTrackId!),
-    enabled: !!activeTrackId,
+    queryKey: ['lyric', { trackId: currentTrackId }],
+    queryFn: () => api.lyrics.getTrackLyricOnClient(currentTrackId!),
+    enabled: !!currentTrackId,
   });
 
-  if (!activeTrackId) return null;
+  if (!currentTrackId) return null;
 
   return (
     <div
@@ -45,11 +62,11 @@ function LyricsModal({ trackTitle, trackImg, trackId }: lyricsModalProps) {
       <div className="flex flex-col gap-y-6 w-full h-full">
         <div className="flex gap-x-8 items-center">
           <div className="h-24 aspect-square bg-slate-600">
-            <img src={activeTrackImg} alt="image" />
+            <img src={currentTrackImg} alt="image" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl">{activeTrackTitle}</span>
-            <span className="text-base text-gray-300">{activeArtistName}</span>
+            <span className="text-xl">{currentTrackTitle}</span>
+            <span className="text-base text-gray-300">{currentArtistName}</span>
           </div>
         </div>
         <div className="max-h-full overflow-y-auto">
