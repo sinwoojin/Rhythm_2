@@ -7,17 +7,28 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { IoCloseOutline } from 'react-icons/io5';
 
-function LyricsModal() {
+interface lyricsModalProps {
+  trackTitle?: string;
+  trackImg?: string;
+  trackId?: string;
+}
+
+function LyricsModal({ trackTitle, trackImg, trackId }: lyricsModalProps) {
   const currentTrack = useSpotifyStore((state) => state.currentTrack);
   const closeModal = useModalStore((state) => state.closeModal);
 
+  const activeTrackId = currentTrack?.id || trackId;
+  const activeTrackTitle = currentTrack?.name || trackTitle;
+  const activeTrackImg = currentTrack?.album.images[0].url || trackImg;
+  const activeArtistName = currentTrack?.artists[0].name || '';
+
   const { data: lyric, isLoading } = useQuery({
-    queryKey: ['lyric', { trackId: currentTrack!.id }],
-    queryFn: () => api.lyrics.getTrackLyricOnClient(currentTrack!.id!),
-    enabled: !!currentTrack,
+    queryKey: ['lyric', { trackId: activeTrackId }],
+    queryFn: () => api.lyrics.getTrackLyricOnClient(activeTrackId!),
+    enabled: !!activeTrackId,
   });
 
-  if (!currentTrack) return null;
+  if (!activeTrackId) return null;
 
   return (
     <div
@@ -25,25 +36,23 @@ function LyricsModal() {
       onClick={(e) => e.stopPropagation()}
     >
       <button
+        aria-label="닫기"
         className="text-white text-4xl absolute top-4 right-4"
         onClick={closeModal}
       >
         <IoCloseOutline />
-      </button>{' '}
+      </button>
       <div className="flex flex-col gap-y-6 w-full h-full">
         <div className="flex gap-x-8 items-center">
           <div className="h-24 aspect-square bg-slate-600">
-            <img src={currentTrack.album.images[0].url} alt="image" />
+            <img src={activeTrackImg} alt="image" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl">{currentTrack.name}</span>
-            <span className="text-base text-gray-300">
-              {currentTrack.artists[0].name}
-            </span>
+            <span className="text-xl">{activeTrackTitle}</span>
+            <span className="text-base text-gray-300">{activeArtistName}</span>
           </div>
         </div>
         <div className="max-h-full overflow-y-auto">
-          {/* 로딩중일때  */}
           {isLoading ? (
             <motion.div
               animate={{ opacity: [0, 1, 0] }}

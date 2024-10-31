@@ -5,19 +5,21 @@ import { IoIosAddCircleOutline } from 'react-icons/io';
 interface PlusButtonProps {
   playlistId: string;
   playlistName: string;
+
+  trackUri?: string;
 }
 
-function PlusButton({ playlistId, playlistName }: PlusButtonProps) {
+function PlusButton({ playlistId, playlistName, trackUri }: PlusButtonProps) {
   const closeModal = useModalStore((state) => state.closeModal);
   const addTrackToPlaylist = useSpotifyStore(
     (state) => state.addTrackToPlaylist,
   );
   const track = useSpotifyStore((state) => state.currentTrack);
 
-  if (!track) return;
-  const trackUri = track.uri;
+  if (!track && !trackUri) return;
+  const currentTrackUri = trackUri || track?.uri;
   const handleClickAddTrackButton = () => {
-    addTrackToPlaylist(playlistId, String(trackUri));
+    addTrackToPlaylist(playlistId, String(currentTrackUri));
     closeModal();
   };
 

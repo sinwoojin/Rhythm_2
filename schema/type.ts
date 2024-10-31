@@ -6,6 +6,9 @@ export interface Album {
   name: string;
   release_date: string;
   description: string;
+  external_urls: {
+    spotify: string;
+  };
   artists: { id: string; name: string }[];
   tracks: {
     href: string;
