@@ -13,14 +13,14 @@ async function PlaylistsPage() {
         <ul className="w-full h-[480px] grid grid-rows-2 grid-flow-col gap-6 auto-cols-fr">
           {categories?.map((category) => (
             <li key={category.id}>
-              <Link href={`userRhythm/${category?.name}`}>
+              <Link href={`/userRhythm/${category?.name}`}>
                 <div className="w-full h-full rounded-md overflow-hidden group relative">
                   <img
                     className="w-full h-full object-cover grayscale-[20%] absolute"
                     src={category?.url}
                     alt={category?.name}
                   />
-                  <p className="opacity-0 group-hover:opacity-100 absolute z-20 text-8xl font-thin top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-200">
+                  <p className="opacity-0 group-hover:opacity-100 absolute z-20 text-8xl font-thin top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-200 text-nowrap">
                     {category.name}
                   </p>
                   <div className="object-contain backdrop-blur-sm backdrop-brightness-90 w-full h-full absolute group-hover:backdrop-grayscale-[100%] group-hover:backdrop-brightness-50 group-active:backdrop-brightness-[40%] transition-all duration-200"></div>
