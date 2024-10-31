@@ -1,10 +1,12 @@
 'use client';
 
 import LikeButton from '@/components/LikeButton';
+import { useAuthStore } from '@/zustand/authStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
 import { FaPause, FaPlay } from 'react-icons/fa';
 import { IoMdSkipBackward, IoMdSkipForward } from 'react-icons/io';
 import { PiHeartStraightDuotone } from 'react-icons/pi';
+import { toast } from 'react-toastify';
 import LyricsButton from './LyricsButton/LyricsButton';
 import OptionButton from './OptionButton/OptionButton';
 import PlaybackBar from './PlaybackBar/PlaybackBar';
@@ -22,7 +24,16 @@ function MusicPlayer() {
   );
   const playPrevTrack = useSpotifyStore((state) => state.playPrevTrack);
   const playNextTrack = useSpotifyStore((state) => state.playNextTrack);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const trackId = currentTrack?.id;
+
+  const handleClickPlayButton = () => {
+    if (!isLoggedIn) return toast.error('로그인 하세요');
+
+    if (!currentTrack) return toast.error('현재 재생중인 곡이 없습니다');
+
+    pauseAndResumeTrack([currentTrack!.uri]);
+  };
 
   return (
     <div className="fixed bottom-0 w-full bg-rhythmBlack flex flex-col max-h-[160px] z-30">
@@ -89,11 +100,11 @@ function MusicPlayer() {
 
           <div className="rounded-full transition-all duration-300 hover:bg-white hover:bg-opacity-30">
             {/* play 버튼 */}
-            {isPaused ? (
+            {isPaused === true || isPaused === null ? (
               <button
                 aria-label="플레이 버튼"
                 className="text-4xl py-4 pl-5 pr-3 text-red-500"
-                onClick={() => pauseAndResumeTrack([currentTrack!.uri])}
+                onClick={handleClickPlayButton}
               >
                 <FaPlay />
               </button>
