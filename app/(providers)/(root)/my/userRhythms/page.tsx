@@ -41,7 +41,7 @@ function UserRhythms() {
   });
 
   if (isLoading) return <div>로딩 중...</div>;
-  if (error) return <div>오류 발생: {error.message}</div>;
+  if (error) return <div>오류 발생: {error?.message}</div>;
 
   return (
     <Page isNav={true} title="리듬">
@@ -49,11 +49,11 @@ function UserRhythms() {
         <div>로그인 되지 않음</div>
       ) : (
         <ul className="flex flex-wrap gap-x-[2%] gap-y-3">
-          {myRhythms!.length > 0 ? (
-            <div>작성한 글이 없습니다</div>
+          {myRhythms?.length === 0 ? (
+            <li>작성한 글이 없습니다</li>
           ) : (
             myRhythms
-              ?.filter((rhythms) => rhythms.userId === userId) // 사용자 ID가 같은 리듬 항목만 필터링
+              ?.filter((rhythm) => rhythm.userId === userId) // 사용자 ID가 같은 리듬 항목만 필터링
               .map((rhythm) => (
                 <li
                   key={rhythm.id}
@@ -86,7 +86,6 @@ function UserRhythms() {
                             remove
                           </button>
                         ) : null}
-                        {/* 버튼 누르면 바로 재생 */}
                       </div>
                     </div>
 
