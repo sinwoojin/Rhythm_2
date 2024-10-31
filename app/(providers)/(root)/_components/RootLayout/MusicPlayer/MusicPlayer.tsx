@@ -2,7 +2,6 @@
 
 import LikeButton from '@/components/LikeButton';
 import useSpotifyStore from '@/zustand/spotifyStore';
-import { useQuery } from '@tanstack/react-query';
 import { FaPause, FaPlay } from 'react-icons/fa';
 import { IoMdSkipBackward, IoMdSkipForward } from 'react-icons/io';
 import { PiHeartStraightDuotone } from 'react-icons/pi';
@@ -23,21 +22,14 @@ function MusicPlayer() {
   );
   const playPrevTrack = useSpotifyStore((state) => state.playPrevTrack);
   const playNextTrack = useSpotifyStore((state) => state.playNextTrack);
-  const getPlayBackState = useSpotifyStore((state) => state.getPlayBackState);
   const trackId = currentTrack?.id;
-
-  const { data } = useQuery({
-    queryKey: ['playbackState'],
-    queryFn: async () => {
-      return await getPlayBackState();
-    },
-  });
-
-  console.log(data);
 
   return (
     <div className="fixed bottom-0 w-full bg-rhythmBlack flex flex-col max-h-[160px] z-30">
       <div className=" grid grid-cols-7 items-center pt-4 pb-2 px-8">
+        <div className="flex col-span-7 w-full">
+          <PlaybackBar />
+        </div>
         <div
           id="music-player-left"
           className="col-span-2 grid grid-cols-5 gap-x-2 items-center"
@@ -124,10 +116,8 @@ function MusicPlayer() {
           >
             <IoMdSkipForward />
           </button>
-          <div className="flex col-span-7 w-full justify-center">
-            <PlaybackBar />
-          </div>
         </div>
+
         <div className="col-span-2 flex items-center ml-auto">
           <VolumeBar />
           {/* 현재 재생한 곡들의 목록 */}

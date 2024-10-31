@@ -24,68 +24,31 @@ const Player = () => {
   };
 
   useEffect(() => {
-    fetchPlaybackState();
+    if (playbackState?.is_playing) {
+      fetchPlaybackState();
+    }
     intervalRef.current = setInterval(() => {
       fetchPlaybackState();
-    }, 1000);
-
+    }, 5000);
     return () => clearInterval(intervalRef.current as NodeJS.Timeout);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (playingRef.current) {
-        setCurrentProgress((prev) => {
-          if (playbackState && prev >= playbackState.item.duration_ms) {
-            clearInterval(interval);
-            return playbackState.item.duration_ms;
-          }
-          return prev + 1000;
-        });
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [playbackState]);
-
-  const formatTime = (ms: number) => {
-    const minutes = Math.floor(ms / 60000);
-    const seconds = Math.floor((ms % 60000) / 1000);
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-  };
+  }, [playbackState?.is_playing]);
 
   if (!playbackState) {
     return (
-      <div className="text-white flex w-full gap-x-3 justify-center text-center text-xs items-center">
-        <span>0:00</span>
-        <div className="relative w-[300px] h-1 bg-gray-200 rounded-full overflow-hidden">
-          <div
-            className="absolute top-0 left-0 h-full bg-slate-400"
-            style={{ width: '0%' }}
-          />
-        </div>
-        <span>0:00</span>
+      <div className=" w-full h-1 bg-gray-600 rounded-full overflow-hidden">
+        <div className=" top-0 left-0 h-full" style={{ width: '0%' }} />
       </div>
     );
   }
-
-  const { item } = playbackState;
-  const { duration_ms } = item;
-
+  const duration_ms = playbackState.item.duration_ms;
   const progressPercent = (currentProgress / duration_ms) * 100;
 
   return (
-    <div className="text-white flex w-full gap-x-3 justify-center text-center text-xs items-center">
-      <span>{formatTime(currentProgress)}</span>
-
-      <div className="relative w-[300px] h-1 bg-gray-200 rounded-full overflow-hidden">
-        <div
-          className="absolute top-0 left-0 h-full bg-red-500 transition-all"
-          style={{ width: `${progressPercent}%` }}
-        />
-      </div>
-
-      <span>{formatTime(duration_ms)}</span>
+    <div className=" w-full h-1 bg-gray-600 rounded-full overflow-hidden">
+      <div
+        className=" top-0 left-0 h-full bg-red-500 transition-all"
+        style={{ width: `${progressPercent}%` }}
+      />
     </div>
   );
 };
