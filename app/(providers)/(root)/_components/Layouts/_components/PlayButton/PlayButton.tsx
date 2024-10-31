@@ -41,7 +41,7 @@ function PlayButton({
       pause();
     } else {
       const uri = playlistUri || albumUri;
-      if (uri) play(uri, index);
+      if (uri) play({ context: uri, index });
     }
   };
 

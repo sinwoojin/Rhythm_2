@@ -1,6 +1,6 @@
 'use client';
 
-import { setRepeatMusic } from '@/api/spotifyPlayMusicAPI';
+import { api } from '@/api/spotifyApi';
 import { useAuthStore } from '@/zustand/authStore';
 import useSpotifyStore from '@/zustand/spotifyStore';
 import { cx } from 'class-variance-authority';
@@ -15,7 +15,7 @@ function RepeatMusicButton() {
 
   const handleClickRepeatTrack = () => {
     if (!currentUser) return;
-    setRepeatMusic(String(accessToken), 'track');
+    api.playMusic.setRepeatMusic(String(accessToken), 'track');
     setIsClicked((prev) => !prev);
   };
 
