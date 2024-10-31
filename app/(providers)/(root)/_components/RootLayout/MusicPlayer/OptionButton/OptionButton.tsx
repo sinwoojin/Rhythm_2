@@ -1,5 +1,6 @@
 'use client';
 import OptionModal from '@/app/(providers)/_components/OptionModal/OptionModal';
+import { Track } from '@/schema/type';
 import { useModalStore } from '@/zustand/modalStore';
 import { cx } from 'class-variance-authority';
 import { SlOptions } from 'react-icons/sl';
@@ -8,8 +9,24 @@ interface OptionButtonProps {
 
   trackTitle?: string;
   trackImg?: string;
+  trackId?: string;
+  trackUri?: string;
+  trackUrl?: string;
+
+  artistName?: string[];
+
+  track?: Track;
 }
-function OptionButton({ location, trackTitle, trackImg }: OptionButtonProps) {
+function OptionButton({
+  location,
+  trackTitle,
+  trackImg,
+  trackId,
+  trackUri,
+  artistName,
+  track,
+  trackUrl,
+}: OptionButtonProps) {
   const openModal = useModalStore((state) => state.openModal);
   const handleClickOption = () => {
     openModal({
@@ -18,6 +35,11 @@ function OptionButton({ location, trackTitle, trackImg }: OptionButtonProps) {
           location={location}
           trackTitle={String(trackTitle)}
           trackImg={String(trackImg)}
+          trackId={String(trackId)}
+          trackUri={String(trackUri)}
+          artistName={artistName}
+          track={track}
+          trackUrl={trackUrl}
         />
       ),
       backdrop: false,

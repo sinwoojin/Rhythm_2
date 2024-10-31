@@ -68,6 +68,11 @@ async function TrackDetailPage({ params: { trackId } }: TrackDetailPageProps) {
               location={'track'}
               trackTitle={trackTitle}
               trackImg={albumImg}
+              trackId={track.id}
+              trackUri={track.uri}
+              artistName={artists}
+              track={track}
+              trackUrl={track.album.external_urls.spotify}
             />
           </div>
         </div>
