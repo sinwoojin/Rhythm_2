@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 function Footer() {
   return (
-    <footer className="pl-[320px] pr-[75px] pt-[60px] pb-[calc(29rem/4)] w-full h-full bg-rhythmBlack text-white flex flex-col text-sm">
+    <footer className="pl-[320px] pr-[75px] pb-[160px] pt-20 w-full bg-rhythmBlack text-white flex flex-col text-sm">
       <div className="container mx-auto flex flex-col items-center space-y-3 opacity-65">
         <p className="text-sm">© 2024 리듬 | 모든 권리 보유 할걸?.</p>
         <nav className="flex space-x-4">
