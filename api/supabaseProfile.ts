@@ -140,6 +140,15 @@ const getMyLikeTracks = async (userId: string) => {
   return data;
 };
 
+const getMyRecommend = async (userId: string) => {
+  const response = await supabase
+    .from('userRhythm')
+    .select('*')
+    .eq('userId', userId);
+  const data = response.data;
+  return data;
+};
+
 export const supabaseProfile = {
   getProfile,
   getFollowers,
@@ -149,4 +158,5 @@ export const supabaseProfile = {
   myFollowState,
   updateProfile,
   getMyLikeTracks,
+  getMyRecommend,
 };
