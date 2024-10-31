@@ -53,7 +53,7 @@ function LikedMusics() {
               className="flex gap-x-5 h-28 p-4 items-center transition-all duration-200 hover:bg-white/20"
             >
               <button
-                onClick={() => play([track.uri])}
+                onClick={() => play({ context: [track.uri] })}
                 className="bg-white/20 h-full aspect-square"
               >
                 <div className="bg-black/20 w-full h-full relative group">
@@ -84,7 +84,7 @@ function LikedMusics() {
                   </Link>
                 </span>
                 <span className="col-span-1 text-lg ml-auto flex items-center gap-x-5">
-                <LikeButton trackId={track.id} hasBorder={true} />
+                  <LikeButton trackId={track.id} hasBorder={true} />
                   <button aria-label="설정">
                     <SlOptions />
                   </button>

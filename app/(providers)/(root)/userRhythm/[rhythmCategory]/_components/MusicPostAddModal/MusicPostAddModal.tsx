@@ -73,7 +73,6 @@ function MusicPostAddModal({ rhythmCategory }: MusicPostAddModal) {
       };
 
       const response = await supabase.from('userRhythm').insert(data);
-      console.log(response);
 
       if (response) {
         toast.success('글 작성에 성공하셨습니다!');
