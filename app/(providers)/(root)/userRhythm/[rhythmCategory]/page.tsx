@@ -2,7 +2,6 @@
 
 import { getCategory, getUserRhythms } from '@/api/supabaseGetCategories';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import { FaPlay } from 'react-icons/fa';
 import RhythmDetailLayout from '../../_components/Layouts/RhythmDetailLayout/RhythmDetailLayout';
 import Page from '../../_components/Page/Page';
@@ -15,8 +14,6 @@ interface PlayListPageProps {
 }
 
 function PlayListPage({ params: { rhythmCategory } }: PlayListPageProps) {
-  const router = useRouter();
-
   // 카테고리 데이터
   const { data: category } = useQuery({
     queryKey: ['category', { name: rhythmCategory }],
@@ -29,13 +26,11 @@ function PlayListPage({ params: { rhythmCategory } }: PlayListPageProps) {
     queryFn: () => getUserRhythms(rhythmCategory),
   });
 
-  if (category === null) return router.replace('/today');
-
   return (
     <Page>
       {category ? (
         <>
-          <div className="h-[300px] absolute top-0 left-0 right-0 z-0 overflow-hidden">
+          <div className="w-full h-[300px] absolute top-0 left-0 right-0 z-0 overflow-hidden">
             <img
               className="w-full h-full object-cover blur-lg brightness-95"
               src={category.url}
