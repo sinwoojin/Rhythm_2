@@ -121,7 +121,7 @@ export type Database = {
       }
       users: {
         Row: {
-          content: string | null
+          content: string
           createdAt: string
           email: string
           id: string
@@ -129,7 +129,7 @@ export type Database = {
           userName: string
         }
         Insert: {
-          content?: string | null
+          content?: string
           createdAt?: string
           email: string
           id: string
@@ -137,7 +137,7 @@ export type Database = {
           userName: string
         }
         Update: {
-          content?: string | null
+          content?: string
           createdAt?: string
           email?: string
           id?: string

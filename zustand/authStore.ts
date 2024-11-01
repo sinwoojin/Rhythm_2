@@ -8,6 +8,7 @@ type CurrentUser = {
   content?: string | null | undefined;
   imgUrl?: string | null;
   spotifyId?: string;
+  userProvider?: string;
 } | null;
 
 type AuthStoreState = {
