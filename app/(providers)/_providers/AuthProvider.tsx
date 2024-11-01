@@ -49,11 +49,12 @@ function AuthProvider({ children }: PropsWithChildren) {
 
             const currentUser = {
               id,
-              userName: loggedUser.data!.userName,
+              userName: loggedUser.data?.userName,
               email: loggedUser.data!.email,
               content: loggedUser.data!.content ?? '',
               imgUrl: loggedUser.data!.imgUrl ?? '',
               spotifyId: user.identities?.[0].id,
+              userProvider: session?.user.identities![0].provider,
             };
 
             setCurrentUser(currentUser);

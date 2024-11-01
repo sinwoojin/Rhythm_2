@@ -181,7 +181,7 @@ const useSpotifyStore = create<SpotifyStoreState>((set, get) => ({
 
   getMyPlaylists: async (): Promise<UserPlaylist | undefined> => {
     const { accessToken } = get();
-    if (!accessToken) {
+    if (!accessToken) { 
       toast.warn('프리미엄 로그인이 필요한 기능입니다.');
       return;
     }
