@@ -105,7 +105,7 @@ function RhythmDetailLayout({
                 {userRhythm?.title}
               </p>
             </Link>
-            <p className="line-clamp-2 text-white/40 text-sm line-clamp-1">
+            <p className="text-white/40 text-sm line-clamp-1">
               {userRhythm?.content}
             </p>
           </div>
