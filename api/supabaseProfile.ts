@@ -111,7 +111,7 @@ export const myFollowState = async (follower: string, following: string) => {
  */
 export const updateProfile = async (
   data: {
-    content?: string | null;
+    content?: string;
     createdAt?: string;
     email?: string;
     id?: string;
