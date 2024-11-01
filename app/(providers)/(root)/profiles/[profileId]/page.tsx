@@ -219,9 +219,9 @@ function ProfileDetailPage(props: ProfileDetailPageProps) {
       </div>
 
       <div className="flex flex-col gap-y-4">
-        <span>나의 플레이리스트</span>
+        <span>{user?.userName}의 플레이리스트</span>
         <div>
-          <MyPlaylists location="profile" />
+          <MyPlaylists location="profile" userId={profileId} />
         </div>
         <span>좋아요 표시한 노래</span>
         <div>
