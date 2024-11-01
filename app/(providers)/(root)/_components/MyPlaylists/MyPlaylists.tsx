@@ -14,7 +14,6 @@ interface MyPlaylistsProps {
   userId: string;
 }
 function MyPlaylists({ location, userId }: MyPlaylistsProps) {
-  console.log(userId);
   const currentUser = useAuthStore((state) => state.currentUser);
   const getMyPlaylists = useSpotifyStore((state) => state.getMyPlaylists);
 

@@ -245,7 +245,6 @@ const setRepeatMusic = async (
       },
     );
 
-    console.log('Repeat mode set successfully');
     return response.data;
   } catch (error) {
     console.error('Error setting repeat mode:', error);

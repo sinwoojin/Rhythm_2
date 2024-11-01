@@ -32,8 +32,6 @@ function AddMusicOnMyPlaylistModal({
     return <div>로딩 중...</div>;
   }
 
-  console.log('playlists', playlists, myPlaylists);
-
   return (
     <div
       className="fixed top-[35%] left-1/2 -translate-x-1/2 bg-rhythmBlack text-white w-[340px] rounded-md max-h-52 overflow-auto scrollbar-hide"
