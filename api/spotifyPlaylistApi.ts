@@ -30,7 +30,7 @@ const getPlaylist = async (
 };
 
 /**
- * 유저 플레이 리스트 받아오기(accessToken 필요)
+ * 자신의 플레이 리스트 받아오기(accessToken 필요)
  * @param playlistId
  */
 const getMyPlaylists = async (
@@ -46,6 +46,36 @@ const getMyPlaylists = async (
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
+    // 응답 데이터 출력
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching album information:', error);
+  }
+};
+/**
+ * 유저 플레이 리스트 받아오기(accessToken, userId 필요)
+ * 유저별 스포티파이 아이디 가져오는게 어려워서 구현안됌
+ * @param playlistId
+ */
+const getUserPlaylists = async (
+  accessToken: string,
+  user_id: string,
+): Promise<UserPlaylist | undefined> => {
+  try {
+    if (!accessToken) {
+      throw new Error('Access token is required');
+    }
+
+    const response = await spotifyAPI.get<UserPlaylist>(
+      `users/${user_id}/playlists
+`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
 
     // 응답 데이터 출력
     return response.data;
@@ -90,5 +120,6 @@ const deleteMyPlaylists = async (
 export const playlistApi = {
   getPlaylist,
   getMyPlaylists,
+  getUserPlaylists,
   deleteMyPlaylists,
 };

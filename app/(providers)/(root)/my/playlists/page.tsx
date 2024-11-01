@@ -11,7 +11,7 @@ function MyPlaylist() {
         </h1>
         <CreatePlaylistToggle />
       </div>
-      <MyPlaylists location="my" />
+      <MyPlaylists location="my" userId="" />
     </Page>
   );
 }
